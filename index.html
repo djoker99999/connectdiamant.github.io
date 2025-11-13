@@ -1,0 +1,2984 @@
+
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>💎 Le Diamant Magique</title>
+  <style>
+    * {
+      margin: 0;
+      padding: 0;
+      box-sizing: border-box;
+    }
+
+    body {
+      font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+      background: url('https://cdn6.aptoide.com/imgs/0/1/c/01c662d49e6d02a900e662e0debe0dd8_fgraphic.png') no-repeat center center fixed;
+      background-size: cover;
+      color: #fff;
+      text-align: center;
+      min-height: 100vh;
+      padding: 10px;
+      position: relative;
+      overflow-x: hidden;
+    }
+
+    /* Overlay pour améliorer la lisibilité */
+    body::before {
+      content: '';
+      position: fixed;
+      top: 0;
+      left: 0;
+      width: 100%;
+      height: 100%;
+      background: rgba(0, 0, 0, 0.5);
+      z-index: -1;
+    }
+
+    /* Amélioration de la luminosité et du contraste */
+    body {
+      filter: brightness(1.1) contrast(1.1);
+    }
+
+    .game-container {
+      max-width: 850px; 
+      width: 100%;
+      margin: 0 auto;
+      background: rgba(0, 0, 0, 0.7);
+      border-radius: 20px;
+      padding: 20px;
+      backdrop-filter: blur(10px);
+      box-shadow: 0 10px 30px rgba(0, 0, 0, 0.5);
+      position: relative;
+      border: 2px solid rgba(255, 215, 0, 0.3);
+    }
+
+    .game-container::before {
+      content: '';
+      position: absolute;
+      top: -2px;
+      left: -2px;
+      right: -2px;
+      bottom: -2px;
+      background: linear-gradient(45deg, #ffd700, #ff6b9d, #c44569, #ffd700);
+      border-radius: 22px;
+      z-index: -1;
+      animation: borderGlow 3s linear infinite;
+    }
+
+    @keyframes borderGlow {
+      0% { filter: hue-rotate(0deg); }
+      100% { filter: hue-rotate(360deg); }
+    }
+
+    h1 {
+      font-size: 2.2em;
+      margin-bottom: 15px;
+      text-shadow: 0 0 10px rgba(255, 255, 255, 0.5);
+      background: linear-gradient(45deg, #ff6b9d, #feca57);
+      -webkit-background-clip: text;
+      -webkit-text-fill-color: transparent;
+      background-clip: text;
+    }
+
+    /* Barre de Drop (Jackpot) */
+    .drop-bar-container {
+      width: 90%;
+      max-width: 400px;
+      margin: 15px auto;
+      background: rgba(0, 0, 0, 0.5);
+      border: 2px solid rgba(255, 215, 0, 0.3);
+      border-radius: 15px;
+      padding: 5px;
+      position: relative;
+      overflow: hidden;
+      backdrop-filter: blur(5px);
+    }
+
+    .drop-bar-fill {
+      height: 25px;
+      width: 0%;
+      background: linear-gradient(45deg, #feca57, #ff6b9d);
+      border-radius: 10px;
+      transition: width 0.3s ease;
+    }
+
+    .drop-bar-text {
+      position: absolute;
+      top: 0;
+      left: 0;
+      width: 100%;
+      height: 100%;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      font-weight: bold;
+      color: #fff;
+      text-shadow: 0 0 5px rgba(0, 0, 0, 0.7);
+      font-size: 14px;
+    }
+
+    .instructions {
+      margin: 20px 0;
+      padding: 15px;
+      background: rgba(255, 255, 255, 0.1);
+      border-radius: 15px;
+      backdrop-filter: blur(10px);
+    }
+
+    .instructions h2 {
+      font-size: 1.5em;
+      margin-bottom: 8px;
+      color: #ffffff;
+      text-shadow: 0 0 10px rgba(255, 255, 255, 0.5);
+    }
+
+    .instructions p {
+      font-size: 1.1em;
+      font-weight: bold;
+      color: #ffffff;
+      text-shadow: 0 0 5px rgba(255, 255, 255, 0.5);
+    }
+
+    .diamond-container {
+      position: relative;
+      margin: 20px auto;
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      width: 100%;
+      min-height: 250px; 
+    }
+
+    .diamond {
+      width: 250px;
+      height: 225px;
+      margin: 0 auto;
+      background-image: url('https://i.ibb.co/ks5qw82L/t-l-chargement-3-Photoroom.png');
+      background-size: contain;
+      background-repeat: no-repeat;
+      background-position: center;
+      position: relative;
+      transition: all 0.3s ease;
+      filter: drop-shadow(0 0 15px rgba(255, 215, 0, 0.7));
+      z-index: 5;
+    }
+
+    .diamond.easy {
+      filter: drop-shadow(0 0 15px rgba(0, 255, 0, 0.7)) brightness(1.1);
+    }
+
+    .diamond.medium {
+      filter: drop-shadow(0 0 20px rgba(255, 215, 0, 0.8)) brightness(1.1) hue-rotate(15deg);
+    }
+
+    .diamond.hard {
+      filter: drop-shadow(0 0 25px rgba(255, 0, 0, 0.8)) brightness(1.1) hue-rotate(330deg);
+      animation: redGlow 2s ease-in-out infinite alternate;
+    }
+
+    @keyframes redGlow {
+      0% { filter: drop-shadow(0 0 25px rgba(255, 0, 0, 0.8)) brightness(1.1) hue-rotate(330deg); }
+      100% { filter: drop-shadow(0 0 35px rgba(255, 50, 50, 1)) brightness(1.3) hue-rotate(320deg); }
+    }
+
+    .diamond.hit {
+      animation: lightHit 0.4s ease-out;
+    }
+
+    .diamond.heavy-hit {
+      animation: heavyHit 0.6s ease-out;
+    }
+
+    .diamond.critical-hit {
+      animation: criticalHit 0.8s ease-out;
+    }
+
+    .diamond.mega-hit {
+      animation: megaHit 1.2s ease-out;
+    }
+
+    .diamond.ultra-hit {
+      animation: ultraHit 1.5s ease-out;
+    }
+
+    .diamond.cracked {
+      filter: brightness(0.7) drop-shadow(0 0 15px rgba(255, 0, 0, 0.8));
+      animation: redPulse 1s infinite;
+    }
+
+    .diamond.broken {
+      opacity: 0.3;
+      filter: grayscale(100%) brightness(0.3);
+      animation: knockout 1.5s ease-out forwards;
+    }
+
+    @keyframes lightHit {
+      0% { transform: translateX(0) rotate(0deg); }
+      25% { transform: translateX(-10px) rotate(-5deg); }
+      50% { transform: translateX(5px) rotate(3deg); }
+      75% { transform: translateX(-3px) rotate(-2deg); }
+      100% { transform: translateX(0) rotate(0deg); }
+    }
+
+    @keyframes heavyHit {
+      0% { transform: translateX(0) rotate(0deg) scale(1); }
+      20% { transform: translateX(-15px) rotate(-10deg) scale(0.95); }
+      40% { transform: translateX(8px) rotate(5deg) scale(1.05); }
+      60% { transform: translateX(-4px) rotate(-3deg) scale(0.98); }
+      80% { transform: translateX(2px) rotate(2deg) scale(1.02); }
+      100% { transform: translateX(0) rotate(0deg) scale(1); }
+    }
+
+    @keyframes criticalHit {
+      0% { transform: translateX(0) rotate(0deg) scale(1); }
+      15% { transform: translateX(-20px) rotate(-15deg) scale(0.9); }
+      30% { transform: translateX(12px) rotate(10deg) scale(1.1); }
+      45% { transform: translateX(-8px) rotate(-6deg) scale(0.95); }
+      60% { transform: translateX(5px) rotate(4deg) scale(1.05); }
+      75% { transform: translateX(-3px) rotate(-2deg) scale(0.98); }
+      90% { transform: translateX(1px) rotate(1deg) scale(1.02); }
+      100% { transform: translateX(0) rotate(0deg) scale(1); }
+    }
+
+    @keyframes megaHit {
+      0% { transform: translateX(0) rotate(0deg) scale(1); }
+      10% { transform: translateX(-25px) rotate(-20deg) scale(0.85); }
+      20% { transform: translateX(15px) rotate(12deg) scale(1.15); }
+      30% { transform: translateX(-12px) rotate(-8deg) scale(0.9); }
+      40% { transform: translateX(8px) rotate(6deg) scale(1.1); }
+      50% { transform: translateX(-6px) rotate(-4deg) scale(0.95); }
+      60% { transform: translateX(4px) rotate(3deg) scale(1.05); }
+      70% { transform: translateX(-2px) rotate(-2deg) scale(0.98); }
+      80% { transform: translateX(1px) rotate(1deg) scale(1.02); }
+      90% { transform: translateX(-0.5px) rotate(-0.5deg) scale(0.99); }
+      100% { transform: translateX(0) rotate(0deg) scale(1); }
+    }
+
+    @keyframes ultraHit {
+      0% { transform: translateX(0) rotate(0deg) scale(1); }
+      8% { transform: translateX(-30px) rotate(-25deg) scale(0.8); }
+      16% { transform: translateX(20px) rotate(15deg) scale(1.2); }
+      24% { transform: translateX(-15px) rotate(-12deg) scale(0.85); }
+      32% { transform: translateX(12px) rotate(10deg) scale(1.15); }
+      40% { transform: translateX(-8px) rotate(-8deg) scale(0.9); }
+      48% { transform: translateX(6px) rotate(5deg) scale(1.1); }
+      56% { transform: translateX(-4px) rotate(-4deg) scale(0.95); }
+      64% { transform: translateX(3px) rotate(3deg) scale(1.05); }
+      72% { transform: translateX(-2px) rotate(-2deg) scale(0.98); }
+      80% { transform: translateX(1px) rotate(1deg) scale(1.02); }
+      88% { transform: translateX(-0.5px) rotate(-0.5deg) scale(0.99); }
+      96% { transform: translateX(0.3px) rotate(0.3deg) scale(1.01); }
+      100% { transform: translateX(0) rotate(0deg) scale(1); }
+    }
+
+    @keyframes knockout {
+      0% { transform: translateY(0) rotate(0deg) scale(1); opacity: 1; }
+      30% { transform: translateY(-10px) rotate(-15deg) scale(0.95); opacity: 0.9; }
+      70% { transform: translateY(40px) rotate(-90deg) scale(0.8); opacity: 0.7; }
+      100% { transform: translateY(60px) rotate(-90deg) scale(0.7); opacity: 0.4; }
+    }
+
+    @keyframes redPulse {
+      0%, 100% { filter: brightness(0.7) drop-shadow(0 0 15px rgba(255, 0, 0, 0.8)); }
+      50% { filter: brightness(0.5) drop-shadow(0 0 25px rgba(255, 0, 0, 1)); }
+    }
+
+    .screen-shake {
+      animation: screenShake 0.4s ease-out;
+    }
+
+    .mega-shake {
+      animation: megaShake 0.8s ease-out;
+    }
+
+    .ultra-shake {
+      animation: ultraShake 1.2s ease-out;
+    }
+
+    @keyframes screenShake {
+      0%, 100% { transform: translateX(0); }
+      25% { transform: translateX(-3px); }
+      75% { transform: translateX(3px); }
+    }
+
+    @keyframes megaShake {
+      0%, 100% { transform: translateX(0) translateY(0); }
+      10% { transform: translateX(-5px) translateY(-2px); }
+      20% { transform: translateX(5px) translateY(2px); }
+      30% { transform: translateX(-4px) translateY(-1px); }
+      40% { transform: translateX(4px) translateY(1px); }
+      50% { transform: translateX(-3px) translateY(-1px); }
+      60% { transform: translateX(3px) translateY(1px); }
+      70% { transform: translateX(-2px) translateY(-0.5px); }
+      80% { transform: translateX(2px) translateY(0.5px); }
+    }
+
+    @keyframes ultraShake {
+      0%, 100% { transform: translateX(0) translateY(0); }
+      5% { transform: translateX(-8px) translateY(-3px); }
+      10% { transform: translateX(8px) translateY(3px); }
+      15% { transform: translateX(-6px) translateY(-2px); }
+      20% { transform: translateX(6px) translateY(2px); }
+      25% { transform: translateX(-4px) translateY(-1px); }
+      30% { transform: translateX(4px) translateY(1px); }
+      35% { transform: translateX(-3px) translateY(-1px); }
+      40% { transform: translateX(3px) translateY(1px); }
+      45% { transform: translateX(-2px) translateY(-0.5px); }
+      50% { transform: translateX(2px) translateY(0.5px); }
+      55% { transform: translateX(-1px) translateY(-0.2px); }
+      60% { transform: translateX(1px) translateY(0.2px); }
+    }
+
+    .impact-effect {
+      position: absolute;
+      font-size: 2em;
+      pointer-events: none;
+      z-index: 3;
+      animation: impactPop 1s ease-out forwards;
+      opacity: 0;
+      filter: drop-shadow(0 0 8px rgba(255,255,255,0.8));
+    }
+
+    @keyframes impactPop {
+      0% { opacity: 0; transform: scale(0.3) translateY(0); }
+      30% { opacity: 1; transform: scale(1.3) translateY(-10px); }
+      100% { opacity: 0; transform: scale(1) translateY(-30px); }
+    }
+
+    /* Styles pour le marteau */
+    .hammer {
+      position: absolute;
+      width: 60px;
+      height: 60px;
+      z-index: 10;
+      pointer-events: none;
+      opacity: 0;
+      transform-origin: bottom center;
+    }
+
+    .hammer-head {
+      position: absolute;
+      width: 30px;
+      height: 30px;
+      background: linear-gradient(45deg, #8B4513, #A0522D, #8B4513);
+      border-radius: 4px;
+      top: 0;
+      left: 50%;
+      transform: translateX(-50%) rotate(45deg);
+      box-shadow: 0 3px 10px rgba(0, 0, 0, 0.5);
+    }
+
+    .hammer-handle {
+      position: absolute;
+      width: 6px;
+      height: 45px;
+      background: linear-gradient(to bottom, #D2691E, #8B4513);
+      top: 25px;
+      left: 50%;
+      transform: translateX(-50%);
+      border-radius: 3px;
+      box-shadow: 0 2px 4px rgba(0, 0, 0, 0.3);
+    }
+
+    .hammer-hit {
+      animation: hammerSwing 0.6s ease-out forwards;
+    }
+
+    @keyframes hammerSwing {
+      0% {
+        opacity: 0;
+        transform: translate(-50%, -100%) rotate(-25deg) scale(0.8);
+      }
+      20% {
+        opacity: 1;
+        transform: translate(-50%, -100%) rotate(10deg) scale(1);
+      }
+      40% {
+        transform: translate(-50%, -100%) rotate(-8deg) scale(1.1);
+      }
+      60% {
+        transform: translate(-50%, -100%) rotate(4deg) scale(1);
+      }
+      80% {
+        transform: translate(-50%, -100%) rotate(-2deg) scale(1);
+      }
+      100% {
+        opacity: 0;
+        transform: translate(-50%, -100%) rotate(0deg) scale(0.8);
+      }
+    }
+
+    .attack-modes {
+      display: flex;
+      justify-content: center;
+      gap: 12px;
+      margin: 15px 0;
+      flex-wrap: wrap;
+    }
+
+    .attack-mode-image {
+      width: 110px;
+      height: 110px;
+      cursor: pointer;
+      border: 2px solid rgba(255, 255, 255, 0.3);
+      border-radius: 15px;
+      background: rgba(255, 255, 255, 0.1);
+      transition: all 0.3s ease;
+      backdrop-filter: blur(5px);
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      justify-content: center;
+      padding: 10px;
+      position: relative;
+    }
+
+    .attack-mode-image:hover {
+      background: rgba(255, 255, 255, 0.2);
+      transform: translateY(-3px);
+    }
+
+    .attack-mode-image.active {
+      border-color: #fff;
+      box-shadow: 0 0 20px rgba(255, 255, 255, 0.7);
+      background: rgba(255, 255, 255, 0.3);
+      transform: scale(1.05);
+    }
+
+    .attack-mode-image img {
+      width: 65px;
+      height: 65px;
+      object-fit: contain;
+      filter: drop-shadow(0 0 5px rgba(255, 255, 255, 0.5));
+    }
+
+    .attack-mode-label {
+      font-size: 13px;
+      margin-top: 5px;
+      font-weight: bold;
+      color: #ffffff;
+      text-shadow: 0 0 3px rgba(0, 0, 0, 0.8);
+    }
+
+    .multiplier-indicator {
+      position: absolute;
+      top: -10px;
+      right: -10px;
+      background: linear-gradient(45deg, #ff6b9d, #feca57);
+      color: #000;
+      width: 35px;
+      height: 35px;
+      border-radius: 50%;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      font-weight: bold;
+      font-size: 14px;
+      box-shadow: 0 0 10px rgba(0, 0, 0, 0.5);
+      border: 2px solid white;
+    }
+
+    .controls {
+      margin: 15px 0;
+    }
+
+    button {
+      padding: 12px 25px;
+      margin: 8px;
+      font-size: 14px;
+      cursor: pointer;
+      border: none;
+      border-radius: 20px;
+      background: linear-gradient(45deg, #ff6b9d, #c44569);
+      color: #fff;
+      transition: all 0.3s ease;
+      box-shadow: 0 4px 10px rgba(0, 0, 0, 0.3);
+      text-transform: uppercase;
+      font-weight: bold;
+      letter-spacing: 0.5px;
+    }
+
+    button:hover {
+      transform: translateY(-2px);
+      box-shadow: 0 6px 15px rgba(0, 0, 0, 0.4);
+      background: linear-gradient(45deg, #feca57, #ff6b9d);
+    }
+
+    button:active {
+      transform: translateY(0);
+    }
+
+    #resetBtn {
+      background: linear-gradient(45deg, #555, #777);
+    }
+
+    #resetBtn:hover {
+      background: linear-gradient(45deg, #777, #999);
+    }
+
+    #message {
+      margin: 15px 0;
+      font-size: 1.1em;
+      font-weight: bold;
+      text-shadow: 0 0 8px rgba(255, 255, 255, 0.8);
+      min-height: 25px;
+      color: #ffffff;
+    }
+
+    /* Styles pour la popup de victoire */
+    .popup-overlay {
+      position: fixed;
+      top: 0;
+      left: 0;
+      width: 100%;
+      height: 100%;
+      background: rgba(0, 0, 0, 0.7);
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      z-index: 1000;
+      opacity: 0;
+      visibility: hidden;
+      transition: all 0.3s ease;
+    }
+
+    .popup-overlay.active {
+      opacity: 1;
+      visibility: visible;
+    }
+
+    .popup-content {
+      background: linear-gradient(135deg, rgba(255, 107, 157, 0.95), rgba(254, 202, 87, 0.95));
+      padding: 25px;
+      border-radius: 20px;
+      max-width: 450px;
+      width: 90%;
+      text-align: center;
+      box-shadow: 0 10px 30px rgba(0, 0, 0, 0.5);
+      border: 3px solid rgba(255, 255, 255, 0.5);
+      backdrop-filter: blur(10px);
+      transform: scale(0.7);
+      transition: transform 0.4s ease;
+      position: relative;
+    }
+
+    .popup-overlay.active .popup-content {
+      transform: scale(1);
+    }
+
+    .popup-content h3 {
+      font-size: 1.8em;
+      margin-bottom: 15px;
+      color: #fff;
+      text-shadow: 0 0 10px rgba(0, 0, 0, 0.5);
+    }
+
+    .popup-reward-image {
+      width: 140px;
+      height: 140px;
+      margin: 15px auto;
+      background-size: contain;
+      background-repeat: no-repeat;
+      background-position: center;
+      border-radius: 10px;
+      box-shadow: 0 4px 15px rgba(0,0,0,0.4);
+    }
+
+    .popup-reward-text {
+      font-size: 1.3em;
+      margin: 15px 0;
+      color: #fff;
+      font-weight: bold;
+      text-shadow: 0 0 5px rgba(0, 0, 0, 0.5);
+    }
+
+    .popup-victory-message {
+      font-size: 1.4em;
+      margin: 15px 0;
+      color: #feca57;
+      text-shadow: 0 0 10px rgba(255, 215, 0, 0.7);
+      font-weight: bold;
+    }
+
+    .popup-close-btn {
+      padding: 10px 25px;
+      font-size: 16px;
+      cursor: pointer;
+      border: none;
+      border-radius: 20px;
+      background: linear-gradient(45deg, #ff6b9d, #c44569);
+      color: #fff;
+      transition: all 0.3s ease;
+      box-shadow: 0 4px 10px rgba(0, 0, 0, 0.3);
+      font-weight: bold;
+      margin-top: 15px;
+    }
+
+    .popup-close-btn:hover {
+      transform: translateY(-2px);
+      box-shadow: 0 6px 15px rgba(0, 0, 0, 0.4);
+      background: linear-gradient(45deg, #feca57, #ff6b9d);
+    }
+
+    .hidden {
+      display: none;
+    }
+
+    .combo-indicator {
+      position: absolute;
+      top: 10px;
+      right: 10px;
+      background: linear-gradient(45deg, #ff6b9d, #c44569);
+      padding: 8px 15px;
+      border-radius: 20px;
+      font-weight: bold;
+      font-size: 0.9em;
+      display: none;
+      box-shadow: 0 4px 10px rgba(0,0,0,0.3);
+      border: 2px solid rgba(255,255,255,0.2);
+      color: #ffffff;
+    }
+
+    .difficulty-selector {
+      display: flex;
+      justify-content: center;
+      gap: 15px;
+      margin: 15px 0;
+    }
+
+    .difficulty-btn {
+      width: 80px;
+      height: 80px;
+      border-radius: 15px;
+      cursor: pointer;
+      transition: all 0.3s ease;
+      border: 3px solid rgba(255, 255, 255, 0.3);
+      background-size: cover;
+      background-position: center;
+      background-repeat: no-repeat;
+      position: relative;
+      overflow: hidden;
+    }
+
+    .difficulty-btn::before {
+      content: '';
+      position: absolute;
+      top: 0;
+      left: 0;
+      width: 100%;
+      height: 100%;
+      background: rgba(0, 0, 0, 0.2);
+      transition: all 0.3s ease;
+    }
+
+    .difficulty-btn:hover::before {
+      background: rgba(0, 0, 0, 0.1);
+    }
+
+    .difficulty-btn.noob {
+      background-image: url('https://i.ibb.co/gFMBxFzP/IMG-6063.png');
+    }
+
+    .difficulty-btn.buchette {
+      background-image: url('https://i.ibb.co/JMPfpWV/IMG-5851.png');
+    }
+
+    .difficulty-btn.easy {
+      background-image: url('https://i.ibb.co/p6s7HT5n/IMG-7322.png');
+    }
+
+    .difficulty-btn.medium {
+      background-image: url('https://i.ibb.co/hxXnkQh7/IMG-5861.png');
+    }
+
+    .difficulty-btn.hard {
+      background-image: url('https://i.ibb.co/DHBNtX7t/IMG-6573.png');
+    }
+
+    /* Suppression du cercle jaune pour les niveaux actifs */
+    .difficulty-btn.active {
+      border-color: rgba(255, 255, 255, 0.7);
+      transform: scale(1.1);
+    }
+
+    .difficulty-btn.active::before {
+      background: rgba(255, 255, 255, 0.1);
+    }
+
+    /* Styles pour mobile */
+    @media (max-width: 480px) {
+      .game-container {
+        padding: 15px;
+        margin: 5px;
+      }
+      
+      h1 {
+        font-size: 1.8em;
+      }
+      
+      .diamond {
+        width: 180px;
+        height: 160px;
+      }
+
+      .difficulty-selector {
+        gap: 10px;
+      }
+
+      .difficulty-btn {
+        width: 70px;
+        height: 70px;
+      }
+      
+      .instructions {
+        padding: 10px;
+        margin: 15px 0;
+      }
+      
+      .instructions h2 {
+        font-size: 1.3em;
+      }
+      
+      .instructions p {
+        font-size: 1em;
+      }
+      
+      .attack-modes {
+        gap: 4px;
+      }
+
+      .attack-mode-btn {
+        padding: 5px 8px;
+        font-size: 11px;
+        min-width: 40px;
+      }
+      
+      button {
+        padding: 10px 20px;
+        font-size: 13px;
+        margin: 5px;
+      }
+      
+      .popup-content {
+        padding: 20px;
+        max-width: 90%;
+      }
+      
+      .popup-reward-image {
+        width: 120px;
+        height: 120px;
+      }
+      
+      .popup-content h3 {
+        font-size: 1.5em;
+      }
+      
+      .popup-reward-text {
+        font-size: 1.1em;
+      }
+      
+      .popup-victory-message {
+        font-size: 1.2em;
+      }
+    }
+
+    /* Effets de particules */
+    .particles-container {
+      position: absolute;
+      top: 0;
+      left: 0;
+      width: 100%;
+      height: 100%;
+      pointer-events: none;
+      z-index: 1;
+    }
+
+    .particle {
+      position: absolute;
+      width: 4px;
+      height: 4px;
+      background: #feca57;
+      border-radius: 50%;
+      pointer-events: none;
+      z-index: 2;
+    }
+
+    .difficulty-badge {
+      display: inline-block;
+      padding: 5px 15px;
+      border-radius: 20px;
+      font-weight: bold;
+      margin: 10px 0;
+      color: #ffffff;
+    }
+
+    .difficulty-badge.noob {
+      background: linear-gradient(45deg, #87CEEB, #B0E0E6);
+      color: #000;
+    }
+
+    .difficulty-badge.buchette {
+      background: linear-gradient(45deg, #DDA0DD, #DA70D6);
+    }
+
+    .difficulty-badge.easy {
+      background: linear-gradient(45deg, #4CAF50, #8BC34A);
+    }
+
+    .difficulty-badge.medium {
+      background: linear-gradient(45deg, #FF9800, #FFC107);
+    }
+
+    .difficulty-badge.hard {
+      background: linear-gradient(45deg, #F44336, #E91E63);
+    }
+
+    /* Compteur de points de vie */
+    .hp-counter {
+      background: linear-gradient(45deg, #ff6b9d, #c44569);
+      color: white;
+      padding: 12px 20px;
+      border-radius: 15px;
+      font-weight: bold;
+      font-size: 14px;
+      box-shadow: 0 4px 10px rgba(0, 0, 0, 0.3);
+      border: 2px solid rgba(255, 255, 255, 0.2);
+      backdrop-filter: blur(5px);
+      margin: 15px auto;
+      max-width: 200px;
+      text-align: center;
+    }
+
+    .hp-counter .hp-label {
+      font-size: 12px;
+      opacity: 0.9;
+      display: block;
+      color: #ffffff;
+    }
+
+    .hp-counter .hp-value {
+      font-size: 16px;
+      font-weight: bold;
+      margin-top: 2px;
+      display: block;
+      color: #ffffff;
+    }
+
+    /* TikFinity Connection */
+    .tikfinity-connection {
+      background: rgba(0, 0, 0, 0.8);
+      padding: 15px;
+      border-radius: 15px;
+      border: 2px solid rgba(255, 105, 180, 0.6);
+      backdrop-filter: blur(10px);
+      margin: 20px auto;
+      text-align: center;
+      max-width: 500px;
+      width: 90%;
+    }
+
+    .connection-status {
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      gap: 10px;
+      margin-bottom: 10px;
+      font-weight: bold;
+      color: #ffffff;
+    }
+
+    .status-dot {
+      width: 12px;
+      height: 12px;
+      border-radius: 50%;
+      display: inline-block;
+    }
+
+    .status-dot.connected {
+      background: #4CAF50;
+      box-shadow: 0 0 10px #4CAF50;
+    }
+
+    .status-dot.disconnected {
+      background: #F44336;
+      box-shadow: 0 0 10px #F44336;
+    }
+
+    .status-dot.connecting {
+      background: #FF9800;
+      box-shadow: 0 0 10px #FF9800;
+      animation: pulse 1.5s infinite;
+    }
+
+    @keyframes pulse {
+      0%, 100% { opacity: 1; }
+      50% { opacity: 0.5; }
+    }
+
+    .connect-btn {
+      padding: 10px 20px;
+      margin: 5px;
+      font-size: 14px;
+      cursor: pointer;
+      border: none;
+      border-radius: 20px;
+      background: linear-gradient(45deg, #ff6b9d, #c44569);
+      color: #fff;
+      transition: all 0.3s ease;
+      box-shadow: 0 3px 10px rgba(0, 0, 0, 0.3);
+    }
+
+    .connect-btn:hover {
+      transform: translateY(-2px);
+      box-shadow: 0 5px 15px rgba(0, 0, 0, 0.4);
+    }
+
+    .connect-btn:disabled {
+      background: #555;
+      cursor: not-allowed;
+      transform: none;
+    }
+
+    .connection-info {
+      font-size: 12px;
+      color: #ffffff;
+      margin-top: 10px;
+      line-height: 1.4;
+    }
+
+    .notification {
+      position: fixed;
+      top: 20px;
+      right: 20px;
+      background: linear-gradient(45deg, #4ecdc4, #44a08d);
+      color: white;
+      padding: 15px 20px;
+      border-radius: 10px;
+      font-weight: bold;
+      z-index: 10000;
+      box-shadow: 0 5px 15px rgba(0,0,0,0.3);
+      animation: slideInRight 0.5s ease;
+    }
+
+    @keyframes slideInRight {
+      from { transform: translateX(100%); opacity: 0; }
+      to { transform: translateX(0); opacity: 1; }
+    }
+
+    @keyframes slideOutRight {
+      from { transform: translateX(0); opacity: 1; }
+      to { transform: translateX(100%); opacity: 0; }
+    }
+
+    /* Styles pour le tableau des gains */
+    .rewards-container {
+      position: fixed;
+      top: 20px;
+      left: 20px;
+      background: rgba(0, 0, 0, 0.7);
+      border-radius: 15px;
+      padding: 15px;
+      backdrop-filter: blur(10px);
+      border: 2px solid rgba(255, 215, 0, 0.3);
+      z-index: 100;
+      max-width: 300px;
+      width: 100%;
+      box-shadow: 0 5px 15px rgba(0, 0, 0, 0.5);
+      cursor: move;
+      user-select: none;
+    }
+
+    .rewards-header {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      margin-bottom: 10px;
+      padding-bottom: 8px;
+      border-bottom: 1px solid rgba(255, 255, 255, 0.2);
+    }
+
+    .rewards-title {
+      font-size: 1.1em;
+      font-weight: bold;
+      color: #ffffff;
+      text-shadow: 0 0 5px rgba(254, 202, 87, 0.5);
+    }
+
+    .close-rewards {
+      background: none;
+      border: none;
+      color: #fff;
+      font-size: 1.2em;
+      cursor: pointer;
+      padding: 0;
+      width: 25px;
+      height: 25px;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      border-radius: 50%;
+      transition: all 0.3s ease;
+    }
+
+    .close-rewards:hover {
+      background: rgba(255, 255, 255, 0.2);
+    }
+
+    .rewards-table {
+      width: 100%;
+      border-collapse: collapse;
+    }
+
+    .rewards-table th,
+    .rewards-table td {
+      padding: 8px 5px;
+      text-align: left;
+      border-bottom: 1px solid rgba(255, 255, 255, 0.1);
+      color: #ffffff;
+    }
+
+    .rewards-table th {
+      color: #feca57;
+      font-weight: bold;
+      font-size: 0.9em;
+    }
+
+    .rewards-table td {
+      font-size: 0.85em;
+    }
+
+    .reward-amount {
+      text-align: right;
+      font-weight: bold;
+      color: #ff6b9d;
+    }
+    
+    /* NOUVEAUX STYLES POUR LE BOUTON PAYÉ */
+    .pay-reward-btn {
+      padding: 4px 8px;
+      font-size: 0.8em;
+      background: linear-gradient(45deg, #4CAF50, #8BC34A);
+      border: none;
+      border-radius: 8px;
+      color: white;
+      cursor: pointer;
+      transition: all 0.3s ease;
+    }
+
+    .pay-reward-btn:hover {
+      transform: scale(1.05);
+      box-shadow: 0 0 8px rgba(76, 175, 80, 0.5);
+    }
+    
+    .reward-action {
+        text-align: center;
+    }
+    /* FIN NOUVEAUX STYLES */
+
+    .last-attacker-container {
+      margin-top: 15px;
+      padding-top: 10px;
+      border-top: 1px solid rgba(255, 255, 255, 0.2);
+    }
+
+    .last-attacker-label {
+      font-size: 0.9em;
+      color: #feca57;
+      margin-bottom: 5px;
+      font-weight: bold;
+    }
+
+    .last-attacker-name {
+      font-size: 1em;
+      font-weight: bold;
+      color: #fff;
+      text-shadow: 0 0 5px rgba(255, 255, 255, 0.5);
+    }
+
+    /* Responsive pour le tableau des gains */
+    @media (max-width: 768px) {
+      .rewards-container {
+        position: relative;
+        top: auto;
+        left: auto;
+        margin: 15px auto;
+        max-width: 100%;
+      }
+    }
+
+    /* Menu pour ranger les panneaux */
+    .menu-button {
+      position: fixed;
+      bottom: 20px;
+      left: 50%;
+      transform: translateX(-50%);
+      background: linear-gradient(45deg, #ff6b9d, #c44569);
+      color: white;
+      border: none;
+      border-radius: 20px;
+      padding: 10px 20px;
+      font-size: 14px;
+      cursor: pointer;
+      z-index: 200;
+      box-shadow: 0 4px 10px rgba(0,0,0,0.3);
+      transition: all 0.3s ease;
+      font-weight: bold;
+    }
+
+    .menu-button:hover {
+      transform: translateX(-50%) translateY(-2px);
+      box-shadow: 0 6px 15px rgba(0,0,0,0.4);
+    }
+
+    /* Panneau transparent du dernier attaquant */
+    .last-attacker-panel {
+      position: fixed;
+      top: 50%;
+      right: 20px;
+      transform: translateY(-50%);
+      background: rgba(0, 0, 0, 0.5);
+      border-radius: 15px;
+      padding: 15px;
+      backdrop-filter: blur(10px);
+      border: 2px solid rgba(255, 215, 0, 0.3);
+      z-index: 100;
+      max-width: 200px;
+      width: 100%;
+      box-shadow: 0 5px 15px rgba(0, 0, 0, 0.5);
+      cursor: move;
+      user-select: none;
+      text-align: center;
+    }
+
+    .last-attacker-panel-title {
+      font-size: 1em;
+      font-weight: bold;
+      color: #feca57;
+      margin-bottom: 10px;
+      text-shadow: 0 0 5px rgba(254, 202, 87, 0.5);
+    }
+
+    .last-attacker-panel-name {
+      font-size: 1.2em;
+      font-weight: bold;
+      color: #fff;
+      margin-bottom: 5px;
+      text-shadow: 0 0 5px rgba(255, 255, 255, 0.5);
+    }
+
+    .last-attacker-panel-time {
+      font-size: 0.9em;
+      color: rgba(255, 255, 255, 0.7);
+    }
+
+    /* Responsive pour le panneau du dernier attaquant */
+    @media (max-width: 768px) {
+      .last-attacker-panel {
+        position: relative;
+        top: auto;
+        right: auto;
+        transform: none;
+        margin: 15px auto;
+        max-width: 100%;
+      }
+    }
+
+    /* Menu déroulant */
+    .menu-dropdown {
+      position: fixed;
+      bottom: 70px;
+      left: 50%;
+      transform: translateX(-50%);
+      background: rgba(0, 0, 0, 0.8);
+      border-radius: 15px;
+      padding: 15px;
+      backdrop-filter: blur(10px);
+      border: 2px solid rgba(255, 215, 0, 0.3);
+      z-index: 200;
+      max-width: 300px;
+      width: 100%;
+      box-shadow: 0 5px 15px rgba(0, 0, 0, 0.5);
+      display: none;
+      flex-direction: column;
+      gap: 10px;
+    }
+
+    .menu-dropdown.active {
+      display: flex;
+    }
+
+    .menu-item {
+      padding: 10px 15px;
+      background: rgba(255, 255, 255, 0.1);
+      border-radius: 10px;
+      cursor: pointer;
+      transition: all 0.3s ease;
+      text-align: center;
+      font-weight: bold;
+      color: #ffffff;
+    }
+
+    .menu-item:hover {
+      background: rgba(255, 255, 255, 0.2);
+      transform: translateY(-2px);
+    }
+
+    .menu-item.active {
+      background: rgba(255, 215, 0, 0.3);
+      border: 1px solid rgba(255, 215, 0, 0.5);
+    }
+
+    /* Panneau du dernier gain */
+    .last-reward-container {
+      position: fixed;
+      top: 50%;
+      left: 20px;
+      transform: translateY(-50%);
+      background: rgba(0, 0, 0, 0.7);
+      border-radius: 15px;
+      padding: 15px;
+      backdrop-filter: blur(10px);
+      border: 2px solid rgba(255, 215, 0, 0.3);
+      z-index: 100;
+      max-width: 200px;
+      width: 100%;
+      box-shadow: 0 5px 15px rgba(0, 0, 0, 0.5);
+      cursor: move;
+      user-select: none;
+      text-align: center;
+    }
+
+    .last-reward-header {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      margin-bottom: 10px;
+      padding-bottom: 8px;
+      border-bottom: 1px solid rgba(255, 255, 255, 0.2);
+    }
+
+    .last-reward-title {
+      font-size: 1em;
+      font-weight: bold;
+      color: #feca57;
+      text-shadow: 0 0 5px rgba(254, 202, 87, 0.5);
+    }
+
+    .close-last-reward {
+      background: none;
+      border: none;
+      color: #fff;
+      font-size: 1.2em;
+      cursor: pointer;
+      padding: 0;
+      width: 25px;
+      height: 25px;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      border-radius: 50%;
+      transition: all 0.3s ease;
+    }
+
+    .close-last-reward:hover {
+      background: rgba(255, 255, 255, 0.2);
+    }
+
+    .last-reward-content {
+      padding: 10px 0;
+    }
+
+    .last-reward-player {
+      font-size: 1.1em;
+      font-weight: bold;
+      color: #fff;
+      margin-bottom: 5px;
+      text-shadow: 0 0 5px rgba(255, 255, 255, 0.5);
+    }
+
+    .last-reward-amount {
+      font-size: 1.5em;
+      font-weight: bold;
+      color: #ff6b9d;
+      margin-bottom: 10px;
+      text-shadow: 0 0 10px rgba(255, 107, 157, 0.7);
+    }
+
+    .last-reward-time {
+      font-size: 0.8em;
+      color: rgba(255, 255, 255, 0.7);
+    }
+
+    /* Responsive pour le panneau du dernier gain */
+    @media (max-width: 768px) {
+      .last-reward-container {
+        position: relative;
+        top: auto;
+        left: auto;
+        transform: none;
+        margin: 15px auto;
+        max-width: 100%;
+      }
+    }
+
+    /* Effet de petits coeurs */
+    .heart {
+      position: absolute;
+      width: 20px;
+      height: 20px;
+      background-image: url('https://media.giphy.com/media/v1.Y2lkPWVjZjA1ZTQ3bTk1bDNtc25oOXpuNXd5ZnR3MzVpOHZzbmU1ZTh6dGpkNzZjZ2p4bSZlcD12MV9zdGlja2Vyc19zZWFyY2gmY3Q9cw/Vzebc2BnJ4HZoCDSQy/giphy.gif');
+      background-size: contain;
+      background-repeat: no-repeat;
+      pointer-events: none;
+      z-index: 3;
+    }
+
+    /* Styles pour la file d'attente */
+    .queue-container {
+      position: fixed;
+      top: 150px;
+      left: 50%;
+      transform: translateX(-50%);
+      background: rgba(0, 0, 0, 0.7);
+      border-radius: 15px;
+      padding: 15px;
+      backdrop-filter: blur(10px);
+      border: 2px solid rgba(0, 191, 255, 0.3);
+      z-index: 100;
+      max-width: 300px;
+      width: 100%;
+      box-shadow: 0 5px 15px rgba(0, 0, 0, 0.5);
+      cursor: move;
+      user-select: none;
+    }
+
+    .queue-header {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      margin-bottom: 10px;
+      padding-bottom: 8px;
+      border-bottom: 1px solid rgba(255, 255, 255, 0.2);
+    }
+
+    .queue-title {
+      font-size: 1.1em;
+      font-weight: bold;
+      color: #00bfff;
+      text-shadow: 0 0 5px rgba(0, 191, 255, 0.5);
+    }
+
+    .close-queue {
+      background: none;
+      border: none;
+      color: #fff;
+      font-size: 1.2em;
+      cursor: pointer;
+      padding: 0;
+      width: 25px;
+      height: 25px;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      border-radius: 50%;
+      transition: all 0.3s ease;
+    }
+
+    .close-queue:hover {
+      background: rgba(255, 255, 255, 0.2);
+    }
+
+    .queue-list {
+      max-height: 200px;
+      overflow-y: auto;
+      display: flex;
+      flex-direction: column;
+      gap: 8px;
+    }
+
+    .queue-item {
+      background: rgba(255, 255, 255, 0.05);
+      padding: 8px;
+      border-radius: 8px;
+      font-size: 0.9em;
+      display: flex;
+      align-items: center;
+      gap: 8px;
+    }
+
+    .queue-item-index {
+      color: #00bfff;
+      font-weight: bold;
+      min-width: 20px;
+      text-align: right;
+    }
+    
+    .queue-item-emoji {
+      font-size: 1.1em;
+    }
+
+    .queue-item-name {
+      font-weight: bold;
+      color: #fff;
+      flex: 1;
+      white-space: nowrap;
+      overflow: hidden;
+      text-overflow: ellipsis;
+    }
+    
+    .queue-item-damage {
+      color: rgba(255, 255, 255, 0.7);
+      font-size: 0.9em;
+    }
+    
+    .queue-empty-message {
+      text-align: center;
+      color: rgba(255, 255, 255, 0.7);
+      padding: 20px 0;
+      font-style: italic;
+    }
+    
+    /* Responsive pour la file d'attente */
+    @media (max-width: 768px) {
+      .queue-container {
+        position: relative;
+        top: auto;
+        left: auto;
+        transform: none;
+        margin: 15px auto;
+        max-width: 100%;
+      }
+    }
+  </style>
+</head>
+<body>
+  <div class="menu-dropdown" id="menuDropdown">
+    <div class="menu-item" data-panel="rewardsContainer">🎁 Tableau des gains</div>
+    <div class="menu-item" data-panel="lastAttackerPanel">👤 Dernier attaquant</div>
+    <div class="menu-item" data-panel="lastRewardContainer">🏆 Dernier gain</div>
+    <div class="menu-item" data-panel="queueContainer">🚀 File d'attente</div> 
+    <div class="menu-item" id="resetDataBtn">🔄 Réinitialiser les données</div>
+  </div>
+
+  <button class="menu-button" id="menuBtn">📋 Menu Panneaux</button>
+
+  <div class="rewards-container" id="rewardsContainer" style="display: none;">
+    <div class="rewards-header">
+      <div class="rewards-title">🎁 TABLEAU DES GAINS</div> 
+      <button class="close-rewards" id="closeRewardsBtn">×</button>
+    </div>
+    <table class="rewards-table">
+      <thead>
+        <tr>
+          <th>Joueur</th>
+          <th class="reward-amount">Gains</th>
+          <th class="reward-action">Actions</th> 
+        </tr>
+      </thead>
+      <tbody id="rewardsTableBody">
+      </tbody>
+    </table>
+  </div>
+
+  <div class="last-attacker-panel" id="lastAttackerPanel" style="display: none;">
+    <div class="last-attacker-panel-title">👤 DERNIER ATTAQUANT</div>
+    <div class="last-attacker-panel-name" id="lastAttackerPanelName">-</div>
+    <div class="last-attacker-panel-time" id="lastAttackerPanelTime">-</div>
+  </div>
+
+  <div class="last-reward-container" id="lastRewardContainer" style="display: none;">
+    <div class="last-reward-header">
+      <div class="last-reward-title">🏆 DERNIER GAIN</div>
+      <button class="close-last-reward" id="closeLastRewardBtn">×</button>
+    </div>
+    <div class="last-reward-content">
+      <div class="last-reward-player" id="lastRewardPlayer">-</div>
+      <div class="last-reward-amount" id="lastRewardAmount">0</div>
+      <div class="last-reward-time" id="lastRewardTime">-</div>
+    </div>
+  </div>
+
+  <div class="queue-container" id="queueContainer" style="display: none;">
+    <div class="queue-header">
+      <div class="queue-title">🚀 FILE D'ATTENTE</div>
+      <button class="close-queue" id="closeQueueBtn">×</button>
+    </div>
+    <div class="queue-list" id="queueListBody">
+    </div>
+  </div>
+
+  <div class="game-container" id="gameContainer">
+    <div class="combo-indicator" id="comboIndicator">COMBO x0</div>
+
+    <h1>💎 Le Diamant Magique !</h1>
+    
+    <div class="difficulty-selector">
+      <div class="difficulty-btn noob active" data-difficulty="noob" title="Noob - 6000 HP"></div>
+      <div class="difficulty-btn buchette" data-difficulty="buchette" title="Buchette - 20000 HP"></div>
+      <div class="difficulty-btn easy" data-difficulty="easy" title="Facile - 60000 HP"></div>
+      <div class="difficulty-btn medium" data-difficulty="medium" title="Moyen - 100000 HP"></div>
+      <div class="difficulty-btn hard" data-difficulty="hard" title="Difficile - 200000 HP"></div>
+    </div>
+    
+    <div class="diamond-container">
+      <div class="diamond noob" id="diamond"></div>
+      <div class="particles-container" id="particlesContainer"></div>
+    </div>
+
+    <!-- Barre de drop -->
+    <div class="drop-bar-container" id="dropBarContainer">
+      <div class="drop-bar-fill" id="dropBarFill"></div>
+      <div class="drop-bar-text" id="dropBarText">DROP: 0 💎</div>
+    </div>
+
+    <div class="instructions">
+      <h2>💎 Brise le Diamant Magique et Gagne le Trésor ! 💎</h2>
+      <p>Un Coup = Un Point de Vie en Moins</p>
+    </div>
+
+    <div class="attack-modes">
+      <div id="mode1" class="attack-mode-image active">
+        <img src="https://i.ibb.co/WNXDxn2y/IMG-7354-Photoroom.png" alt="Rose - 1 coup">
+        <div class="attack-mode-label">1 coup</div>
+      </div>
+      <div id="mode10" class="attack-mode-image">
+        <img src="https://i.ibb.co/7JsBRrCn/IMG-5885.png" alt="Rosa - 10 coups">
+        <div class="attack-mode-label">10 coups</div>
+      </div>
+      <div id="mode30" class="attack-mode-image">
+        <img src="https://i.ibb.co/8DMJ0cxy/IMG-7355-Photoroom.png" alt="Donuts - 30 coups">
+        <div class="attack-mode-label">30 coups</div>
+      </div>
+    </div>
+
+    <div class="controls">
+      <button id="attackBtn">Attaquer (1 coup)</button>
+      <button id="resetBtn">Nouveau Diamant</button>
+    </div>
+
+    <p id="message"></p>
+  </div>
+
+  <div class="hp-counter" id="hpCounter">
+    <span class="hp-label">Points de vie restants</span>
+    <span class="hp-value" id="hpValue">6000 / 6000</span>
+  </div>
+
+  <div class="popup-overlay" id="victoryPopup">
+    <div class="popup-content">
+      <h3>🎉 Diamant Magique Brisé ! 🎉</h3>
+      <div id="popupRewardImage" class="popup-reward-image"></div>
+      <p id="popupRewardText" class="popup-reward-text"></p>
+      <div id="popupVictoryMessage" class="popup-victory-message"></div>
+      <button class="popup-close-btn" id="closePopupBtn">Continuer</button>
+    </div>
+  </div>
+
+  <div class="tikfinity-connection">
+    <div class="connection-status">
+      <span class="status-dot disconnected" id="statusDot"></span>
+      <span id="statusText">Déconnecté de TikFinity</span>
+    </div>
+    <button id="connectBtn" class="connect-btn">Se connecter à TikFinity</button>
+    <div class="connection-info">
+      💡 Configurez "Le Diamant Magique" dans TikFinity → Actions & Events → Third-party action
+    </div>
+  </div>
+
+  <script>
+    let maxHP, currentHP, coupCounter, totalHits;
+    let attackMode = 1;
+    let combo = 0;
+    let lastHitTime = 0;
+    let isAttacking = false;
+    let audioContext = null;
+    let currentDifficulty = "noob";
+    let lastAttackerName = "Personne";
+    let lastAttackerTime = null;
+    let extraHits = 0;
+    let rewardAlreadyAdded = false;
+
+    // Variables pour le Drop
+    let dropProgress = 0;
+    let dropPool = 0;
+    const DROP_TARGET = 100;
+    const DROP_REWARD = 5;
+    // MODIFICATION: Tripler les chances de drop (1/333 au lieu de 1/1000)
+    const DROP_CHANCE_MAX = 333;
+
+    const diamond = document.getElementById("diamond");
+    const message = document.getElementById("message");
+    const attackBtn = document.getElementById("attackBtn");
+    const gameContainer = document.getElementById("gameContainer");
+    const comboIndicator = document.getElementById("comboIndicator");
+    const particlesContainer = document.getElementById("particlesContainer");
+    const hpValue = document.getElementById("hpValue");
+    
+    // Éléments de la barre de drop
+    const dropBarFill = document.getElementById("dropBarFill");
+    const dropBarText = document.getElementById("dropBarText");
+
+    // Éléments de la popup
+    const victoryPopup = document.getElementById("victoryPopup");
+    const popupRewardImage = document.getElementById("popupRewardImage");
+    const popupRewardText = document.getElementById("popupRewardText");
+    const popupVictoryMessage = document.getElementById("popupVictoryMessage");
+    const closePopupBtn = document.getElementById("closePopupBtn");
+
+    // Éléments du tableau des gains
+    const rewardsContainer = document.getElementById("rewardsContainer");
+    const rewardsTableBody = document.getElementById("rewardsTableBody");
+    const closeRewardsBtn = document.getElementById("closeRewardsBtn");
+
+    // Éléments du menu et du panneau du dernier attaquant
+    const menuBtn = document.getElementById("menuBtn");
+    const menuDropdown = document.getElementById("menuDropdown");
+    const lastAttackerPanel = document.getElementById("lastAttackerPanel");
+    const lastAttackerPanelName = document.getElementById("lastAttackerPanelName");
+    const lastAttackerPanelTime = document.getElementById("lastAttackerPanelTime");
+
+    // Éléments du panneau du dernier gain
+    const lastRewardContainer = document.getElementById("lastRewardContainer");
+    const lastRewardPlayer = document.getElementById("lastRewardPlayer");
+    const lastRewardAmount = document.getElementById("lastRewardAmount");
+    const lastRewardTime = document.getElementById("lastRewardTime");
+    const closeLastRewardBtn = document.getElementById("closeLastRewardBtn");
+
+    // Éléments du panneau de la file d'attente
+    const queueContainer = document.getElementById("queueContainer");
+    const queueListBody = document.getElementById("queueListBody");
+    const closeQueueBtn = document.getElementById("closeQueueBtn");
+
+    const impactEffects = ["💥", "🔥", "⭐", "💫", "✨", "💢"];
+
+    // Variables pour TikFinity
+    let tikfinitySocket = null;
+    let isTikFinityConnected = false;
+    let reconnectTimeout = null;
+    const attackQueue = [];
+    let isProcessingQueue = false;
+    let currentQueueProgress = 0;
+    let queueProgressInterval = null;
+    const lastAttackers = [];
+    const MAX_LAST_ATTACKERS = 3;
+
+    // Variables pour le tableau des gains
+    let recentRewards = {};
+
+    // Variables pour stocker les positions des panneaux déplaçables
+    const draggablePanels = {
+      rewardsContainer: { x: 0, y: 0 },
+      lastAttackerPanel: { x: 0, y: 0 },
+      lastRewardContainer: { x: 0, y: 0 },
+      queueContainer: { x: 0, y: 0 }
+    };
+
+    // =============================================
+    // FONCTIONS DE SAUVEGARDE ET CHARGEMENT
+    // =============================================
+    
+    // Fonction pour sauvegarder les données dans le localStorage
+    function saveGameData() {
+      try {
+        const gameData = {
+          recentRewards: recentRewards,
+          dropProgress: dropProgress,
+          dropPool: dropPool,
+          lastSaved: Date.now()
+        };
+        localStorage.setItem('diamondGameData', JSON.stringify(gameData));
+        console.log('✅ Données sauvegardées');
+      } catch (error) {
+        console.error('❌ Erreur sauvegarde:', error);
+      }
+    }
+    
+    // Fonction pour charger les données depuis le localStorage
+    function loadGameData() {
+      try {
+        const savedData = localStorage.getItem('diamondGameData');
+        if (savedData) {
+          const gameData = JSON.parse(savedData);
+          
+          // Charger les gains récents
+          if (gameData.recentRewards) {
+            recentRewards = gameData.recentRewards;
+          }
+          
+          // Charger les données de drop
+          if (gameData.dropProgress !== undefined) {
+            dropProgress = gameData.dropProgress;
+          }
+          
+          if (gameData.dropPool !== undefined) {
+            dropPool = gameData.dropPool;
+          }
+          
+          console.log('✅ Données chargées');
+          return true;
+        }
+      } catch (error) {
+        console.error('❌ Erreur chargement:', error);
+      }
+      return false;
+    }
+    
+    // Fonction pour sauvegarder automatiquement
+    function autoSave() {
+      saveGameData();
+    }
+
+    // Système audio
+    function initAudioContext() {
+      try {
+        if (!audioContext) {
+          audioContext = new (window.AudioContext || window.webkitAudioContext)();
+        }
+        if (audioContext.state === 'suspended') {
+          audioContext.resume();
+        }
+        return audioContext;
+      } catch (e) {
+        return null;
+      }
+    }
+
+    function createSound(frequency, duration, type = 'sine', volume = 0.15) {
+      const context = initAudioContext();
+      if (!context) return;
+
+      try {
+        const oscillator = context.createOscillator();
+        const gainNode = context.createGain();
+        
+        oscillator.connect(gainNode);
+        gainNode.connect(context.destination);
+        
+        oscillator.frequency.value = frequency;
+        oscillator.type = type;
+        
+        gainNode.gain.setValueAtTime(volume, context.currentTime);
+        gainNode.gain.exponentialRampToValueAtTime(0.01, context.currentTime + duration);
+        
+        oscillator.start(context.currentTime);
+        oscillator.stop(context.currentTime + duration);
+      } catch (e) {
+        // Silence en cas d'erreur
+      }
+    }
+
+    function playHitSound() {
+      createSound(800, 0.1, 'square');
+      setTimeout(() => createSound(400, 0.05, 'triangle'), 50);
+    }
+
+    function playCrackSound() {
+      createSound(200, 0.3, 'sawtooth');
+      setTimeout(() => createSound(150, 0.2, 'sawtooth'), 100);
+    }
+
+    function playBreakSound() {
+      createSound(100, 0.5, 'sawtooth');
+      setTimeout(() => createSound(300, 0.3, 'square'), 100);
+      setTimeout(() => createSound(600, 0.2, 'sine'), 200);
+    }
+
+    // Fonction pour créer un marteau animé
+    function createHammer() {
+      const hammer = document.createElement('div');
+      hammer.className = 'hammer';
+      
+      const hammerHead = document.createElement('div');
+      hammerHead.className = 'hammer-head';
+      
+      const hammerHandle = document.createElement('div');
+      hammerHandle.className = 'hammer-handle';
+      
+      hammer.appendChild(hammerHead);
+      hammer.appendChild(hammerHandle);
+      
+      // Positionner le marteau au-dessus du diamant
+      const diamondRect = diamond.getBoundingClientRect();
+      const containerRect = diamond.parentElement.getBoundingClientRect();
+      
+      hammer.style.left = (diamondRect.left + diamondRect.width/2 - containerRect.left) + 'px';
+      hammer.style.top = (diamondRect.top - containerRect.top) + 'px';
+      
+      diamond.parentElement.appendChild(hammer);
+      
+      return hammer;
+    }
+
+    // Fonction pour animer le marteau
+    function animateHammer() {
+      const hammer = createHammer();
+      hammer.classList.add('hammer-hit');
+      
+      // Supprimer le marteau après l'animation
+      setTimeout(() => {
+        if (hammer.parentElement) {
+          hammer.parentElement.removeChild(hammer);
+        }
+      }, 600);
+    }
+
+    // Fonction pour créer des particules d'impact
+    function createHitParticles() {
+      for (let i = 0; i < 8; i++) {
+        const particle = document.createElement('div');
+        particle.className = 'particle';
+        
+        const diamondRect = diamond.getBoundingClientRect();
+        const containerRect = diamond.parentElement.getBoundingClientRect();
+        
+        particle.style.left = (diamondRect.left + diamondRect.width/2 - containerRect.left + (Math.random() * 60 - 30)) + 'px';
+        particle.style.top = (diamondRect.top + diamondRect.height/2 - containerRect.top + (Math.random() * 60 - 30)) + 'px';
+        
+        particlesContainer.appendChild(particle);
+        
+        const angle = Math.random() * Math.PI * 2;
+        const distance = 30 + Math.random() * 40;
+        
+        particle.animate([
+          {
+            transform: 'scale(1)',
+            opacity: 1
+          },
+          {
+            transform: `translate(${Math.cos(angle) * distance}px, ${Math.sin(angle) * distance}px) scale(0)`,
+            opacity: 0
+          }
+        ], {
+          duration: 500 + Math.random() * 300,
+          easing: 'ease-out'
+        }).onfinish = () => particle.remove();
+      }
+    }
+
+    // Fonction pour créer des petits coeurs
+    function createHearts() {
+      for (let i = 0; i < 15; i++) {
+        const heart = document.createElement('div');
+        heart.className = 'heart';
+        
+        const diamondRect = diamond.getBoundingClientRect();
+        const containerRect = diamond.parentElement.getBoundingClientRect();
+        
+        heart.style.left = (diamondRect.left + diamondRect.width/2 - containerRect.left + (Math.random() * 100 - 50)) + 'px';
+        heart.style.top = (diamondRect.top + diamondRect.height/2 - containerRect.top + (Math.random() * 100 - 50)) + 'px';
+        
+        particlesContainer.appendChild(heart);
+        
+        const angle = Math.random() * Math.PI * 2;
+        const distance = 50 + Math.random() * 80;
+        
+        heart.animate([
+          {
+            transform: 'scale(1)',
+            opacity: 1
+          },
+          {
+            transform: `translate(${Math.cos(angle) * distance}px, ${Math.sin(angle) * distance}px) scale(0)`,
+            opacity: 0
+          }
+        ], {
+          duration: 800 + Math.random() * 500,
+          easing: 'ease-out'
+        }).onfinish = () => heart.remove();
+      }
+    }
+
+    function createImpactEffect() {
+      const effect = document.createElement('div');
+      effect.className = 'impact-effect';
+      effect.textContent = impactEffects[Math.floor(Math.random() * impactEffects.length)];
+      effect.style.left = (Math.random() * 70 + 15) + '%';
+      effect.style.top = (Math.random() * 50 + 25) + '%';
+      
+      document.querySelector('.diamond-container').appendChild(effect);
+      
+      setTimeout(() => {
+        effect.remove();
+      }, 1000);
+    }
+
+    function updateCombo() {
+      const currentTime = Date.now();
+      if (currentTime - lastHitTime > 2000) {
+        combo = 0;
+      }
+      combo++;
+      lastHitTime = currentTime;
+      
+      if (combo >= 3) {
+        comboIndicator.textContent = `COMBO x${combo}`;
+        comboIndicator.style.display = 'block';
+      }
+    }
+
+    // Fonction d'attaque
+    function attack() {
+      if (currentHP <= 0 || isAttacking) return;
+      
+      isAttacking = true;
+      
+      let hits = attackMode;
+      let actualHits = 0;
+      let wasCracked = diamond.classList.contains('cracked');
+      
+      // Animer le marteau
+      animateHammer();
+      
+      playHitSound();
+      createHitParticles();
+      createHearts();
+      createImpactEffect();
+      updateCombo();
+      
+      let animationType = 'hit';
+      let shakeType = 'screen-shake';
+      let animationDuration = 400;
+      
+      if (attackMode >= 30) {
+        animationType = 'critical-hit';
+        shakeType = 'mega-shake';
+        animationDuration = 800;
+      } else if (attackMode >= 10) {
+        animationType = 'heavy-hit';
+        animationDuration = 600;
+      }
+
+      diamond.classList.add(animationType);
+      if (shakeType) gameContainer.classList.add(shakeType);
+      
+      for (let i = 0; i < hits && currentHP > 0; i++) {
+        coupCounter++;
+        actualHits++;
+        totalHits++;
+
+        // 1 coup = -1 point de vie
+        currentHP--;
+
+        // Vérifier le drop à chaque coup
+        checkDropSingleHit("Vous");
+      }
+      
+      updateUI();
+      
+      if (!wasCracked && diamond.classList.contains('cracked')) {
+        playCrackSound();
+      }
+      
+      setTimeout(() => {
+        diamond.classList.remove(animationType);
+        if (shakeType) gameContainer.classList.remove(shakeType);
+        isAttacking = false;
+        
+        if (currentHP <= 0) {
+          endGame();
+        }
+      }, animationDuration);
+    }
+
+    function updateUI() {
+      // Mettre à jour le compteur de points de vie
+      hpValue.textContent = `${currentHP.toLocaleString()} / ${maxHP.toLocaleString()}`;
+      
+      let difficultyName = "";
+      switch(currentDifficulty) {
+        case "noob": difficultyName = "noob"; break;
+        case "buchette": difficultyName = "buchette"; break;
+        case "easy": difficultyName = "facile"; break;
+        case "medium": difficultyName = "moyen"; break;
+        case "hard": difficultyName = "difficile"; break;
+      }
+      
+      if (currentHP === 0) {
+        diamond.className = "diamond broken " + currentDifficulty;
+        message.textContent = "💥 Le diamant magique a été brisé !";
+      } else {
+        if (maxHP - currentHP >= maxHP * 0.7) {
+          diamond.classList.add("cracked");
+          message.textContent = "⚠️ Le diamant magique commence à se fissurer...";
+        } else {
+          diamond.classList.remove("cracked");
+          message.textContent = `Diamant magique ${difficultyName} - À tout moment le diamant peut être brisé...`;
+        }
+      }
+    }
+
+    function showVictoryPopup() {
+      let rewardText = "";
+      let victoryText = "";
+      let rewardImg = "";
+      
+      // Déterminer la récompense selon la difficulté
+      switch(currentDifficulty) {
+        case "noob":
+          rewardText = "Vous avez gagné 300";
+          victoryText = "Bravo ! Tu as gagné tes premières pièces !";
+          rewardImg = "https://i.ibb.co/gFMBxFzP/IMG-6063.png";
+          break;
+        case "buchette":
+          rewardText = "Vous avez gagné 1000";
+          victoryText = "Incroyable ! Tu as découvert une galaxie entière !";
+          rewardImg = "https://i.ibb.co/JMPfpWV/IMG-5851.png";
+          break;
+        case "easy":
+          rewardText = "Vous avez gagné 3000";
+          victoryText = "Félicitations ! Tu as remporté un superbe trésor !";
+          rewardImg = "https://i.ibb.co/p6s7HT5n/IMG-7322.png";
+          break;
+        case "medium":
+          rewardText = "Vous avez gagné 5000";
+          victoryText = "Incroyable ! Tu as trouvé un trésor précieux !";
+          rewardImg = "https://i.ibb.co/hxXnkQh7/IMG-5861.png";
+          break;
+        case "hard":
+          rewardText = "Vous avez gagné 10000";
+          victoryText = "Victoire totale ! Tu as remporté le jackpot !";
+          rewardImg = "https://i.ibb.co/DHBNtX7t/IMG-6573.png";
+          break;
+      }
+      
+      popupRewardImage.style.backgroundImage = `url('${rewardImg}')`;
+      
+      // Message de victoire clair et épuré
+      popupRewardText.innerHTML = `
+        <div class="difficulty-badge ${currentDifficulty}">NIVEAU ${currentDifficulty.toUpperCase()}</div><br>
+        <strong>RÉCOMPENSE :</strong><br>
+        ${rewardText}
+      `;
+      
+      popupVictoryMessage.textContent = victoryText;
+      
+      // Centrer la popup sur le jeu
+      const gameRect = gameContainer.getBoundingClientRect();
+      const popupContent = document.querySelector('.popup-content');
+      
+      // Positionner la popup au centre du jeu
+      victoryPopup.style.display = 'flex';
+      setTimeout(() => {
+        victoryPopup.classList.add('active');
+      }, 10);
+    }
+
+    function closeVictoryPopup() {
+      victoryPopup.classList.remove('active');
+      setTimeout(() => {
+        victoryPopup.style.display = 'none';
+      }, 300);
+    }
+
+    function endGame() {
+      playBreakSound();
+      
+      // Calculer les pièces gagnées selon la difficulté
+      let coinsWon = 0;
+      switch(currentDifficulty) {
+        case "noob": coinsWon = 300; break;
+        case "buchette": coinsWon = 1000; break;
+        case "easy": coinsWon = 3000; break;
+        case "medium": coinsWon = 5000; break;
+        case "hard": coinsWon = 10000; break;
+      }
+      
+      // Ajouter la récompense au tableau des gains (une seule fois)
+      if (!rewardAlreadyAdded) {
+        registerNewWin(lastAttackerName, `${coinsWon}`); 
+        rewardAlreadyAdded = true;
+      }
+      
+      // Mettre à jour le message
+      message.textContent = `💥 ${lastAttackerName} a brisé le diamant magique et gagne ${coinsWon} ! 💎✨`;
+      
+      // Pas de popup de victoire, on passe directement au niveau suivant
+      comboIndicator.style.display = "none";
+      
+      // Choisir un niveau aléatoire
+      const difficulties = ["noob", "buchette", "easy", "medium", "hard"];
+      const randomDifficulty = difficulties[Math.floor(Math.random() * difficulties.length)];
+      
+      // Appliquer les coups en trop au nouveau niveau
+      extraHits = Math.abs(currentHP); 
+      
+      // Initialiser le nouveau niveau
+      setTimeout(() => {
+        setDifficulty(randomDifficulty);
+        
+        // Réinitialiser le flag de récompense
+        rewardAlreadyAdded = false;
+        
+        // Appliquer les coups en trop
+        if (extraHits > 0) {
+          currentHP = Math.max(0, currentHP - extraHits);
+          updateUI();
+          
+          if (currentHP <= 0) {
+            // Si les coups en trop ont vaincu le nouveau diamant, recommencer
+            setTimeout(() => {
+              endGame();
+            }, 500);
+          }
+        }
+      }, 1000);
+    }
+
+    function setAttackMode(mode) {
+      attackMode = mode;
+      
+      document.querySelectorAll('.attack-mode-image').forEach(btn => {
+        btn.classList.remove('active');
+      });
+      
+      const btnEl = document.getElementById(`mode${mode}`);
+      if (btnEl) btnEl.classList.add('active');
+
+      attackBtn.textContent = `Attaquer (${mode} coup${mode > 1 ? 's' : ''})`;
+    }
+
+    function setDifficulty(difficulty) {
+      currentDifficulty = difficulty;
+      
+      // Mettre à jour l'apparence des boutons de difficulté
+      document.querySelectorAll('.difficulty-btn').forEach(btn => {
+        btn.classList.remove('active');
+      });
+      document.querySelector(`.difficulty-btn.${difficulty}`).classList.add('active');
+      
+      // Mettre à jour l'apparence du diamant
+      diamond.className = "diamond " + difficulty;
+      
+      // Réinitialiser le jeu avec la nouvelle difficulté
+      initGame();
+    }
+
+    function initGame() {
+      // Définir les points de vie selon la difficulté (DOUBLÉS)
+      switch(currentDifficulty) {
+        case "noob":
+          maxHP = 6000;
+          break;
+        case "buchette":
+          maxHP = 20000;
+          break;
+        case "easy":
+          maxHP = 60000;
+          break;
+        case "medium":
+          maxHP = 100000;
+          break;
+        case "hard":
+          maxHP = 200000;
+          break;
+      }
+      
+      currentHP = maxHP;
+      coupCounter = 0;
+      totalHits = 0;
+      combo = 0;
+      lastHitTime = 0;
+      isAttacking = false;
+      
+      diamond.className = "diamond " + currentDifficulty;
+      
+      let difficultyName = "";
+      switch(currentDifficulty) {
+        case "noob": difficultyName = "noob"; break;
+        case "buchette": difficultyName = "buchette"; break;
+        case "easy": difficultyName = "facile"; break;
+        case "medium": difficultyName = "moyen"; break;
+        case "hard": difficultyName = "difficile"; break;
+      }
+      message.textContent = `Diamant magique ${difficultyName} - À tout moment le diamant peut être brisé...`;
+      
+      // Fermer la popup si elle est ouverte
+      closeVictoryPopup();
+      comboIndicator.style.display = "none";
+
+      // reset des compteurs visibles (sécurité si tu veux les afficher autrement)
+      coupCounter = 0;
+      totalHits = 0;
+      
+      // Mettre à jour l'affichage des points de vie
+      updateUI();
+    }
+
+    // =============================================
+    // FONCTIONS POUR LE TABLEAU DES GAINS
+    // =============================================
+
+    function registerNewWin(userName, amountStr) {
+      const amount = parseInt(amountStr);
+      if (!amount || amount <= 0) return; // Ne pas ajouter 0
+
+      // Mettre à jour ou créer l'entrée pour l'utilisateur
+      if (recentRewards[userName]) {
+        recentRewards[userName].reward += amount;
+        recentRewards[userName].timestamp = Date.now();
+      } else {
+        recentRewards[userName] = {
+          userName: userName,
+          reward: amount,
+          timestamp: Date.now()
+        };
+      }
+      
+      // Mettre à jour le tableau
+      updateRewardsTable();
+      
+      // Mettre à jour le panneau du dernier gain (affiche ce gain spécifique)
+      updateLastRewardPanel(userName, amountStr);
+      
+      // Sauvegarder automatiquement
+      autoSave();
+    }
+
+    function updateRewardsTable() {
+      // Vider le tableau
+      rewardsTableBody.innerHTML = '';
+
+      // Itérer sur l'objet et trier
+      const sortedRewards = Object.values(recentRewards).sort((a, b) => b.timestamp - a.timestamp);
+      
+      // Remplir avec les récompenses
+      sortedRewards.forEach(reward => {
+        const row = document.createElement('tr');
+        
+        const nameCell = document.createElement('td');
+        nameCell.textContent = reward.userName;
+        nameCell.style.fontSize = "16px";
+        
+        const rewardCell = document.createElement('td');
+        rewardCell.textContent = reward.reward;
+        rewardCell.className = 'reward-amount';
+        rewardCell.style.fontSize = "16px";
+
+        // Cellule d'action
+        const actionCell = document.createElement('td');
+        actionCell.className = 'reward-action';
+        
+        const payButton = document.createElement('button');
+        payButton.textContent = 'Payé';
+        payButton.className = 'pay-reward-btn';
+        payButton.addEventListener('click', () => payReward(reward.userName)); 
+        
+        actionCell.appendChild(payButton);
+        
+        row.appendChild(nameCell);
+        row.appendChild(rewardCell);
+        row.appendChild(actionCell);
+        
+        rewardsTableBody.appendChild(row);
+      });
+    }
+
+    // Payer par userName
+    function payReward(userName) {
+        if (recentRewards[userName]) {
+            // Supprimer la récompense du tableau
+            delete recentRewards[userName];
+            
+            // Mettre à jour l'affichage du tableau
+            updateRewardsTable();
+            
+            // Sauvegarder automatiquement
+            autoSave();
+            
+            // Afficher une notification
+            showNotification('✅ Gain marqué comme payé!', 'success');
+        }
+    }
+
+    function updateLastAttacker(userName) {
+      lastAttackerName = userName;
+      lastAttackerTime = new Date();
+      
+      // Mettre à jour le panneau du dernier attaquant
+      updateLastAttackerPanel(userName, lastAttackerTime);
+    }
+
+    // Mettre à jour le panneau du dernier attaquant
+    function updateLastAttackerPanel(userName, time) {
+      lastAttackerPanelName.textContent = userName;
+      lastAttackerPanelTime.textContent = formatTime(time);
+      
+      // Animation du panneau
+      lastAttackerPanel.style.transform = `translate3d(${draggablePanels.lastAttackerPanel.x}px, ${draggablePanels.lastAttackerPanel.y}px, 0) scale(1.1)`;
+      setTimeout(() => {
+        lastAttackerPanel.style.transform = `translate3d(${draggablePanels.lastAttackerPanel.x}px, ${draggablePanels.lastAttackerPanel.y}px, 0) scale(1)`;
+      }, 300);
+    }
+
+    // Mettre à jour le panneau du dernier gain
+    function updateLastRewardPanel(userName, amount) {
+      lastRewardPlayer.textContent = userName;
+      lastRewardAmount.textContent = amount;
+      lastRewardTime.textContent = formatTime(new Date());
+      
+      // Animation du panneau
+      lastRewardContainer.style.transform = `translate3d(${draggablePanels.lastRewardContainer.x}px, ${draggablePanels.lastRewardContainer.y}px, 0) scale(1.1)`;
+      setTimeout(() => {
+        lastRewardContainer.style.transform = `translate3d(${draggablePanels.lastRewardContainer.x}px, ${draggablePanels.lastRewardContainer.y}px, 0) scale(1)`;
+      }, 300);
+    }
+
+    function formatTime(date) {
+      const now = new Date();
+      const diff = now - date;
+      
+      if (diff < 60000) {
+        return "À l'instant";
+      } else if (diff < 3600000) {
+        const minutes = Math.floor(diff / 60000);
+        return `Il y a ${minutes} min`;
+      } else {
+        const hours = Math.floor(diff / 3600000);
+        return `Il y a ${hours} h`;
+      }
+    }
+
+    // Fonction pour rendre un panneau déplaçable
+    function makeDraggable(panelId) {
+      const panel = document.getElementById(panelId);
+      if (!panel) return; // Sécurité si le panneau a été supprimé
+      
+      let isDragging = false;
+      let currentX;
+      let currentY;
+      let initialX;
+      let initialY;
+      let xOffset = draggablePanels[panelId].x;
+      let yOffset = draggablePanels[panelId].y;
+
+      panel.addEventListener("mousedown", dragStart);
+      panel.addEventListener("touchstart", dragStart);
+      document.addEventListener("mouseup", dragEnd);
+      document.addEventListener("touchend", dragEnd);
+      document.addEventListener("mousemove", drag);
+      document.addEventListener("touchmove", drag);
+
+      function dragStart(e) {
+        if (e.type === "touchstart") {
+          initialX = e.touches[0].clientX - xOffset;
+          initialY = e.touches[0].clientY - yOffset;
+        } else {
+          initialX = e.clientX - xOffset;
+          initialY = e.clientY - yOffset;
+        }
+
+        if (e.target === panel || e.target.parentNode === panel || e.target.parentNode.parentNode === panel) {
+          isDragging = true;
+        }
+      }
+
+      function dragEnd(e) {
+        initialX = currentX;
+        initialY = currentY;
+
+        isDragging = false;
+        
+        // Sauvegarder la position finale
+        draggablePanels[panelId].x = xOffset;
+        draggablePanels[panelId].y = yOffset;
+      }
+
+      function drag(e) {
+        if (isDragging) {
+          e.preventDefault();
+          
+          if (e.type === "touchmove") {
+            currentX = e.touches[0].clientX - initialX;
+            currentY = e.touches[0].clientY - initialY;
+          } else {
+            currentX = e.clientX - initialX;
+            currentY = e.clientY - initialY;
+          }
+
+          xOffset = currentX;
+          yOffset = currentY;
+
+          setTranslate(currentX, currentY, panel);
+        }
+      }
+
+      function setTranslate(xPos, yPos, el) {
+        el.style.transform = `translate3d(${xPos}px, ${yPos}px, 0)`;
+      }
+      
+      // Appliquer la position sauvegardée
+      setTranslate(xOffset, yOffset, panel);
+    }
+
+    // Fonction pour gérer le menu des panneaux
+    function toggleMenu() {
+      menuDropdown.classList.toggle('active');
+    }
+
+    function showPanel(panelId) {
+      // Afficher le panneau sélectionné
+      const panel = document.getElementById(panelId);
+      if (panel) {
+        if (panel.style.display === 'none') {
+          panel.style.display = 'block';
+        } else {
+          panel.style.display = 'none';
+        }
+      }
+      
+      // Mettre à jour l'état actif dans le menu
+      document.querySelectorAll('.menu-item').forEach(item => {
+        if (item.getAttribute('data-panel') === panelId) {
+          const panel = document.getElementById(panelId);
+          if (panel.style.display === 'block') {
+            item.classList.add('active');
+          } else {
+            item.classList.remove('active');
+          }
+        }
+      });
+      
+      // Fermer le menu
+      menuDropdown.classList.remove('active');
+    }
+
+    // Fonction pour réinitialiser toutes les données du jeu
+    function resetGameData() {
+      if (confirm("Êtes-vous sûr de vouloir réinitialiser toutes les données du jeu ? Cette action est irréversible.")) {
+        // Réinitialiser les variables
+        recentRewards = {};
+        
+        // Réinitialiser le drop
+        dropProgress = 0;
+        dropPool = 0;
+        updateDropBar();
+
+        // Mettre à jour les affichages
+        updateRewardsTable();
+        
+        // Sauvegarder les données réinitialisées
+        autoSave();
+        
+        // Réinitialiser le jeu
+        initGame();
+        
+        // Afficher une notification
+        showNotification("✅ Toutes les données du jeu ont été réinitialisées!", 'success');
+      }
+    }
+
+    // =============================================
+    // INTÉGRATION TIKFINTY
+    // =============================================
+
+    function connectToTikFinity() {
+        if (isTikFinityConnected) return;
+        
+        updateTikFinityStatus('connecting', 'Connexion à TikFinity...');
+        connectBtn.disabled = true;
+        connectBtn.textContent = 'Connexion...';
+        
+        try {
+            tikfinitySocket = new WebSocket('ws://localhost:8832');
+            
+            tikfinitySocket.onopen = () => {
+                console.log('✅ Connecté à TikFinity');
+                isTikFinityConnected = true;
+                updateTikFinityStatus('connected', 'Connecté à TikFinity');
+                connectBtn.textContent = 'Déconnecter';
+                connectBtn.disabled = false;
+                showNotification('✅ Connecté à TikFinity! Les viewers peuvent maintenant attaquer le diamant!', 'success');
+            };
+            
+            tikfinitySocket.onmessage = (event) => {
+                try {
+                    const message = JSON.parse(event.data);
+                    handleTikFinityMessage(message);
+                } catch (error) {
+                    console.error('❌ Erreur message TikFinity:', error);
+                }
+            };
+            
+            tikfinitySocket.onclose = () => {
+                console.log('🔌 Déconnecté de TikFinity');
+                isTikFinityConnected = false;
+                updateTikFinityStatus('disconnected', 'Déconnecté de TikFinity');
+                connectBtn.textContent = 'Se connecter à TikFinity';
+                connectBtn.disabled = false;
+                
+                if (reconnectTimeout) clearTimeout(reconnectTimeout);
+                reconnectTimeout = setTimeout(connectToTikFinity, 5000);
+            };
+            
+            tikfinitySocket.onerror = (error) => {
+                console.error('❌ Erreur TikFinity WebSocket:', error);
+                updateTikFinityStatus('disconnected', 'Erreur de connexion');
+                connectBtn.textContent = 'Se connecter à TikFinity';
+                connectBtn.disabled = false;
+                showNotification('❌ Serveur TikFinity non disponible. Lancez "npm start" d\'abord.', 'error');
+            };
+            
+        } catch (error) {
+            console.error('❌ Erreur connexion TikFinity:', error);
+            updateTikFinityStatus('disconnected', 'Serveur non disponible');
+            connectBtn.textContent = 'Se connecter à TikFinity';
+            connectBtn.disabled = false;
+        }
+    }
+
+    function disconnectFromTikFinity() {
+        if (tikfinitySocket) {
+            tikfinitySocket.close();
+        }
+        isTikFinityConnected = false;
+        updateTikFinityStatus('disconnected', 'Déconnecté de TikFinity');
+        connectBtn.textContent = 'Se connecter à TikFinity';
+    }
+
+    function updateTikFinityStatus(status, text) {
+        const statusDot = document.getElementById('statusDot');
+        const statusText = document.getElementById('statusText');
+        statusDot.className = 'status-dot ' + status;
+        statusText.textContent = text;
+    }
+
+    function handleTikFinityMessage(message) {
+        console.log('📨 Message TikFinity:', message);
+        
+        switch(message.event) {
+            case 'tiktokAttack':
+                handleTikFinityAttack(message.data);
+                break;
+            case 'gameControl':
+                handleGameControl(message.data);
+                break;
+            default:
+                console.log('📨 Autre message TikFinity:', message);
+        }
+    }
+
+    function handleTikFinityAttack(attackData) {
+      const userName = attackData.userName || 'Viewer';
+      const damage = attackData.damage || 1;
+      
+      addAttackToQueue(userName, damage, attackData.triggerType);
+    }
+
+    function handleGameControl(controlData) {
+        switch(controlData.type) {
+            case 'reset':
+                initGame();
+                showNotification('🔄 Nouveau diamant créé!');
+                break;
+        }
+    }
+
+    // Fonction pour mettre à jour le panneau de la file d'attente
+    function updateAttackQueuePanel() {
+      queueListBody.innerHTML = ''; // Vider la liste
+      
+      if (attackQueue.length === 0) {
+        queueListBody.innerHTML = '<div class="queue-empty-message">La file d\'attente est vide.</div>';
+        return;
+      }
+      
+      attackQueue.forEach((attack, index) => {
+        const item = document.createElement('div');
+        item.className = 'queue-item';
+        
+        let triggerEmoji = '⚔️';
+        switch(attack.triggerType) {
+          case 3: triggerEmoji = '🎁'; break;
+          case 7: triggerEmoji = '❤️'; break;
+          case 9: triggerEmoji = '👤'; break;
+          case 10: triggerEmoji = '⭐'; break;
+        }
+        
+        item.innerHTML = `
+          <span class="queue-item-index">${index + 1}.</span>
+          <span class="queue-item-emoji">${triggerEmoji}</span>
+          <span class="queue-item-name">${attack.userName}</span>
+          <span class="queue-item-damage">(${attack.damage} ${attack.damage > 1 ? 'coups' : 'coup'})</span>
+        `;
+        queueListBody.appendChild(item);
+      });
+    }
+
+    function addAttackToQueue(userName, damage = 1, triggerType = null) {
+      attackQueue.push({
+        userName,
+        damage,
+        triggerType,
+        timestamp: Date.now()
+      });
+      
+      updateLastAttackers(userName);
+      showAttackNotification(userName, triggerType);
+      updateAttackQueuePanel(); // Mettre à jour le panneau
+      
+      // Si la file d'attente n'est pas déjà en train de tourner, on la lance
+      if (!isProcessingQueue) {
+        processAttackQueue();
+      }
+    }
+
+    // processAttackQueue traite un élément à la fois
+    async function processAttackQueue() {
+        // Si la file est vide, arrêter le traitement
+        if (attackQueue.length === 0) {
+            isProcessingQueue = false;
+            return;
+        }
+
+        // Verrouiller la file d'attente
+        isProcessingQueue = true;
+
+        // Prendre le prochain attaquant
+        const attack = attackQueue.shift();
+        const { userName, damage } = attack;
+
+        // Mettre à jour l'interface (file d'attente et dernier attaquant)
+        updateAttackQueuePanel();
+        updateLastAttacker(userName); // Le nom se met à jour au moment du coup
+
+        // 1. Calculer le total des dégâts (pour cet unique "tour")
+        const totalDamage = damage;
+        
+        // 2. Appliquer les dégâts
+        // Choisir la bonne animation
+        let animationType = 'hit';
+        let shakeType = 'screen-shake';
+        let animationDuration = 600; // Durée par défaut
+        
+        if (totalDamage >= 30) {
+            animationType = 'ultra-hit'; // L'animation la plus grosse
+            shakeType = 'ultra-shake';
+            animationDuration = 1500;
+        } else if (totalDamage >= 15) {
+            animationType = 'mega-hit';
+            shakeType = 'mega-shake';
+            animationDuration = 1200;
+        } else if (totalDamage >= 5) {
+            animationType = 'heavy-hit';
+            shakeType = 'screen-shake';
+            animationDuration = 800;
+        }
+        
+        // Jouer les effets
+        diamond.classList.add(animationType);
+        if (shakeType) gameContainer.classList.add(shakeType);
+        animateHammer();
+        playHitSound();
+        
+        // Enlever les HP
+        for (let i = 0; i < totalDamage; i++) {
+            if(currentHP <= 0) break; // Arrêter si le diamant est déjà cassé
+            
+            currentHP--;
+            coupCounter++;
+            totalHits++;
+
+            // Vérifier le drop à chaque coup
+            checkDropSingleHit(userName);
+        }
+        
+        // Jouer les effets visuels (une seule fois)
+        createHitParticles();
+        createHearts();  
+        createImpactEffect();
+        
+        // Mettre à jour l'UI
+        updateUI();
+        
+        // 3. Attendre la fin de l'animation pour passer au suivant
+        setTimeout(() => {
+            diamond.classList.remove(animationType);
+            if (shakeType) gameContainer.classList.remove(shakeType);
+            
+            // Vérifier si le diamant est cassé
+            if (currentHP <= 0) {
+                // S'assurer que le nom du dernier attaquant est bien celui qui a porté le coup final
+                lastAttackerName = userName;  
+                endGame(); // endGame s'occupe de réinitialiser, etc.
+                
+                // Le jeu est terminé, on arrête le traitement de la file
+                isProcessingQueue = false;
+                // Vider la file d'attente pour la prochaine manche
+                attackQueue.length = 0;  
+                updateAttackQueuePanel();
+            } else {
+                // Le diamant n'est pas cassé, on passe à l'attaque suivante
+                // (un petit délai pour respirer, même si l'animation est finie)
+                setTimeout(() => {
+                    processAttackQueue();
+                }, 100); // Délai de 100ms entre chaque coup
+            }
+        }, animationDuration); // Utiliser la durée d'animation dynamique
+    }
+
+    // Fonctions pour le Drop
+    function updateDropBar() {
+      const percent = (dropProgress / DROP_TARGET) * 100;
+      dropBarFill.style.width = `${percent}%`;
+      dropBarText.textContent = `DROP: ${dropPool} 💎`;
+    }
+
+    function checkDropSingleHit(attackerName) {
+      if (currentHP <= 0) return; // Ne pas compter les coups sur un diamant cassé
+
+      dropProgress++;
+
+      if (dropProgress >= DROP_TARGET) {
+        dropProgress = 0; // Réinitialiser
+        dropPool += DROP_REWARD; // Ajouter au pot
+
+        // Vérifier la chance de jackpot (1 sur 333 au lieu de 1 sur 1000)
+        const dropRoll = Math.floor(Math.random() * DROP_CHANCE_MAX);
+        if (dropRoll === 0) {
+          // JACKPOT!
+          showNotification(`🎉 DROP ! ${attackerName} gagne ${dropPool} 💎 !`, 'success');
+          
+          // Utiliser la fonction de gain
+          registerNewWin(attackerName, dropPool.toString());
+          
+          // Réinitialiser le pot
+          dropPool = 0;
+        }
+      }
+
+      // Mettre à jour la barre à chaque coup
+      updateDropBar();
+    }
+
+    function updateLastAttackers(userName) {
+      const existingIndex = lastAttackers.indexOf(userName);
+      if (existingIndex !== -1) {
+        lastAttackers.splice(existingIndex, 1);
+      }
+      
+      lastAttackers.unshift(userName);
+      
+      if (lastAttackers.length > MAX_LAST_ATTACKERS) {
+        lastAttackers.pop();
+      }
+    }
+
+    function showAttackNotification(userName, triggerType) {
+      let notificationMessage = '';
+      
+      switch(triggerType) {
+        case 3:
+          notificationMessage = `🎁 ${userName} envoie un cadeau!`;
+          break;
+        case 7:
+          notificationMessage = `❤️ ${userName} like la stream!`;
+          break;
+        case 9:
+          notificationMessage = `👤 ${userName} suit la chaîne!`;
+          break;
+        case 10:
+          notificationMessage = `⭐ ${userName} s'abonne!`;
+          break;
+        default:
+          notificationMessage = `${userName} attaque le diamant!`;
+      }
+      
+      showNotification(notificationMessage);
+    }
+
+    function showNotification(message, type = 'info') {
+      const notification = document.createElement('div');
+      notification.className = `notification ${type === 'error' ? 'error' : type === 'success' ? 'success' : ''}`;
+      notification.textContent = message;
+      document.body.appendChild(notification);
+      
+      setTimeout(() => {
+        notification.style.animation = 'slideOutRight 0.5s ease';
+        setTimeout(() => {
+          if (notification.parentNode) {
+            notification.parentNode.removeChild(notification);
+          }
+        }, 500);
+      }, 3000);
+    }
+
+    // =============================================
+    // INITIALISATION
+    // =============================================
+
+    // Événements
+    document.getElementById("attackBtn").addEventListener("click", attack);
+    document.getElementById("resetBtn").addEventListener("click", initGame);
+
+    document.getElementById("mode1").addEventListener("click", () => setAttackMode(1));
+    document.getElementById("mode10").addEventListener("click", () => setAttackMode(10));
+    document.getElementById("mode30").addEventListener("click", () => setAttackMode(30));
+
+    // Sélecteur de difficulté
+    document.querySelectorAll('.difficulty-btn').forEach(btn => {
+      btn.addEventListener('click', function() {
+        setDifficulty(this.getAttribute('data-difficulty'));
+      });
+    });
+
+    // Fermer la popup
+    closePopupBtn.addEventListener('click', closeVictoryPopup);
+
+    // Fermer la popup en cliquant en dehors
+    victoryPopup.addEventListener('click', function(e) {
+      if (e.target === this) {
+        closeVictoryPopup();
+      }
+    });
+
+    // Fermer le tableau des gains
+    closeRewardsBtn.addEventListener('click', function() {
+      rewardsContainer.style.display = 'none';
+      document.querySelector('.menu-item[data-panel="rewardsContainer"]').classList.remove('active');
+    });
+
+    // Fermer le panneau du dernier gain
+    closeLastRewardBtn.addEventListener('click', function() {
+      lastRewardContainer.style.display = 'none';
+      document.querySelector('.menu-item[data-panel="lastRewardContainer"]').classList.remove('active');
+    });
+
+    // Fermer la file d'attente
+    closeQueueBtn.addEventListener('click', function() {
+      queueContainer.style.display = 'none';
+      document.querySelector('.menu-item[data-panel="queueContainer"]').classList.remove('active');
+    });
+
+    // Gestion du menu
+    menuBtn.addEventListener('click', toggleMenu);
+    
+    // Gestion des éléments du menu
+    document.querySelectorAll('.menu-item').forEach(item => {
+      if (item.id === 'resetDataBtn') {
+        item.addEventListener('click', resetGameData);
+      } else {
+        item.addEventListener('click', function() {
+          const panelId = this.getAttribute('data-panel');
+          showPanel(panelId);
+        });
+      }
+    });
+
+    // Raccourcis clavier
+    document.addEventListener('keydown', (e) => {
+      if (isAttacking) return;
+      
+      switch(e.key) {
+        case ' ':
+        case 'Enter':
+          e.preventDefault();
+          attack();
+          break;
+        case '1':
+          setAttackMode(1);
+          break;
+        case '2':
+          setAttackMode(10);
+          break;
+        case '3':
+          setAttackMode(30);
+          break;
+        case 'r':
+        case 'R':
+          break;
+        case 'n':
+        case 'N':
+          setDifficulty('noob');
+          break;
+        case 'b':
+        case 'B':
+          setDifficulty('buchette');
+          break;
+        case 'd':
+        case 'D':
+          setDifficulty('hard');
+          break;
+        case 'Escape':
+          closeVictoryPopup();
+          menuDropdown.classList.remove('active');
+          break;
+        case 'g':
+        case 'G':
+          // Afficher/masquer le tableau des gains
+          showPanel('rewardsContainer');
+          break;
+        case 'l':
+        case 'L':
+          // Afficher/masquer le panneau du dernier attaquant
+          showPanel('lastAttackerPanel');
+          break;
+        case 'm':
+        case 'M':
+          // Basculer le menu
+          toggleMenu();
+          break;
+        case 'r':
+        case 'R':
+          // Afficher/masquer le panneau du dernier gain
+          showPanel('lastRewardContainer');
+          break;
+        case 'q':
+        case 'Q':
+          // Afficher/masquer la file d'attente
+          showPanel('queueContainer');
+          break;
+      }
+    });
+
+    // Reset combo après inactivité
+    setInterval(() => {
+      const currentTime = Date.now();
+      if (currentTime - lastHitTime > 3000 && combo > 0) {
+        combo = 0;
+        comboIndicator.style.display = "none";
+      }
+    }, 1000);
+
+    // Connexion TikFinity
+    const connectBtn = document.getElementById('connectBtn');
+    if (connectBtn) {
+        connectBtn.addEventListener('click', () => {
+            if (isTikFinityConnected) {
+                disconnectFromTikFinity();
+            } else {
+                connectToTikFinity();
+            }
+        });
+        
+        // Tentative de connexion automatique au chargement
+        setTimeout(connectToTikFinity, 1000);
+    }
+
+    // Initialiser les tableaux déplaçables
+    makeDraggable('rewardsContainer');
+    makeDraggable('lastAttackerPanel');
+    makeDraggable('lastRewardContainer');
+    makeDraggable('queueContainer');
+
+    // Initialiser le panneau du dernier attaquant
+    updateLastAttackerPanel("Personne", new Date());
+
+    // Initialiser le panneau du dernier gain
+    updateLastRewardPanel("Personne", "0");
+
+    // Initialiser le panneau de la file d'attente
+    updateAttackQueuePanel();
+
+    // Initialiser la barre de drop
+    updateDropBar();
+
+    // CHARGER LES DONNÉES AU DÉMARRAGE
+    loadGameData();
+    updateRewardsTable(); // Mettre à jour l'affichage avec les données chargées
+
+    initGame();
+  </script>
+</body>
+</html>

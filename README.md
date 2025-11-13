@@ -1,1 +1,0 @@
-# connectdiamant.github.io

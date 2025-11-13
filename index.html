@@ -154,7 +154,7 @@
       width: 250px;
       height: 225px;
       margin: 0 auto;
-      background-image: url('https://i.ibb.co/ks5qw82L/t-l-chargement-3-Photoroom.png');
+      /* background-image est maintenant géré par JS */
       background-size: contain;
       background-repeat: no-repeat;
       background-position: center;
@@ -163,6 +163,40 @@
       filter: drop-shadow(0 0 15px rgba(255, 215, 0, 0.7));
       z-index: 5;
     }
+    
+    /* CORRIGÉ: Animation pour l'attaque spéciale (30 coups) */
+    .special-attack-anim {
+      position: absolute;
+      left: 50%; /* Positionné au centre */
+      top: 50%;
+      /* Décalé à droite du diamant (largeur diamant 250px / 2 = 125px) */
+      transform: translate(130px, -50%); /* 130px > 125px pour un petit écart */
+      width: 150px;
+      height: 150px;
+      background-image: url('https://media.giphy.com/media/v1.Y2lkPTc5MGI3NjExd3IzbHh3ZjNrcmZ5MzA3ZmtoM3MxMTkwOHZrc3B1YjNyOTlqcHh2NSZlcD12MV9zdGlja2Vyc19zZWFyY2gmY3Q9cw/UqYDZT2Sek7bXkL2On/giphy.gif');
+      background-size: contain;
+      background-repeat: no-repeat;
+      background-position: center;
+      z-index: 10;
+      pointer-events: none;
+      display: none; /* Caché par défaut */
+      opacity: 0;
+    }
+    
+    .special-attack-anim.play {
+      display: block;
+      animation: fadeInOut 3s ease-out forwards;
+    }
+    
+    /* CORRIGÉ: Keyframes pour le positionnement desktop */
+    @keyframes fadeInOut {
+      0% { opacity: 0; transform: translate(130px, -50%) scale(0.5); }
+      20% { opacity: 1; transform: translate(130px, -50%) scale(1); }
+      80% { opacity: 1; transform: translate(130px, -50%) scale(1); }
+      100% { opacity: 0; transform: translate(130px, -50%) scale(0.5); }
+    }
+    /* FIN CORRECTION */
+
 
     .diamond.easy {
       filter: drop-shadow(0 0 15px rgba(0, 255, 0, 0.7)) brightness(1.1);
@@ -508,6 +542,17 @@
     button:active {
       transform: translateY(0);
     }
+    
+    /* NOUVEAU: Style pour le bouton "Changer Skin" */
+    #changeSkinBtn {
+      background: linear-gradient(45deg, #4CAF50, #8BC34A);
+    }
+
+    #changeSkinBtn:hover {
+      background: linear-gradient(45deg, #8BC34A, #9CCC65);
+    }
+    /* FIN NOUVEAU */
+
 
     #resetBtn {
       background: linear-gradient(45deg, #555, #777);
@@ -721,6 +766,23 @@
         width: 180px;
         height: 160px;
       }
+      
+      /* CORRIGÉ: Ajuster l'animation spéciale pour mobile */
+      .special-attack-anim {
+        width: 100px;
+        height: 100px;
+        /* Diamant mobile 180px large -> 90px du centre */
+        transform: translate(95px, -50%); /* 95px > 90px */
+      }
+      
+      /* CORRIGÉ: Redéfinir les keyframes pour le transform mobile */
+      @keyframes fadeInOut {
+        0% { opacity: 0; transform: translate(95px, -50%) scale(0.5); }
+        20% { opacity: 1; transform: translate(95px, -50%) scale(1); }
+        80% { opacity: 1; transform: translate(95px, -50%) scale(1); }
+        100% { opacity: 0; transform: translate(95px, -50%) scale(0.5); }
+      }
+      /* FIN CORRECTION */
 
       .difficulty-selector {
         gap: 10px;
@@ -1523,10 +1585,10 @@
     
     <div class="diamond-container">
       <div class="diamond noob" id="diamond"></div>
+      <div class="special-attack-anim" id="specialAttackAnim"></div>
       <div class="particles-container" id="particlesContainer"></div>
     </div>
 
-    <!-- Barre de drop -->
     <div class="drop-bar-container" id="dropBarContainer">
       <div class="drop-bar-fill" id="dropBarFill"></div>
       <div class="drop-bar-text" id="dropBarText">DROP: 0 💎</div>
@@ -1554,6 +1616,7 @@
 
     <div class="controls">
       <button id="attackBtn">Attaquer (1 coup)</button>
+      <button id="changeSkinBtn">Changer Skin</button>
       <button id="resetBtn">Nouveau Diamant</button>
     </div>
 
@@ -1614,6 +1677,16 @@
     const comboIndicator = document.getElementById("comboIndicator");
     const particlesContainer = document.getElementById("particlesContainer");
     const hpValue = document.getElementById("hpValue");
+    
+    // NOUVEAU: Variables pour le changement de skin
+    const diamondSkins = [
+      'https://i.ibb.co/ks5qw82L/t-l-chargement-3-Photoroom.png', // Original
+      'https://media.giphy.com/media/v1.Y2lkPWVjZjA1ZTQ3OG03eTVuZW1kbDVlN2s5cDRsMnptd3JtdWxycmFrMnpxa21za2RtcyZlcD12MV9zdGlja2Vyc19zZWFyY2gmY3Q9cw/s5CX4GI44nDeAC9cXy/giphy.gif',
+      'https://media.giphy.com/media/v1.Y2lkPWVjZjA1ZTQ3aDltbDZtOWd3Y2lqbTRhd3Brdjg1MHdqeW5pcHQ4dHpldmdtazNjayZlcD12MV9zdGlja2Vyc19yZWxhdGVkJmN0PXM/47LC5ZOQFPdhTVqHDR/giphy.gif'
+    ];
+    let currentSkinIndex = 0;
+    const specialAttackAnim = document.getElementById('specialAttackAnim');
+    // FIN NOUVEAU
     
     // Éléments de la barre de drop
     const dropBarFill = document.getElementById("dropBarFill");
@@ -1716,8 +1789,15 @@
           }
           
           console.log('✅ Données chargées');
-          return true;
         }
+        
+        // NOUVEAU: Charger le skin
+        const savedSkinIndex = localStorage.getItem('diamondGameSkinIndex');
+        if (savedSkinIndex !== null) {
+          currentSkinIndex = parseInt(savedSkinIndex, 10) % diamondSkins.length;
+        }
+        // FIN NOUVEAU
+        
       } catch (error) {
         console.error('❌ Erreur chargement:', error);
       }
@@ -1728,6 +1808,40 @@
     function autoSave() {
       saveGameData();
     }
+    
+    // NOUVEAU: Fonction pour changer le skin du diamant
+    function changeDiamondSkin() {
+      currentSkinIndex = (currentSkinIndex + 1) % diamondSkins.length;
+      diamond.style.backgroundImage = `url('${diamondSkins[currentSkinIndex]}')`;
+      
+      // Sauvegarder la préférence de skin
+      try {
+        localStorage.setItem('diamondGameSkinIndex', currentSkinIndex);
+      } catch (e) {
+        console.warn("Impossible de sauvegarder la préférence de skin.");
+      }
+    }
+    
+    // NOUVEAU: Fonction pour jouer l'animation d'attaque spéciale
+    function playSpecialAttackAnimation() {
+      if (specialAttackAnim) {
+        specialAttackAnim.classList.remove('play');
+        
+        // Forcer le reflow pour redémarrer l'animation
+        void specialAttackAnim.offsetWidth; 
+        
+        specialAttackAnim.classList.add('play');
+        
+        // Cacher à nouveau après la fin de l'animation
+        setTimeout(() => {
+            if (specialAttackAnim) {
+                specialAttackAnim.classList.remove('play');
+                specialAttackAnim.style.display = 'none'; // Assurer qu'il est caché
+            }
+        }, 3000); // Doit correspondre à la durée de l'animation CSS
+      }
+    }
+    // FIN NOUVEAU
 
     // Système audio
     function initAudioContext() {
@@ -1944,6 +2058,7 @@
         animationType = 'critical-hit';
         shakeType = 'mega-shake';
         animationDuration = 800;
+        playSpecialAttackAnimation(); // NOUVEAU: Jouer l'animation
       } else if (attackMode >= 10) {
         animationType = 'heavy-hit';
         animationDuration = 600;
@@ -2181,6 +2296,8 @@
       lastHitTime = 0;
       isAttacking = false;
       
+      // NOUVEAU: Appliquer le skin actuel
+      diamond.style.backgroundImage = `url('${diamondSkins[currentSkinIndex]}')`;
       diamond.className = "diamond " + currentDifficulty;
       
       let difficultyName = "";
@@ -2655,6 +2772,7 @@
             animationType = 'ultra-hit'; // L'animation la plus grosse
             shakeType = 'ultra-shake';
             animationDuration = 1500;
+            playSpecialAttackAnimation(); // NOUVEAU: Jouer l'animation
         } else if (totalDamage >= 15) {
             animationType = 'mega-hit';
             shakeType = 'mega-shake';
@@ -2810,6 +2928,9 @@
     // Événements
     document.getElementById("attackBtn").addEventListener("click", attack);
     document.getElementById("resetBtn").addEventListener("click", initGame);
+    
+    // NOUVEAU: Événement pour le bouton de skin
+    document.getElementById("changeSkinBtn").addEventListener("click", changeDiamondSkin);
 
     document.getElementById("mode1").addEventListener("click", () => setAttackMode(1));
     document.getElementById("mode10").addEventListener("click", () => setAttackMode(10));

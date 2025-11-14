@@ -51,6 +51,7 @@
             box-shadow: 0 10px 30px rgba(0, 0, 0, 0.5);
             position: relative;
             border: 2px solid rgba(255, 215, 0, 0.3);
+            z-index: 50; /* Z-INDEX AJUSTÉ: Assure que la zone de jeu est au-dessus du fond, mais en dessous des panneaux flottants. */
         }
 
         .game-container::before {
@@ -876,7 +877,7 @@
         }
 
         .difficulty-selector {
-            display: flex;
+            display: none; /* MODIFIÉ: Cache la barre de difficulté par défaut */
             justify-content: center;
             gap: 15px;
             margin: 15px 0;
@@ -1098,6 +1099,11 @@
         .difficulty-badge.hard {
             background: linear-gradient(45deg, #F44336, #E91E63);
         }
+        
+        /* Styles pour les badges personnalisés (si aucune classe de base n'est définie) */
+        .difficulty-badge.custom {
+            background: linear-gradient(45deg, #feca57, #ff6b9d);
+        }
 
         /* Compteur de points de vie */
         .hp-counter {
@@ -1141,6 +1147,7 @@
             text-align: center;
             max-width: 500px;
             width: 90%;
+            z-index: 55; /* Doit être au-dessus du game-container */
         }
 
         .connection-status {
@@ -1263,7 +1270,7 @@
             padding: 15px;
             backdrop-filter: blur(10px);
             border: 2px solid rgba(255, 215, 0, 0.3);
-            z-index: 100;
+            z-index: 100; /* Z-INDEX AJUSTÉ: Pour être au-dessus du game-container */
             max-width: 300px;
             width: 100%;
             box-shadow: 0 5px 15px rgba(0, 0, 0, 0.5);
@@ -1908,6 +1915,128 @@
             border: 1px dashed rgba(255, 255, 255, 0.5);
             border-radius: 8px;
         }
+        
+        /* NOUVEAU: Styles pour le panneau de sélection de niveau */
+        .level-selector-container {
+            position: fixed;
+            top: 50%;
+            right: 20px; /* Positionnement initial */
+            transform: translateY(-50%);
+            background: rgba(0, 0, 0, 0.7);
+            border-radius: 15px;
+            padding: 15px;
+            backdrop-filter: blur(10px);
+            border: 2px solid rgba(0, 255, 255, 0.3); /* Nouvelle couleur de bordure */
+            z-index: 100;
+            max-width: 250px;
+            width: 90%;
+            box-shadow: 0 5px 15px rgba(0, 0, 0, 0.5);
+            cursor: move;
+            user-select: none;
+            text-align: center;
+        }
+
+        .level-selector-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 10px;
+            padding-bottom: 8px;
+            border-bottom: 1px solid rgba(255, 255, 255, 0.2);
+        }
+
+        .level-selector-title {
+            font-size: 1.1em;
+            font-weight: bold;
+            color: #00ffff;
+            text-shadow: 0 0 5px rgba(0, 255, 255, 0.5);
+        }
+
+        .level-list {
+            display: flex;
+            flex-direction: column;
+            gap: 8px;
+            max-height: 300px;
+            overflow-y: auto;
+        }
+
+        .level-item {
+            background: rgba(255, 255, 255, 0.1);
+            border-radius: 10px;
+            padding: 10px;
+            cursor: pointer;
+            transition: all 0.2s ease;
+            display: flex;
+            align-items: center;
+            gap: 10px;
+            border: 2px solid transparent;
+        }
+
+        .level-item:hover {
+            background: rgba(255, 255, 255, 0.2);
+            transform: translateY(-2px);
+        }
+
+        .level-item.active {
+            border-color: #00ffff;
+            background: rgba(0, 255, 255, 0.2);
+        }
+
+        .level-item-img {
+            width: 40px;
+            height: 40px;
+            background-size: cover;
+            background-position: center;
+            border-radius: 5px;
+            flex-shrink: 0;
+        }
+
+        .level-item-info {
+            text-align: left;
+            flex-grow: 1;
+        }
+
+        .level-item-name {
+            font-weight: bold;
+            color: #fff;
+            font-size: 0.9em;
+        }
+
+        .level-item-details {
+            font-size: 0.8em;
+            color: #cccccc;
+        }
+        
+        .menu-item-selector {
+            width: 100%;
+            padding: 10px 15px;
+            background: linear-gradient(45deg, #00bfff, #00e5ff);
+            color: white;
+            border: none;
+            border-radius: 10px;
+            cursor: pointer;
+            font-weight: bold;
+            transition: all 0.3s ease;
+            margin-top: 10px;
+        }
+        
+        .menu-item-selector:hover {
+            background: linear-gradient(45deg, #00e5ff, #00bfff);
+            transform: translateY(-2px);
+            box-shadow: 0 4px 10px rgba(0, 0, 0, 0.3);
+        }
+        
+        @media (max-width: 480px) {
+            .level-selector-container {
+                right: 50%;
+                transform: translate(50%, -50%);
+            }
+        }
+        
+        .hp-counter {
+            z-index: 55;
+        }
+
     </style>
 </head>
 <body>
@@ -1916,7 +2045,7 @@
         <div class="menu-item" data-panel="lastAttackerPanel">👤 Dernier attaquant</div>
         <div class="menu-item" data-panel="lastRewardContainer">🏆 Dernier gain</div>
         <div class="menu-item" data-panel="queueContainer">🚀 File d'attente</div>
-        <div class="menu-item" id="openAdminPanelBtn">🐞 Mode Admin (Bug HP)</div>
+        <div class="menu-item" data-panel="levelSelectorContainer" id="openLevelSelectorBtn">🎯 Sélectionner Niveau</div> <div class="menu-item" id="openAdminPanelBtn">🐞 Mode Admin (Bug HP)</div>
         <div class="menu-item" id="openSkinAttackPanelBtn">🖌️ Menu Skin Coups</div>
         <div class="menu-item" id="openDataPanelBtn">📦 Import/Export Données</div> <div class="menu-item" id="resetDataBtn">🔄 Réinitialiser les données</div>
     </div>
@@ -1935,7 +2064,7 @@
                 </tr>
             </thead>
             <tbody id="rewardsTableBody">
-            </</tbody>
+            </tbody>
         </table>
     </div>
     <div class="last-attacker-panel" id="lastAttackerPanel" style="display: none;">
@@ -1962,7 +2091,16 @@
         <div class="queue-list" id="queueListBody">
         </div>
     </div>
-
+    
+    <div class="level-selector-container" id="levelSelectorContainer" style="display: none;">
+        <div class="level-selector-header">
+            <div class="level-selector-title">🎯 SÉLECTIONNER NIVEAU</div>
+            <button class="close-panel" id="closeLevelSelectorBtn">×</button>
+        </div>
+        <div class="level-list" id="levelListBody">
+            </div>
+        <button id="setRandomLevelBtn" class="menu-item-selector">Choisir Niveau Aléatoire</button>
+    </div>
     <div class="admin-panel" id="adminPanel" style="display: none;">
         <div class="admin-panel-header">
             <div class="admin-panel-title">🐞 Mode Admin (Bug HP)</div>
@@ -2021,6 +2159,7 @@
             <button id="importDataBtn">Importer un Fichier (.json)</button>
         </div>
     </div>
+    
     <div class="game-container" id="gameContainer">
         <div class="combo-indicator" id="comboIndicator">COMBO x0</div>
         <h1>💎 Le Diamant Magique !</h1>
@@ -2069,10 +2208,12 @@
         </div>
         <p id="message"></p>
     </div>
+    
     <div class="hp-counter" id="hpCounter">
         <span class="hp-label">Points de vie restants</span>
         <span class="hp-value" id="hpValue">6000 / 6000</span>
     </div>
+    
     <div class="popup-overlay" id="victoryPopup">
         <div class="popup-content">
             <h3>🎉 Diamant Magique Brisé ! 🎉</h3>
@@ -2108,12 +2249,79 @@
         // Variables pour le Drop
         let dropProgress = 0;
         let dropPool = 0;
-        const DROP_TARGET = 1000; // MODIFIÉ: Ancienne valeur 100 * 10 = 1000
+        const DROP_TARGET = 1000;
         const DROP_REWARD = 5;
-        // MODIFICATION: Tripler les chances de drop (1/333 au lieu de 1/1000)
         const DROP_CHANCE_MAX = 333;
 
-        // NOUVEAU: Stockage des configurations d'attaque et images
+        // NOUVEAU: Structure pour les niveaux personnalisés
+        const customDifficulties = {
+            'trentecoups': {
+                maxHP: 500,
+                reward: 30,
+                name: "30 Coups",
+                img: 'https://i.ibb.co/8DMJ0cxy/IMG-7355-Photoroom.png'
+            },
+            'coeursdanslesmains': {
+                maxHP: 1500,
+                reward: 100,
+                name: "Cœurs Mains",
+                img: 'https://i.ibb.co/C5M6DHcS/IMG-7356-Photoroom.png'
+            },
+            'rosa': {
+                maxHP: 200,
+                reward: 10,
+                name: "Rosa",
+                img: 'https://i.ibb.co/7JsBRrCn/IMG-5885.png'
+            },
+            'fetes': {
+                maxHP: 2500,
+                reward: 100,
+                name: "Fêtes",
+                img: 'https://i.ibb.co/ZRFjM91q/IMG-5895.png'
+            }
+        };
+
+        // Difficultés par défaut
+        const defaultDifficulties = {
+            "noob": {
+                maxHP: 6000,
+                reward: 300,
+                name: "Noob",
+                img: 'https://i.ibb.co/gFMBxFzP/IMG-6063.png'
+            },
+            "buchette": {
+                maxHP: 20000,
+                reward: 1000,
+                name: "Buchette",
+                img: 'https://i.ibb.co/JMPfpWV/IMG-5851.png'
+            },
+            "easy": {
+                maxHP: 60000,
+                reward: 3000,
+                name: "Facile",
+                img: 'https://i.ibb.co/p6s7HT5n/IMG-7322.png'
+            },
+            "medium": {
+                maxHP: 100000,
+                reward: 5000,
+                name: "Moyen",
+                img: 'https://i.ibb.co/hxXnkQh7/IMG-5861.png'
+            },
+            "hard": {
+                maxHP: 200000,
+                reward: 10000,
+                name: "Difficile",
+                img: 'https://i.ibb.co/DHBNtX7t/IMG-6573.png'
+            },
+        };
+
+        // Fusion de toutes les difficultés
+        const allDifficulties = {
+            ...defaultDifficulties,
+            ...customDifficulties
+        };
+
+        // Stockage des configurations d'attaque et images
         const attackModesConfig = {
             1: {
                 img: 'https://i.ibb.co/WNXDxn2y/IMG-7354-Photoroom.png',
@@ -2141,65 +2349,60 @@
         const particlesContainer = document.getElementById("particlesContainer");
         const hpValue = document.getElementById("hpValue");
 
-        // NOUVEAU: Variables pour le changement de skin
         const diamondSkins = [
             'https://i.ibb.co/ks5qw82L/t-l-chargement-3-Photoroom.png', // Original
             'https://media.giphy.com/media/v1.Y2lkPWVjZjA1ZTQ3OG03eTVuZW1kbDVlN2s5cDRsMnptd3JtdWxycmFrMnpxa21za2RtcyZlcD12MV9zdGlja2Vyc19zZWFyY2gmY3Q9cw/s5CX4GI44nDeAC9cXy/giphy.gif',
-            'https://media.giphy.com/media/v1.Y2lkPWVjZjA1ZTQ3aDltbDZtOWd3Y2lqbTRhd3Brdjg1MHdqeW5pcHQ4dHpldmdtazNjayZlcD12MV9zdGlja2Vyc19yZWxhdGVkJmN0PXM/47LC5ZOQFPdhTVqHDR/giphy.gif'
+            'https://media.giphy.com/media/v1.Y2lkPWVjZjA1ZTQ3aDltbDZtOWd3Y2lqbTRhd3Brdjg1MHdqeW5pcHQ4dHpldmdtazNjayZlcP12MV9zdGlja2Vyc19yZWxhdGVkJmN0PXM/47LC5ZOQFPdhTVqHDR/giphy.gif'
         ];
         let currentSkinIndex = 0;
         const specialAttackAnim = document.getElementById('specialAttackAnim');
-        // FIN NOUVEAU
 
-        // Éléments de la barre de drop
         const dropBarFill = document.getElementById("dropBarFill");
         const dropBarText = document.getElementById("dropBarText");
 
-        // Éléments de la popup
         const victoryPopup = document.getElementById("victoryPopup");
         const popupRewardImage = document.getElementById("popupRewardImage");
         const popupRewardText = document.getElementById("popupRewardText");
         const popupVictoryMessage = document.getElementById("popupVictoryMessage");
         const closePopupBtn = document.getElementById("closePopupBtn");
 
-        // Éléments du tableau des gains
         const rewardsContainer = document.getElementById("rewardsContainer");
         const rewardsTableBody = document.getElementById("rewardsTableBody");
         const closeRewardsBtn = document.getElementById("closeRewardsBtn");
 
-        // Éléments du menu et du panneau du dernier attaquant
         const menuBtn = document.getElementById("menuBtn");
         const menuDropdown = document.getElementById("menuDropdown");
         const lastAttackerPanel = document.getElementById("lastAttackerPanel");
         const lastAttackerPanelName = document.getElementById("lastAttackerPanelName");
         const lastAttackerPanelTime = document.getElementById("lastAttackerPanelTime");
 
-        // Éléments du panneau du dernier gain
         const lastRewardContainer = document.getElementById("lastRewardContainer");
         const lastRewardPlayer = document.getElementById("lastRewardPlayer");
         const lastRewardAmount = document.getElementById("lastRewardAmount");
         const lastRewardTime = document.getElementById("lastRewardTime");
         const closeLastRewardBtn = document.getElementById("closeLastRewardBtn");
 
-        // Éléments du panneau de la file d'attente
         const queueContainer = document.getElementById("queueContainer");
         const queueListBody = document.getElementById("queueListBody");
         const closeQueueBtn = document.getElementById("closeQueueBtn");
+        
+        // NOUVEAU: Éléments du panneau de sélection de niveau
+        const levelSelectorContainer = document.getElementById("levelSelectorContainer");
+        const levelListBody = document.getElementById("levelListBody");
+        const closeLevelSelectorBtn = document.getElementById("closeLevelSelectorBtn");
+        const setRandomLevelBtn = document.getElementById("setRandomLevelBtn");
 
-        // NOUVEAU: Éléments du panneau Admin
+
         const adminPanel = document.getElementById("adminPanel");
         const adminHpInput = document.getElementById("adminHpInput");
         const adminRemoveHpBtn = document.getElementById("adminRemoveHpBtn");
         const closeAdminPanelBtn = document.getElementById("closeAdminPanelBtn");
         const openAdminPanelBtn = document.getElementById("openAdminPanelBtn");
 
-        // AJOUTÉ: Éléments du contrôle manuel HP
         const adminManualHpInput = document.getElementById("adminManualHpInput");
         const adminAddHpBtn = document.getElementById("adminAddHpBtn");
         const adminSubtractHpBtn = document.getElementById("adminSubtractHpBtn");
-        // FIN AJOUTÉ
 
-        // NOUVEAU: Éléments du panneau Skin Attack
         const skinAttackPanel = document.getElementById("skinAttackPanel");
         const attackModeSelector = document.getElementById("attackModeSelector");
         const skinUrlInput = document.getElementById("skinUrlInput");
@@ -2208,11 +2411,10 @@
         const closeSkinAttackPanelBtn = document.getElementById("closeSkinAttackPanelBtn");
         const openSkinAttackPanelBtn = document.getElementById("openSkinAttackPanelBtn");
         const skinImagePreview = document.getElementById("skinImagePreview");
-        const localFileInput = document.getElementById('localFileInput'); // NOUVEAU
-        const uploadFileBtn = document.getElementById('uploadFileBtn'); // NOUVEAU
+        const localFileInput = document.getElementById('localFileInput');
+        const uploadFileBtn = document.getElementById('uploadFileBtn');
         let selectedAttackModeToEdit = 1;
         
-        // NOUVEAU: Éléments du panneau de données
         const dataPanel = document.getElementById("dataPanel");
         const exportDataBtn = document.getElementById("exportDataBtn");
         const importDataBtn = document.getElementById("importDataBtn");
@@ -2222,7 +2424,7 @@
 
 
         const impactEffects = ["💥", "🔥", "⭐", "💫", "✨", "💢"];
-        // Variables pour TikFinity
+        
         let tikfinitySocket = null;
         let isTikFinityConnected = false;
         let reconnectTimeout = null;
@@ -2233,10 +2435,8 @@
         const lastAttackers = [];
         const MAX_LAST_ATTACKERS = 3;
 
-        // Variables pour le tableau des gains
         let recentRewards = {};
 
-        // Variables pour stocker les positions des panneaux déplaçables
         const draggablePanels = {
             rewardsContainer: {
                 x: 0,
@@ -2266,13 +2466,16 @@
                 x: 0,
                 y: 0
             },
+            levelSelectorContainer: {
+                x: 0,
+                y: 0
+            },
         };
 
         // =============================================
         // FONCTIONS DE SAUVEGARDE ET CHARGEMENT PAR FICHIER
         // =============================================
 
-        // Fonction pour obtenir les données à exporter
         function getGameDataToSave() {
             return {
                 recentRewards: recentRewards,
@@ -2284,7 +2487,6 @@
             };
         }
 
-        // Fonction d'exportation (téléchargement)
         function exportGameData() {
             try {
                 const data = getGameDataToSave();
@@ -2307,7 +2509,6 @@
             }
         }
 
-        // Fonction de chargement (lecture du fichier)
         function importGameData(event) {
             const file = event.target.files[0];
             if (!file) return;
@@ -2317,7 +2518,6 @@
                 try {
                     const loadedData = JSON.parse(e.target.result);
 
-                    // Charger les données
                     if (loadedData.recentRewards) {
                         recentRewards = loadedData.recentRewards;
                     }
@@ -2331,7 +2531,6 @@
                     }
 
                     if (loadedData.attackModesConfig) {
-                        // Utiliser Object.assign pour mettre à jour les configs existantes
                         Object.assign(attackModesConfig, loadedData.attackModesConfig);
                     }
                     
@@ -2339,11 +2538,10 @@
                         currentSkinIndex = loadedData.diamondSkinIndex % diamondSkins.length;
                     }
 
-                    // Mettre à jour l'interface
                     updateRewardsTable();
                     updateDropBar();
                     updateAttackModeDisplay();
-                    initGame(); // Réinitialiser le jeu pour appliquer les changements
+                    initGame();
 
                     showNotification('✅ Données importées avec succès !', 'success');
 
@@ -2351,13 +2549,11 @@
                     console.error('❌ Erreur importation:', error);
                     showNotification('❌ Fichier d\'importation invalide ou corrompu.', 'error');
                 }
-                // Réinitialiser le champ de fichier pour pouvoir importer le même fichier à nouveau
                 event.target.value = '';
             };
             reader.readAsText(file);
         }
 
-        // Fonction pour charger les positions des panneaux depuis le localStorage
         function loadPanelPositions() {
             try {
                 const savedPositions = localStorage.getItem('diamondPanelPositions');
@@ -2370,7 +2566,6 @@
             }
         }
         
-        // Fonction pour sauvegarder les positions des panneaux dans le localStorage
         function savePanelPositions() {
             try {
                 localStorage.setItem('diamondPanelPositions', JSON.stringify(draggablePanels));
@@ -2380,12 +2575,10 @@
         }
 
 
-        // Fonction pour changer le skin du diamant
         function changeDiamondSkin() {
             currentSkinIndex = (currentSkinIndex + 1) % diamondSkins.length;
             diamond.style.backgroundImage = `url('${diamondSkins[currentSkinIndex]}')`;
 
-            // Sauvegarder la préférence de skin (ici on garde le local storage juste pour le skin du diamant)
             try {
                 localStorage.setItem('diamondGameSkinIndex', currentSkinIndex);
             } catch (e) {
@@ -2393,26 +2586,22 @@
             }
         }
 
-        // Fonction pour jouer l'animation d'attaque spéciale
         function playSpecialAttackAnimation() {
             if (specialAttackAnim) {
                 specialAttackAnim.classList.remove('play');
 
-                // Forcer le reflow pour redémarrer l'animation
                 void specialAttackAnim.offsetWidth;
 
                 specialAttackAnim.classList.add('play');
 
-                // Cacher à nouveau après la fin de l'animation
                 setTimeout(() => {
                     if (specialAttackAnim) {
                         specialAttackAnim.classList.remove('play');
-                        specialAttackAnim.style.display = 'none'; // Assurer qu'il est caché
+                        specialAttackAnim.style.display = 'none';
                     }
-                }, 3000); // Doit correspondre à la durée de l'animation CSS
+                }, 3000);
             }
         }
-        // FIN NOUVEAU
 
         // Système audio
         function initAudioContext() {
@@ -2449,7 +2638,7 @@
                 oscillator.start(context.currentTime);
                 oscillator.stop(context.currentTime + duration);
             } catch (e) {
-                // Silence en cas d'erreur
+                
             }
         }
 
@@ -2469,7 +2658,6 @@
             setTimeout(() => createSound(600, 0.2, 'sine'), 200);
         }
 
-        // Fonction pour créer un marteau animé
         function createHammer() {
             const hammer = document.createElement('div');
             hammer.className = 'hammer';
@@ -2483,7 +2671,6 @@
             hammer.appendChild(hammerHead);
             hammer.appendChild(hammerHandle);
 
-            // Positionner le marteau au-dessus du diamant
             const diamondRect = diamond.getBoundingClientRect();
             const containerRect = diamond.parentElement.getBoundingClientRect();
 
@@ -2495,12 +2682,10 @@
             return hammer;
         }
 
-        // Fonction pour animer le marteau
         function animateHammer() {
             const hammer = createHammer();
             hammer.classList.add('hammer-hit');
 
-            // Supprimer le marteau après l'animation
             setTimeout(() => {
                 if (hammer.parentElement) {
                     hammer.parentElement.removeChild(hammer);
@@ -2508,7 +2693,6 @@
             }, 600);
         }
 
-        // Fonction pour créer des particules d'impact
         function createHitParticles() {
             for (let i = 0; i < 8; i++) {
                 const particle = document.createElement('div');
@@ -2538,7 +2722,6 @@
             }
         }
 
-        // Fonction pour créer des petits coeurs
         function createHearts() {
             for (let i = 0; i < 15; i++) {
                 const heart = document.createElement('div');
@@ -2596,7 +2779,6 @@
             }
         }
 
-        // Fonction d'attaque
         function attack() {
             if (currentHP <= 0 || isAttacking) return;
 
@@ -2606,7 +2788,6 @@
             let actualHits = 0;
             let wasCracked = diamond.classList.contains('cracked');
 
-            // Animer le marteau
             animateHammer();
 
             playHitSound();
@@ -2628,7 +2809,7 @@
                 animationType = 'critical-hit';
                 shakeType = 'mega-shake';
                 animationDuration = 800;
-                playSpecialAttackAnimation(); // NOUVEAU: Jouer l'animation
+                playSpecialAttackAnimation();
             } else if (attackMode >= 10) {
                 animationType = 'heavy-hit';
                 animationDuration = 600;
@@ -2642,10 +2823,8 @@
                 actualHits++;
                 totalHits++;
 
-                // 1 coup = -1 point de vie
                 currentHP--;
 
-                // Vérifier le drop à chaque coup
                 checkDropSingleHit("Vous");
             }
 
@@ -2667,30 +2846,14 @@
         }
 
         function updateUI() {
-            // Mettre à jour le compteur de points de vie
             hpValue.textContent = `${currentHP.toLocaleString()} / ${maxHP.toLocaleString()}`;
 
-            let difficultyName = "";
-            switch (currentDifficulty) {
-                case "noob":
-                    difficultyName = "noob";
-                    break;
-                case "buchette":
-                    difficultyName = "buchette";
-                    break;
-                case "easy":
-                    difficultyName = "facile";
-                    break;
-                case "medium":
-                    difficultyName = "moyen";
-                    break;
-                case "hard":
-                    difficultyName = "difficile";
-                    break;
-            }
+            const config = allDifficulties[currentDifficulty] || defaultDifficulties["noob"];
+            const difficultyName = config.name;
 
             if (currentHP === 0) {
-                diamond.className = "diamond broken " + currentDifficulty;
+                const baseClass = defaultDifficulties[currentDifficulty] ? currentDifficulty : 'custom';
+                diamond.className = "diamond broken " + baseClass;
                 message.textContent = "💥 Le diamant magique a été brisé !";
             } else {
                 if (maxHP - currentHP >= maxHP * 0.7) {
@@ -2703,62 +2866,6 @@
             }
         }
 
-        function showVictoryPopup() {
-            let rewardText = "";
-            let victoryText = "";
-            let rewardImg = "";
-
-            // Déterminer la récompense selon la difficulté
-            switch (currentDifficulty) {
-                case "noob":
-                    rewardText = "Vous avez gagné 300";
-                    victoryText = "Bravo ! Tu as gagné tes premières pièces !";
-                    rewardImg = "https://i.ibb.co/gFMBxFzP/IMG-6063.png";
-                    break;
-                case "buchette":
-                    rewardText = "Vous avez gagné 1000";
-                    victoryText = "Incroyable ! Tu as découvert une galaxie entière !";
-                    rewardImg = "https://i.ibb.co/JMPfpWV/IMG-5851.png";
-                    break;
-                case "easy":
-                    rewardText = "Vous avez gagné 3000";
-                    victoryText = "Félicitations ! Tu as remporté un superbe trésor !";
-                    rewardImg = "https://i.ibb.co/p6s7HT5n/IMG-7322.png";
-                    break;
-                case "medium":
-                    rewardText = "Vous avez gagné 5000";
-                    victoryText = "Incroyable ! Tu as trouvé un trésor précieux !";
-                    rewardImg = "https://i.ibb.co/hxXnkQh7/IMG-5861.png";
-                    break;
-                case "hard":
-                    rewardText = "Vous avez gagné 10000";
-                    victoryText = "Victoire totale ! Tu as remporté le jackpot !";
-                    rewardImg = "https://i.ibb.co/DHBNtX7t/IMG-6573.png";
-                    break;
-            }
-
-            popupRewardImage.style.backgroundImage = `url('${rewardImg}')`;
-
-            // Message de victoire clair et épuré
-            popupRewardText.innerHTML = `
-                <div class="difficulty-badge ${currentDifficulty}">NIVEAU ${currentDifficulty.toUpperCase()}</div><br>
-                <strong>RÉCOMPENSE :</strong><br>
-                ${rewardText}
-            `;
-
-            popupVictoryMessage.textContent = victoryText;
-
-            // Centrer la popup sur le jeu
-            const gameRect = gameContainer.getBoundingClientRect();
-            const popupContent = document.querySelector('.popup-content');
-
-            // Positionner la popup au centre du jeu
-            victoryPopup.style.display = 'flex';
-            setTimeout(() => {
-                victoryPopup.classList.add('active');
-            }, 10);
-        }
-
         function closeVictoryPopup() {
             victoryPopup.classList.remove('active');
             setTimeout(() => {
@@ -2769,59 +2876,33 @@
         function endGame() {
             playBreakSound();
 
-            // Calculer les pièces gagnées selon la difficulté
-            let coinsWon = 0;
-            switch (currentDifficulty) {
-                case "noob":
-                    coinsWon = 300;
-                    break;
-                case "buchette":
-                    coinsWon = 1000;
-                    break;
-                case "easy":
-                    coinsWon = 3000;
-                    break;
-                case "medium":
-                    coinsWon = 5000;
-                    break;
-                case "hard":
-                    coinsWon = 10000;
-                    break;
-            }
+            const config = allDifficulties[currentDifficulty] || defaultDifficulties["noob"];
+            const coinsWon = config.reward;
 
-            // Ajouter la récompense au tableau des gains (une seule fois)
             if (!rewardAlreadyAdded) {
                 registerNewWin(lastAttackerName, `${coinsWon}`);
                 rewardAlreadyAdded = true;
             }
 
-            // Mettre à jour le message
             message.textContent = `💥 ${lastAttackerName} a brisé le diamant magique et gagne ${coinsWon} ! 💎✨`;
 
-            // Pas de popup de victoire, on passe directement au niveau suivant
             comboIndicator.style.display = "none";
 
-            // Choisir un niveau aléatoire
-            const difficulties = ["noob", "buchette", "easy", "medium", "hard"];
-            const randomDifficulty = difficulties[Math.floor(Math.random() * difficulties.length)];
+            const allKeys = Object.keys(allDifficulties);
+            const randomDifficulty = allKeys[Math.floor(Math.random() * allKeys.length)];
 
-            // Appliquer les coups en trop au nouveau niveau
             extraHits = Math.abs(currentHP);
 
-            // Initialiser le nouveau niveau
             setTimeout(() => {
                 setDifficulty(randomDifficulty);
 
-                // Réinitialiser le flag de récompense
                 rewardAlreadyAdded = false;
 
-                // Appliquer les coups en trop
                 if (extraHits > 0) {
                     currentHP = Math.max(0, currentHP - extraHits);
                     updateUI();
 
                     if (currentHP <= 0) {
-                        // Si les coups en trop ont vaincu le nouveau diamant, recommencer
                         setTimeout(() => {
                             endGame();
                         }, 500);
@@ -2843,42 +2924,31 @@
             attackBtn.textContent = `Attaquer (${mode} coup${mode > 1 ? 's' : ''})`;
         }
 
-        function setDifficulty(difficulty) {
-            currentDifficulty = difficulty;
+        function setDifficulty(difficultyKey) {
+            const config = allDifficulties[difficultyKey];
+            if (!config) return;
 
-            // Mettre à jour l'apparence des boutons de difficulté
-            document.querySelectorAll('.difficulty-btn').forEach(btn => {
-                btn.classList.remove('active');
-            });
-            document.querySelector(`.difficulty-btn.${difficulty}`).classList.add('active');
+            currentDifficulty = difficultyKey;
 
-            // Mettre à jour l'apparence du diamant
-            diamond.className = "diamond " + difficulty;
+            if (levelListBody) {
+                 levelListBody.querySelectorAll('.level-item').forEach(li => {
+                    li.classList.remove('active');
+                    if (li.getAttribute('data-level-key') === difficultyKey) {
+                        li.classList.add('active');
+                    }
+                });
+            }
 
-            // Réinitialiser le jeu avec la nouvelle difficulté
+            const baseClass = defaultDifficulties[difficultyKey] ? difficultyKey : 'custom';
+            diamond.className = "diamond " + baseClass;
+
             initGame();
         }
 
         function initGame() {
-            // Définir les points de vie selon la difficulté (DOUBLÉS)
-            switch (currentDifficulty) {
-                case "noob":
-                    maxHP = 6000;
-                    break;
-                case "buchette":
-                    maxHP = 20000;
-                    break;
-                case "easy":
-                    maxHP = 60000;
-                    break;
-                case "medium":
-                    maxHP = 100000;
-                    break;
-                case "hard":
-                    maxHP = 200000;
-                    break;
-            }
+            const config = allDifficulties[currentDifficulty] || defaultDifficulties["noob"];
 
+            maxHP = config.maxHP;
             currentHP = maxHP;
             coupCounter = 0;
             totalHits = 0;
@@ -2886,44 +2956,24 @@
             lastHitTime = 0;
             isAttacking = false;
 
-            // Appliquer le skin actuel
             diamond.style.backgroundImage = `url('${diamondSkins[currentSkinIndex]}')`;
-            diamond.className = "diamond " + currentDifficulty;
+            
+            const baseClass = defaultDifficulties[currentDifficulty] ? currentDifficulty : 'custom';
+            diamond.className = "diamond " + baseClass;
 
-            let difficultyName = "";
-            switch (currentDifficulty) {
-                case "noob":
-                    difficultyName = "noob";
-                    break;
-                case "buchette":
-                    difficultyName = "buchette";
-                    break;
-                case "easy":
-                    difficultyName = "facile";
-                    break;
-                case "medium":
-                    difficultyName = "moyen";
-                    break;
-                case "hard":
-                    difficultyName = "difficile";
-                    break;
-            }
+            const difficultyName = config.name;
             message.textContent = `Diamant magique ${difficultyName} - À tout moment le diamant peut être brisé...`;
 
-            // Fermer la popup si elle est ouverte
             closeVictoryPopup();
             comboIndicator.style.display = "none";
 
-            // reset des compteurs visibles (sécurité si tu veux les afficher autrement)
             coupCounter = 0;
             totalHits = 0;
 
-            // Mettre à jour l'affichage des points de vie
             updateUI();
-            updateAttackModeDisplay(); // Mise à jour des boutons d'attaque
+            updateAttackModeDisplay();
         }
 
-        // Fonction pour mettre à jour l'affichage des modes d'attaque
         function updateAttackModeDisplay() {
             const modes = [1, 10, 30, 100];
             modes.forEach(mode => {
@@ -2937,7 +2987,7 @@
                     if (label) label.textContent = config.label;
                 }
             });
-            setAttackMode(attackMode); // S'assurer que le mode actif est correctement affiché
+            setAttackMode(attackMode);
         }
 
         // =============================================
@@ -2946,8 +2996,7 @@
 
         function registerNewWin(userName, amountStr) {
             const amount = parseInt(amountStr);
-            if (!amount || amount <= 0) return; // Ne pas ajouter 0
-            // Mettre à jour ou créer l'entrée pour l'utilisateur
+            if (!amount || amount <= 0) return;
             if (recentRewards[userName]) {
                 recentRewards[userName].reward += amount;
                 recentRewards[userName].timestamp = Date.now();
@@ -2959,21 +3008,16 @@
                 };
             }
 
-            // Mettre à jour le tableau
             updateRewardsTable();
 
-            // Mettre à jour le panneau du dernier gain (affiche ce gain spécifique)
             updateLastRewardPanel(userName, amountStr);
         }
 
         function updateRewardsTable() {
-            // Vider le tableau
             rewardsTableBody.innerHTML = '';
 
-            // Itérer sur l'objet et trier
             const sortedRewards = Object.values(recentRewards).sort((a, b) => b.timestamp - a.timestamp);
 
-            // Remplir avec les récompenses
             sortedRewards.forEach(reward => {
                 const row = document.createElement('tr');
 
@@ -2986,7 +3030,6 @@
                 rewardCell.className = 'reward-amount';
                 rewardCell.style.fontSize = "16px";
 
-                // Cellule d'action
                 const actionCell = document.createElement('td');
                 actionCell.className = 'reward-action';
 
@@ -3005,16 +3048,12 @@
             });
         }
 
-        // Payer par userName
         function payReward(userName) {
             if (recentRewards[userName]) {
-                // Supprimer la récompense du tableau
                 delete recentRewards[userName];
 
-                // Mettre à jour l'affichage du tableau
                 updateRewardsTable();
 
-                // Afficher une notification
                 showNotification('✅ Gain marqué comme payé!', 'success');
             }
         }
@@ -3023,29 +3062,24 @@
             lastAttackerName = userName;
             lastAttackerTime = new Date();
 
-            // Mettre à jour le panneau du dernier attaquant
             updateLastAttackerPanel(userName, lastAttackerTime);
         }
 
-        // Mettre à jour le panneau du dernier attaquant
         function updateLastAttackerPanel(userName, time) {
             lastAttackerPanelName.textContent = userName;
             lastAttackerPanelTime.textContent = formatTime(time);
 
-            // Animation du panneau
             lastAttackerPanel.style.transform = `translate3d(${draggablePanels.lastAttackerPanel.x}px, ${draggablePanels.lastAttackerPanel.y}px, 0) scale(1.1)`;
             setTimeout(() => {
                 lastAttackerPanel.style.transform = `translate3d(${draggablePanels.lastAttackerPanel.x}px, ${draggablePanels.lastAttackerPanel.y}px, 0) scale(1)`;
             }, 300);
         }
 
-        // Mettre à jour le panneau du dernier gain
         function updateLastRewardPanel(userName, amount) {
             lastRewardPlayer.textContent = userName;
             lastRewardAmount.textContent = amount;
             lastRewardTime.textContent = formatTime(new Date());
 
-            // Animation du panneau
             lastRewardContainer.style.transform = `translate3d(${draggablePanels.lastRewardContainer.x}px, ${draggablePanels.lastRewardContainer.y}px, 0) scale(1.1)`;
             setTimeout(() => {
                 lastRewardContainer.style.transform = `translate3d(${draggablePanels.lastRewardContainer.x}px, ${draggablePanels.lastRewardContainer.y}px, 0) scale(1)`;
@@ -3067,10 +3101,9 @@
             }
         }
 
-        // Fonction pour rendre un panneau déplaçable
         function makeDraggable(panelId) {
             const panel = document.getElementById(panelId);
-            if (!panel) return; // Sécurité si le panneau a été supprimé
+            if (!panel) return;
 
             let isDragging = false;
             let currentX;
@@ -3080,7 +3113,6 @@
             let xOffset = draggablePanels[panelId].x;
             let yOffset = draggablePanels[panelId].y;
             
-            // Appliquer la position sauvegardée initialement
             panel.style.transform = `translate3d(${xOffset}px, ${yOffset}px, 0)`;
 
             panel.addEventListener("mousedown", dragStart);
@@ -3091,8 +3123,7 @@
             document.addEventListener("touchmove", drag);
 
             function dragStart(e) {
-                // Ignorer si l'utilisateur clique sur un bouton ou un input
-                if (e.target.tagName === 'BUTTON' || e.target.tagName === 'INPUT' || e.target.closest('.skin-content') || e.target.closest('.admin-content') || e.target.closest('.data-content')) {
+                if (e.target.tagName === 'BUTTON' || e.target.tagName === 'INPUT' || e.target.closest('.skin-content') || e.target.closest('.admin-content') || e.target.closest('.data-content') || e.target.closest('.level-item')) {
                     return;
                 }
 
@@ -3104,8 +3135,7 @@
                     initialY = e.clientY - yOffset;
                 }
 
-                // Permettre de glisser si l'on clique sur le panneau lui-même ou son header
-                if (e.target === panel || e.target.parentNode === panel || e.target.parentNode.parentNode === panel || e.target.classList.contains('rewards-header') || e.target.classList.contains('admin-panel-header') || e.target.classList.contains('skin-attack-header') || e.target.classList.contains('data-panel-header')) {
+                if (e.target === panel || e.target.parentNode === panel || e.target.parentNode.parentNode === panel || e.target.classList.contains('rewards-header') || e.target.classList.contains('admin-panel-header') || e.target.classList.contains('skin-attack-header') || e.target.classList.contains('data-panel-header') || e.target.classList.contains('level-selector-header') || e.target.classList.contains('queue-header') || e.target.classList.contains('last-reward-header')) {
                     isDragging = true;
                 }
             }
@@ -3116,10 +3146,9 @@
 
                 isDragging = false;
 
-                // Sauvegarder la position finale
                 draggablePanels[panelId].x = xOffset;
                 draggablePanels[panelId].y = yOffset;
-                savePanelPositions(); // Sauvegarder les positions dans localStorage
+                savePanelPositions();
             }
 
             function drag(e) {
@@ -3147,33 +3176,38 @@
 
         }
 
-        // Fonction pour gérer le menu des panneaux
         function toggleMenu() {
             menuDropdown.classList.toggle('active');
         }
 
         function showPanel(panelId) {
-            // Afficher le panneau sélectionné
             const panel = document.getElementById(panelId);
-            if (panel) {
-                const isCurrentlyDisplayed = panel.style.display !== 'none';
-                panel.style.display = isCurrentlyDisplayed ? 'none' : 'block';
+            if (!panel) return;
 
-                // Gérer le cas spécial du panneau de skin pour la prévisualisation
-                if (panelId === 'skinAttackPanel' && !isCurrentlyDisplayed) {
-                    updateSkinAttackPanelUI();
-                }
+            const isCurrentlyDisplayed = panel.style.display !== 'none';
+            panel.style.display = isCurrentlyDisplayed ? 'none' : 'block';
+
+            if (panelId === 'skinAttackPanel' && !isCurrentlyDisplayed) {
+                updateSkinAttackPanelUI();
+            }
+            
+            if (panelId === 'levelSelectorContainer' && !isCurrentlyDisplayed) {
+                populateLevelSelector();
             }
 
-            // Mettre à jour l'état actif dans le menu
             document.querySelectorAll('.menu-item').forEach(item => {
                 let itemPanelId = item.getAttribute('data-panel');
                 let itemOpenBtnId = item.id;
                 let isActive = false;
-
-                if (itemPanelId === panelId || itemOpenBtnId === `open${panelId.charAt(0).toUpperCase() + panelId.slice(1)}Btn`) {
-                    const panel = document.getElementById(panelId);
-                    isActive = panel && panel.style.display !== 'none';
+                
+                let targetPanelId = itemPanelId;
+                if (itemOpenBtnId === 'openAdminPanelBtn') targetPanelId = 'adminPanel';
+                if (itemOpenBtnId === 'openSkinAttackPanelBtn') targetPanelId = 'skinAttackPanel';
+                if (itemOpenBtnId === 'openDataPanelBtn') targetPanelId = 'dataPanel';
+                
+                if (targetPanelId === panelId) {
+                    const panelEl = document.getElementById(targetPanelId);
+                    isActive = panelEl && panelEl.style.display !== 'none';
                     if (isActive) {
                         item.classList.add('active');
                     } else {
@@ -3182,22 +3216,49 @@
                 }
             });
 
-            // Fermer le menu
             menuDropdown.classList.remove('active');
         }
+        
+        function populateLevelSelector() {
+            levelListBody.innerHTML = '';
 
-        // Fonction pour réinitialiser toutes les données du jeu
+            Object.keys(allDifficulties).forEach(key => {
+                const config = allDifficulties[key];
+                const item = document.createElement('div');
+                item.className = 'level-item';
+                if (key === currentDifficulty) {
+                    item.classList.add('active');
+                }
+                item.setAttribute('data-level-key', key);
+                
+                item.innerHTML = `
+                    <div class="level-item-img" style="background-image: url('${config.img}');"></div>
+                    <div class="level-item-info">
+                        <div class="level-item-name">${config.name}</div>
+                        <div class="level-item-details">${config.maxHP.toLocaleString()} HP / ${config.reward} Pièces</div>
+                    </div>
+                `;
+                
+                item.addEventListener('click', function() {
+                    setDifficulty(key);
+                    levelListBody.querySelectorAll('.level-item').forEach(li => li.classList.remove('active'));
+                    this.classList.add('active');
+                    levelSelectorContainer.style.display = 'none';
+                    document.querySelector('.menu-item[data-panel="levelSelectorContainer"]').classList.remove('active');
+                });
+
+                levelListBody.appendChild(item);
+            });
+        }
+        
         function resetGameData() {
             if (confirm("Êtes-vous sûr de vouloir réinitialiser toutes les données du jeu ? Ceci ne peut être annulé.")) {
-                // Réinitialiser les variables
                 recentRewards = {};
 
-                // Réinitialiser le drop
                 dropProgress = 0;
                 dropPool = 0;
                 updateDropBar();
 
-                // Réinitialiser les configurations de mode d'attaque (recharge les valeurs par défaut)
                 Object.assign(attackModesConfig, {
                     1: {
                         img: 'https://i.ibb.co/WNXDxn2y/IMG-7354-Photoroom.png',
@@ -3217,25 +3278,21 @@
                     },
                 });
                 
-                // Réinitialiser le skin du diamant
                 currentSkinIndex = 0;
                 localStorage.removeItem('diamondGameSkinIndex');
 
 
-                // Mettre à jour les affichages
                 updateRewardsTable();
                 updateAttackModeDisplay();
 
-                // Réinitialiser le jeu
-                initGame();
+                setDifficulty("noob");
 
-                // Afficher une notification
                 showNotification("✅ Toutes les données du jeu ont été réinitialisées!", 'success');
             }
         }
 
         // =============================================
-        // NOUVEAU: FONCTIONS ADMIN (BUG HP)
+        // FONCTIONS ADMIN (BUG HP)
         // =============================================
         function handleAdminRemoveHp() {
             const hpToRemove = parseInt(adminHpInput.value);
@@ -3248,18 +3305,15 @@
             updateUI();
             showNotification(`⚠️ Admin a retiré ${hpToRemove.toLocaleString()} HP discrètement.`, 'info');
 
-            // Simuler l'attaquant final en cas de victoire (pour le panneau)
             if (currentHP <= 0) {
                 lastAttackerName = "Admin (Bug HP)";
                 endGame();
             }
 
-            // Fermer le panneau après l'action
             adminPanel.style.display = 'none';
             document.getElementById('openAdminPanelBtn').classList.remove('active');
         }
 
-        // AJOUTÉ: Fonction pour ajouter ou retirer des HP manuellement
         function adjustHP(operation) {
             const hpToAdjust = parseInt(adminManualHpInput.value);
             if (isNaN(hpToAdjust) || hpToAdjust <= 0) {
@@ -3277,26 +3331,22 @@
                 showNotification(`⚠️ Admin a retiré ${hpToAdjust.toLocaleString()} HP.`, 'info');
             }
 
-            // Si on passe à 0, terminer le jeu
             if (currentHP <= 0 && oldHP > 0) {
                 lastAttackerName = "Admin (Ajustement)";
                 endGame();
             } else if (currentHP > 0 && oldHP <= 0) {
-                // Si on ajoute des HP après la défaite, réinitialiser
                 diamond.classList.remove('broken');
                 initGame();
             }
 
             updateUI();
 
-            // Fermer le panneau après l'action
             adminPanel.style.display = 'none';
             document.getElementById('openAdminPanelBtn').classList.remove('active');
         }
-        // FIN AJOUTÉ
 
         // =============================================
-        // NOUVEAU: FONCTIONS SKIN ATTACK
+        // FONCTIONS SKIN ATTACK
         // =============================================
         function selectAttackModeToEdit(mode) {
             selectedAttackModeToEdit = mode;
@@ -3327,7 +3377,6 @@
 
             const mode = selectedAttackModeToEdit;
 
-            // Mettre à jour la configuration
             if (newUrl) {
                 attackModesConfig[mode].img = newUrl;
                 skinImagePreview.style.backgroundImage = `url('${newUrl}')`;
@@ -3336,25 +3385,20 @@
                 attackModesConfig[mode].label = newLabel;
             }
 
-            // Mettre à jour l'affichage global
             updateAttackModeDisplay();
 
             showNotification(`✅ Skin pour ${mode} coups mis à jour !`, 'success');
         }
         
-        // NOUVEAU: Fonction pour charger un fichier local
         function handleLocalFileUpload(event) {
-            // Simuler le clic sur le champ de fichier invisible
             localFileInput.click();
         }
         
         localFileInput.addEventListener('change', (event) => {
             const file = event.target.files[0];
             if (file) {
-                // Créer une URL d'objet pour l'image locale. Ceci fonctionne tant que la page n'est pas rechargée.
                 const objectURL = URL.createObjectURL(file);
                 
-                // Mettre à jour le champ URL et la prévisualisation
                 skinUrlInput.value = objectURL;
                 skinImagePreview.style.backgroundImage = `url('${objectURL}')`;
                 
@@ -3463,15 +3507,16 @@
         function handleGameControl(controlData) {
             switch (controlData.type) {
                 case 'reset':
-                    initGame();
+                    const allKeys = Object.keys(allDifficulties);
+                    const randomDifficulty = allKeys[Math.floor(Math.random() * allKeys.length)];
+                    setDifficulty(randomDifficulty);
                     showNotification('🔄 Nouveau diamant créé!');
                     break;
             }
         }
 
-        // Fonction pour mettre à jour le panneau de la file d'attente
         function updateAttackQueuePanel() {
-            queueListBody.innerHTML = ''; // Vider la liste
+            queueListBody.innerHTML = '';
 
             if (attackQueue.length === 0) {
                 queueListBody.innerHTML = '<div class="queue-empty-message">La file d\'attente est vide.</div>';
@@ -3518,55 +3563,46 @@
 
             updateLastAttackers(userName);
             showAttackNotification(userName, triggerType);
-            updateAttackQueuePanel(); // Mettre à jour le panneau
+            updateAttackQueuePanel();
 
-            // Si la file d'attente n'est pas déjà en train de tourner, on la lance
             if (!isProcessingQueue) {
                 processAttackQueue();
             }
         }
 
-        // processAttackQueue traite un élément à la fois
         async function processAttackQueue() {
-            // Si la file est vide, arrêter le traitement
             if (attackQueue.length === 0) {
                 isProcessingQueue = false;
                 return;
             }
 
-            // Verrouiller la file d'attente
             isProcessingQueue = true;
 
-            // Prendre le prochain attaquant
             const attack = attackQueue.shift();
             const {
                 userName,
                 damage
             } = attack;
 
-            // Mettre à jour l'interface (file d'attente et dernier attaquant)
             updateAttackQueuePanel();
-            updateLastAttacker(userName); // Le nom se met à jour au moment du coup
+            updateLastAttacker(userName);
 
-            // 1. Calculer le total des dégâts (pour cet unique "tour")
             const totalDamage = damage;
 
-            // 2. Appliquer les dégâts
-            // Choisir la bonne animation
             let animationType = 'hit';
             let shakeType = 'screen-shake';
-            let animationDuration = 600; // Durée par défaut
+            let animationDuration = 600;
 
-            if (totalDamage >= 100) { // NOUVEAU: 100 coups
-                animationType = 'ultra-hit'; // L'animation la plus grosse
+            if (totalDamage >= 100) {
+                animationType = 'ultra-hit';
                 shakeType = 'ultra-shake';
                 animationDuration = 1500;
-                playSpecialAttackAnimation(); // NOUVEAU: Jouer l'animation
+                playSpecialAttackAnimation();
             } else if (totalDamage >= 30) {
-                animationType = 'ultra-hit'; // L'animation la plus grosse
+                animationType = 'ultra-hit';
                 shakeType = 'ultra-shake';
                 animationDuration = 1500;
-                playSpecialAttackAnimation(); // NOUVEAU: Jouer l'animation
+                playSpecialAttackAnimation();
             } else if (totalDamage >= 15) {
                 animationType = 'mega-hit';
                 shakeType = 'mega-shake';
@@ -3577,59 +3613,46 @@
                 animationDuration = 800;
             }
 
-            // Jouer les effets
             diamond.classList.add(animationType);
             if (shakeType) gameContainer.classList.add(shakeType);
             animateHammer();
             playHitSound();
 
-            // Enlever les HP
             for (let i = 0; i < totalDamage; i++) {
-                if (currentHP <= 0) break; // Arrêter si le diamant est déjà cassé
+                if (currentHP <= 0) break;
 
                 currentHP--;
                 coupCounter++;
                 totalHits++;
 
-                // Vérifier le drop à chaque coup
                 checkDropSingleHit(userName);
             }
 
-            // Jouer les effets visuels (une seule fois)
             createHitParticles();
             createHearts();
             createImpactEffect();
 
-            // Mettre à jour l'UI
             updateUI();
 
-            // 3. Attendre la fin de l'animation pour passer au suivant
             setTimeout(() => {
                 diamond.classList.remove(animationType);
                 if (shakeType) gameContainer.classList.remove(shakeType);
 
-                // Vérifier si le diamant est cassé
                 if (currentHP <= 0) {
-                    // S'assurer que le nom du dernier attaquant est bien celui qui a porté le coup final
                     lastAttackerName = userName;
-                    endGame(); // endGame s'occupe de réinitialiser, etc.
+                    endGame();
 
-                    // Le jeu est terminé, on arrête le traitement de la file
                     isProcessingQueue = false;
-                    // Vider la file d'attente pour la prochaine manche
                     attackQueue.length = 0;
                     updateAttackQueuePanel();
                 } else {
-                    // Le diamant n'est pas cassé, on passe à l'attaque suivante
-                    // (un petit délai pour respirer, même si l'animation est finie)
                     setTimeout(() => {
                         processAttackQueue();
-                    }, 100); // Délai de 100ms entre chaque coup
+                    }, 100);
                 }
-            }, animationDuration); // Utiliser la durée d'animation dynamique
+            }, animationDuration);
         }
 
-        // Fonctions pour le Drop
         function updateDropBar() {
             const percent = (dropProgress / DROP_TARGET) * 100;
             dropBarFill.style.width = `${percent}%`;
@@ -3637,29 +3660,24 @@
         }
 
         function checkDropSingleHit(attackerName) {
-            if (currentHP <= 0) return; // Ne pas compter les coups sur un diamant cassé
+            if (currentHP <= 0) return;
 
             dropProgress++;
 
             if (dropProgress >= DROP_TARGET) {
-                dropProgress = 0; // Réinitialiser
-                dropPool += DROP_REWARD; // Ajouter au pot
+                dropProgress = 0;
+                dropPool += DROP_REWARD;
 
-                // Vérifier la chance de jackpot (1 sur 333 au lieu de 1 sur 1000)
                 const dropRoll = Math.floor(Math.random() * DROP_CHANCE_MAX);
                 if (dropRoll === 0) {
-                    // JACKPOT!
                     showNotification(`🎉 DROP ! ${attackerName} gagne ${dropPool} 💎 !`, 'success');
 
-                    // Utiliser la fonction de gain
                     registerNewWin(attackerName, dropPool.toString());
 
-                    // Réinitialiser le pot
                     dropPool = 0;
                 }
             }
 
-            // Mettre à jour la barre à chaque coup
             updateDropBar();
         }
 
@@ -3719,11 +3737,13 @@
         // INITIALISATION
         // =============================================
 
-        // Événements
         document.getElementById("attackBtn").addEventListener("click", attack);
-        document.getElementById("resetBtn").addEventListener("click", initGame);
+        document.getElementById("resetBtn").addEventListener("click", () => {
+            const allKeys = Object.keys(allDifficulties);
+            const randomDifficulty = allKeys[Math.floor(Math.random() * allKeys.length)];
+            setDifficulty(randomDifficulty);
+        });
 
-        // Événement pour le bouton de skin
         document.getElementById("changeSkinBtn").addEventListener("click", changeDiamondSkin);
 
         document.getElementById("mode1").addEventListener("click", () => setAttackMode(1));
@@ -3731,55 +3751,56 @@
         document.getElementById("mode30").addEventListener("click", () => setAttackMode(30));
         document.getElementById("mode100").addEventListener("click", () => setAttackMode(100));
 
-        // Sélecteur de difficulté
         document.querySelectorAll('.difficulty-btn').forEach(btn => {
             btn.addEventListener('click', function() {
                 setDifficulty(this.getAttribute('data-difficulty'));
             });
         });
 
-        // Fermer la popup
         closePopupBtn.addEventListener('click', closeVictoryPopup);
 
-        // Fermer la popup en cliquant en dehors
         victoryPopup.addEventListener('click', function(e) {
             if (e.target === this) {
                 closeVictoryPopup();
             }
         });
 
-        // Fermer le tableau des gains
         closeRewardsBtn.addEventListener('click', function() {
             rewardsContainer.style.display = 'none';
             document.querySelector('.menu-item[data-panel="rewardsContainer"]').classList.remove('active');
         });
 
-        // Fermer le panneau du dernier gain
         closeLastRewardBtn.addEventListener('click', function() {
             lastRewardContainer.style.display = 'none';
             document.querySelector('.menu-item[data-panel="lastRewardContainer"]').classList.remove('active');
         });
 
-        // Fermer la file d'attente
         closeQueueBtn.addEventListener('click', function() {
             queueContainer.style.display = 'none';
             document.querySelector('.menu-item[data-panel="queueContainer"]').classList.remove('active');
         });
+        
+        document.querySelector('.menu-item[data-panel="levelSelectorContainer"]').addEventListener('click', () => showPanel('levelSelectorContainer'));
+        closeLevelSelectorBtn.addEventListener('click', () => showPanel('levelSelectorContainer'));
+        setRandomLevelBtn.addEventListener('click', function() {
+            const allKeys = Object.keys(allDifficulties);
+            const randomDifficultyKey = allKeys[Math.floor(Math.random() * allKeys.length)];
+            setDifficulty(randomDifficultyKey);
+            levelSelectorContainer.style.display = 'none';
+            document.querySelector('.menu-item[data-panel="levelSelectorContainer"]').classList.remove('active');
+        });
 
-        // Événements Panneau Admin
+
         openAdminPanelBtn.addEventListener('click', () => showPanel('adminPanel'));
         closeAdminPanelBtn.addEventListener('click', () => showPanel('adminPanel'));
         adminRemoveHpBtn.addEventListener('click', handleAdminRemoveHp);
-        // AJOUTÉ: Événements pour l'ajustement manuel
         adminAddHpBtn.addEventListener('click', () => adjustHP('add'));
         adminSubtractHpBtn.addEventListener('click', () => adjustHP('subtract'));
-        // FIN AJOUTÉ
 
-        // Événements Panneau Skin Attack
         openSkinAttackPanelBtn.addEventListener('click', () => showPanel('skinAttackPanel'));
         closeSkinAttackPanelBtn.addEventListener('click', () => showPanel('skinAttackPanel'));
         applySkinBtn.addEventListener('click', applyCustomSkin);
-        uploadFileBtn.addEventListener('click', handleLocalFileUpload); // NOUVEAU
+        uploadFileBtn.addEventListener('click', handleLocalFileUpload);
         
         attackModeSelector.querySelectorAll('.skin-attack-option').forEach(opt => {
             opt.addEventListener('click', function() {
@@ -3789,9 +3810,7 @@
         skinUrlInput.addEventListener('input', () => {
             skinImagePreview.style.backgroundImage = `url('${skinUrlInput.value.trim()}')`;
         });
-        // FIN NOUVEAU
         
-        // Événements Panneau Export/Import
         openDataPanelBtn.addEventListener('click', () => showPanel('dataPanel'));
         closeDataPanelBtn.addEventListener('click', () => showPanel('dataPanel'));
         exportDataBtn.addEventListener('click', exportGameData);
@@ -3799,14 +3818,12 @@
         importFileInput.addEventListener('change', importGameData);
 
 
-        // Gestion du menu
         menuBtn.addEventListener('click', toggleMenu);
 
-        // Gestion des éléments du menu
         document.querySelectorAll('.menu-item').forEach(item => {
             if (item.id === 'resetDataBtn') {
                 item.addEventListener('click', resetGameData);
-            } else if (item.id !== 'openAdminPanelBtn' && item.id !== 'openSkinAttackPanelBtn' && item.id !== 'openDataPanelBtn') {
+            } else if (item.id !== 'openAdminPanelBtn' && item.id !== 'openSkinAttackPanelBtn' && item.id !== 'openDataPanelBtn' && item.id !== 'openLevelSelectorBtn') {
                 item.addEventListener('click', function() {
                     const panelId = this.getAttribute('data-panel');
                     if (panelId) showPanel(panelId);
@@ -3814,7 +3831,6 @@
             }
         });
 
-        // Raccourcis clavier
         document.addEventListener('keydown', (e) => {
             if (isAttacking) return;
 
@@ -3833,7 +3849,7 @@
                 case '3':
                     setAttackMode(30);
                     break;
-                case '4': // NOUVEAU: Raccourci pour 100 coups
+                case '4':
                     setAttackMode(100);
                     break;
                 case 'Escape':
@@ -3841,37 +3857,36 @@
                     menuDropdown.classList.remove('active');
                     if (adminPanel.style.display !== 'none') showPanel('adminPanel');
                     if (skinAttackPanel.style.display !== 'none') showPanel('skinAttackPanel');
-                    if (dataPanel.style.display !== 'none') showPanel('dataPanel'); // NOUVEAU
+                    if (dataPanel.style.display !== 'none') showPanel('dataPanel'); 
+                    if (levelSelectorContainer.style.display !== 'none') showPanel('levelSelectorContainer');
                     break;
                 case 'g':
                 case 'G':
-                    // Afficher/masquer le tableau des gains
                     showPanel('rewardsContainer');
                     break;
                 case 'l':
                 case 'L':
-                    // Afficher/masquer le panneau du dernier attaquant
                     showPanel('lastAttackerPanel');
                     break;
                 case 'm':
                 case 'M':
-                    // Basculer le menu
                     toggleMenu();
                     break;
                 case 'r':
                 case 'R':
-                    // Afficher/masquer le panneau du dernier gain
                     showPanel('lastRewardContainer');
                     break;
                 case 'q':
                 case 'Q':
-                    // Afficher/masquer la file d'attente
                     showPanel('queueContainer');
+                    break;
+                case 'n':
+                case 'N':
+                    showPanel('levelSelectorContainer');
                     break;
             }
         });
 
-        // Reset combo après inactivité
         setInterval(() => {
             const currentTime = Date.now();
             if (currentTime - lastHitTime > 3000 && combo > 0) {
@@ -3880,7 +3895,6 @@
             }
         }, 1000);
 
-        // Connexion TikFinity
         const connectBtn = document.getElementById('connectBtn');
         if (connectBtn) {
             connectBtn.addEventListener('click', () => {
@@ -3891,11 +3905,9 @@
                 }
             });
 
-            // Tentative de connexion automatique au chargement
             setTimeout(connectToTikFinity, 1000);
         }
 
-        // Charger les positions et appliquer la fonction de drag
         loadPanelPositions();
         makeDraggable('rewardsContainer');
         makeDraggable('lastAttackerPanel');
@@ -3903,30 +3915,25 @@
         makeDraggable('queueContainer');
         makeDraggable('adminPanel');
         makeDraggable('skinAttackPanel');
-        makeDraggable('dataPanel'); // Rendre le nouveau panneau déplaçable
+        makeDraggable('dataPanel');
+        makeDraggable('levelSelectorContainer');
 
-        // Initialiser le panneau du dernier attaquant
         updateLastAttackerPanel("Personne", new Date());
 
-        // Initialiser le panneau du dernier gain
         updateLastRewardPanel("Personne", "0");
 
-        // Initialiser le panneau de la file d'attente
         updateAttackQueuePanel();
 
-        // Initialiser la barre de drop
         updateDropBar();
 
-        // Charger le skin du diamant au démarrage (via localStorage)
         const savedSkinIndex = localStorage.getItem('diamondGameSkinIndex');
         if (savedSkinIndex !== null) {
             currentSkinIndex = parseInt(savedSkinIndex, 10) % diamondSkins.length;
         }
 
-        // Démarrage du jeu
-        updateRewardsTable(); // Mettre à jour l'affichage des gains (potentiellement vide)
-        updateAttackModeDisplay(); // Mettre à jour les skins d'attaque
-        selectAttackModeToEdit(1); // Initialiser la sélection de skin
+        updateRewardsTable();
+        updateAttackModeDisplay();
+        selectAttackModeToEdit(1);
         initGame();
     </script>
 </body>

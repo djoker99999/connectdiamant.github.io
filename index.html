@@ -580,30 +580,10 @@
             pointer-events: none;
             opacity: 0;
             transform-origin: bottom center;
-        }
-
-        .hammer-head {
-            position: absolute;
-            width: 30px;
-            height: 30px;
-            background: linear-gradient(45deg, #8B4513, #A0522D, #8B4513);
-            border-radius: 4px;
-            top: 0;
-            left: 50%;
-            transform: translateX(-50%) rotate(45deg);
-            box-shadow: 0 3px 10px rgba(0, 0, 0, 0.5);
-        }
-
-        .hammer-handle {
-            position: absolute;
-            width: 6px;
-            height: 45px;
-            background: linear-gradient(to bottom, #D2691E, #8B4513);
-            top: 25px;
-            left: 50%;
-            transform: translateX(-50%);
-            border-radius: 3px;
-            box-shadow: 0 2px 4px rgba(0, 0, 0, 0.3);
+            background-image: url('https://i.gifer.com/ZSj8.gif');
+            background-size: contain;
+            background-repeat: no-repeat;
+            background-position: center;
         }
 
         .hammer-hit {
@@ -2037,6 +2017,101 @@
             z-index: 55;
         }
 
+        /* NOUVEAU: Styles pour le panneau de sélection de skin */
+        .skin-selector-container {
+            position: fixed;
+            top: 50%;
+            left: 20px;
+            transform: translateY(-50%);
+            background: rgba(0, 0, 0, 0.7);
+            border-radius: 15px;
+            padding: 15px;
+            backdrop-filter: blur(10px);
+            border: 2px solid rgba(255, 105, 180, 0.3);
+            z-index: 100;
+            max-width: 250px;
+            width: 90%;
+            box-shadow: 0 5px 15px rgba(0, 0, 0, 0.5);
+            cursor: move;
+            user-select: none;
+            text-align: center;
+        }
+
+        .skin-selector-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 10px;
+            padding-bottom: 8px;
+            border-bottom: 1px solid rgba(255, 255, 255, 0.2);
+        }
+
+        .skin-selector-title {
+            font-size: 1.1em;
+            font-weight: bold;
+            color: #ff69b4;
+            text-shadow: 0 0 5px rgba(255, 105, 180, 0.5);
+        }
+
+        .skin-list {
+            display: grid;
+            grid-template-columns: repeat(2, 1fr);
+            gap: 8px;
+            max-height: 300px;
+            overflow-y: auto;
+        }
+
+        .skin-item {
+            background: rgba(255, 255, 255, 0.1);
+            border-radius: 10px;
+            padding: 8px;
+            cursor: pointer;
+            transition: all 0.2s ease;
+            border: 2px solid transparent;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+        }
+
+        .skin-item:hover {
+            background: rgba(255, 255, 255, 0.2);
+            transform: translateY(-2px);
+        }
+
+        .skin-item.active {
+            border-color: #ff69b4;
+            background: rgba(255, 105, 180, 0.2);
+        }
+
+        .skin-item-img {
+            width: 60px;
+            height: 60px;
+            background-size: contain;
+            background-repeat: no-repeat;
+            background-position: center;
+            border-radius: 5px;
+            margin-bottom: 5px;
+        }
+
+        .skin-item-name {
+            font-weight: bold;
+            color: #fff;
+            font-size: 0.8em;
+            text-align: center;
+        }
+
+        /* Responsive pour le panneau de sélection de skin */
+        @media (max-width: 768px) {
+            .skin-selector-container {
+                position: relative;
+                top: auto;
+                left: auto;
+                transform: none;
+                margin: 15px auto;
+                max-width: 100%;
+            }
+        }
+
     </style>
 </head>
 <body>
@@ -2045,11 +2120,26 @@
         <div class="menu-item" data-panel="lastAttackerPanel">👤 Dernier attaquant</div>
         <div class="menu-item" data-panel="lastRewardContainer">🏆 Dernier gain</div>
         <div class="menu-item" data-panel="queueContainer">🚀 File d'attente</div>
-        <div class="menu-item" data-panel="levelSelectorContainer" id="openLevelSelectorBtn">🎯 Sélectionner Niveau</div> <div class="menu-item" id="openAdminPanelBtn">🐞 Mode Admin (Bug HP)</div>
+        <div class="menu-item" data-panel="levelSelectorContainer" id="openLevelSelectorBtn">🎯 Sélectionner Niveau</div>
+        <div class="menu-item" data-panel="skinSelectorContainer" id="openSkinSelectorBtn">🎨 Sélectionner Skin</div>
+        <div class="menu-item" id="openAdminPanelBtn">🐞 Mode Admin (Bug HP)</div>
         <div class="menu-item" id="openSkinAttackPanelBtn">🖌️ Menu Skin Coups</div>
-        <div class="menu-item" id="openDataPanelBtn">📦 Import/Export Données</div> <div class="menu-item" id="resetDataBtn">🔄 Réinitialiser les données</div>
+        <div class="menu-item" id="openDataPanelBtn">📦 Import/Export Données</div>
+        <div class="menu-item" id="resetDataBtn">🔄 Réinitialiser les données</div>
     </div>
     <button class="menu-button" id="menuBtn">📋 Menu Panneaux</button>
+    
+    <!-- NOUVEAU: Panneau de sélection de skin -->
+    <div class="skin-selector-container" id="skinSelectorContainer" style="display: none;">
+        <div class="skin-selector-header">
+            <div class="skin-selector-title">🎨 SÉLECTIONNER SKIN</div>
+            <button class="close-panel" id="closeSkinSelectorBtn">×</button>
+        </div>
+        <div class="skin-list" id="skinListBody">
+            <!-- Les skins seront ajoutés dynamiquement par JavaScript -->
+        </div>
+    </div>
+    
     <div class="rewards-container" id="rewardsContainer" style="display: none;">
         <div class="rewards-header">
             <div class="rewards-title">🎁 TABLEAU DES GAINS</div>
@@ -2341,6 +2431,76 @@
             },
         };
 
+        // NOUVEAU: Liste des skins de diamant
+        const diamondSkins = [
+            { 
+                name: "Original", 
+                url: 'https://i.ibb.co/ks5qw82L/t-l-chargement-3-Photoroom.png' 
+            },
+            { 
+                name: "Crystal", 
+                url: 'https://i.ibb.co/kgw8Xj95/IMG-7451-Photoroom.png' 
+            },
+            { 
+                name: "Sparkle", 
+                url: 'https://media.giphy.com/media/v1.Y2lkPTc5MGI3NjExd3IzbHh3ZjNrcmZ5MzA3ZmtoM3MxMTkwOHZrc3B1YjNyOTlqcHh2NSZlcD12MV9zdGlja2Vyc19zZWFyY2gmY3Q9cw/UqYDZT2Sek7bXkL2On/giphy.gif' 
+            },
+            { 
+                name: "Rainbow", 
+                url: 'https://i.gifer.com/PYh.gif' 
+            },
+            { 
+                name: "Fire", 
+                url: 'https://i.gifer.com/4Jnt.gif' 
+            },
+            { 
+                name: "Water", 
+                url: 'https://i.gifer.com/3qSW.gif' 
+            },
+            { 
+                name: "Earth", 
+                url: 'https://i.gifer.com/xw.gif' 
+            },
+            { 
+                name: "Lightning", 
+                url: 'https://i.gifer.com/Z7i4.gif' 
+            },
+            { 
+                name: "Galaxy", 
+                url: 'https://i.gifer.com/6os.gif' 
+            },
+            { 
+                name: "Magic", 
+                url: 'https://i.gifer.com/WS2c.gif' 
+            },
+            { 
+                name: "Cosmic", 
+                url: 'https://i.gifer.com/XDZT.gif' 
+            },
+            { 
+                name: "Neon", 
+                url: 'https://i.gifer.com/xt.gif' 
+            },
+            { 
+                name: "Prism", 
+                url: 'https://i.gifer.com/3nRK.gif' 
+            },
+            { 
+                name: "Crystal Heart", 
+                url: 'https://i.gifer.com/ZJFD.gif' 
+            },
+            { 
+                name: "Diamond Shine", 
+                url: 'https://i.gifer.com/3nR6.gif' 
+            },
+            { 
+                name: "Golden", 
+                url: 'https://i.gifer.com/45Ra.gif' 
+            }
+        ];
+        
+        let currentSkinIndex = 0;
+
         const diamond = document.getElementById("diamond");
         const message = document.getElementById("message");
         const attackBtn = document.getElementById("attackBtn");
@@ -2349,12 +2509,6 @@
         const particlesContainer = document.getElementById("particlesContainer");
         const hpValue = document.getElementById("hpValue");
 
-        const diamondSkins = [
-            'https://i.ibb.co/ks5qw82L/t-l-chargement-3-Photoroom.png', // Original
-            'https://media.giphy.com/media/v1.Y2lkPWVjZjA1ZTQ3OG03eTVuZW1kbDVlN2s5cDRsMnptd3JtdWxycmFrMnpxa21za2RtcyZlcD12MV9zdGlja2Vyc19zZWFyY2gmY3Q9cw/s5CX4GI44nDeAC9cXy/giphy.gif',
-            'https://media.giphy.com/media/v1.Y2lkPWVjZjA1ZTQ3aDltbDZtOWd3Y2lqbTRhd3Brdjg1MHdqeW5pcHQ4dHpldmdtazNjayZlcP12MV9zdGlja2Vyc19yZWxhdGVkJmN0PXM/47LC5ZOQFPdhTVqHDR/giphy.gif'
-        ];
-        let currentSkinIndex = 0;
         const specialAttackAnim = document.getElementById('specialAttackAnim');
 
         const dropBarFill = document.getElementById("dropBarFill");
@@ -2392,6 +2546,11 @@
         const closeLevelSelectorBtn = document.getElementById("closeLevelSelectorBtn");
         const setRandomLevelBtn = document.getElementById("setRandomLevelBtn");
 
+        // NOUVEAU: Éléments du panneau de sélection de skin
+        const skinSelectorContainer = document.getElementById("skinSelectorContainer");
+        const skinListBody = document.getElementById("skinListBody");
+        const closeSkinSelectorBtn = document.getElementById("closeSkinSelectorBtn");
+        const openSkinSelectorBtn = document.getElementById("openSkinSelectorBtn");
 
         const adminPanel = document.getElementById("adminPanel");
         const adminHpInput = document.getElementById("adminHpInput");
@@ -2470,6 +2629,10 @@
                 x: 0,
                 y: 0
             },
+            skinSelectorContainer: {
+                x: 0,
+                y: 0
+            }
         };
 
         // =============================================
@@ -2577,7 +2740,18 @@
 
         function changeDiamondSkin() {
             currentSkinIndex = (currentSkinIndex + 1) % diamondSkins.length;
-            diamond.style.backgroundImage = `url('${diamondSkins[currentSkinIndex]}')`;
+            diamond.style.backgroundImage = `url('${diamondSkins[currentSkinIndex].url}')`;
+
+            try {
+                localStorage.setItem('diamondGameSkinIndex', currentSkinIndex);
+            } catch (e) {
+                console.warn("Impossible de sauvegarder la préférence de skin.");
+            }
+        }
+
+        function setDiamondSkin(index) {
+            currentSkinIndex = index;
+            diamond.style.backgroundImage = `url('${diamondSkins[currentSkinIndex].url}')`;
 
             try {
                 localStorage.setItem('diamondGameSkinIndex', currentSkinIndex);
@@ -2661,15 +2835,6 @@
         function createHammer() {
             const hammer = document.createElement('div');
             hammer.className = 'hammer';
-
-            const hammerHead = document.createElement('div');
-            hammerHead.className = 'hammer-head';
-
-            const hammerHandle = document.createElement('div');
-            hammerHandle.className = 'hammer-handle';
-
-            hammer.appendChild(hammerHead);
-            hammer.appendChild(hammerHandle);
 
             const diamondRect = diamond.getBoundingClientRect();
             const containerRect = diamond.parentElement.getBoundingClientRect();
@@ -2956,7 +3121,7 @@
             lastHitTime = 0;
             isAttacking = false;
 
-            diamond.style.backgroundImage = `url('${diamondSkins[currentSkinIndex]}')`;
+            diamond.style.backgroundImage = `url('${diamondSkins[currentSkinIndex].url}')`;
             
             const baseClass = defaultDifficulties[currentDifficulty] ? currentDifficulty : 'custom';
             diamond.className = "diamond " + baseClass;
@@ -3194,6 +3359,10 @@
             if (panelId === 'levelSelectorContainer' && !isCurrentlyDisplayed) {
                 populateLevelSelector();
             }
+            
+            if (panelId === 'skinSelectorContainer' && !isCurrentlyDisplayed) {
+                populateSkinSelector();
+            }
 
             document.querySelectorAll('.menu-item').forEach(item => {
                 let itemPanelId = item.getAttribute('data-panel');
@@ -3248,6 +3417,35 @@
                 });
 
                 levelListBody.appendChild(item);
+            });
+        }
+        
+        // NOUVEAU: Fonction pour peupler le sélecteur de skin
+        function populateSkinSelector() {
+            skinListBody.innerHTML = '';
+
+            diamondSkins.forEach((skin, index) => {
+                const item = document.createElement('div');
+                item.className = 'skin-item';
+                if (index === currentSkinIndex) {
+                    item.classList.add('active');
+                }
+                item.setAttribute('data-skin-index', index);
+                
+                item.innerHTML = `
+                    <div class="skin-item-img" style="background-image: url('${skin.url}');"></div>
+                    <div class="skin-item-name">${skin.name}</div>
+                `;
+                
+                item.addEventListener('click', function() {
+                    setDiamondSkin(index);
+                    skinListBody.querySelectorAll('.skin-item').forEach(si => si.classList.remove('active'));
+                    this.classList.add('active');
+                    skinSelectorContainer.style.display = 'none';
+                    document.querySelector('.menu-item[data-panel="skinSelectorContainer"]').classList.remove('active');
+                });
+
+                skinListBody.appendChild(item);
             });
         }
         
@@ -3790,6 +3988,9 @@
             document.querySelector('.menu-item[data-panel="levelSelectorContainer"]').classList.remove('active');
         });
 
+        // NOUVEAU: Gestion du panneau de sélection de skin
+        document.querySelector('.menu-item[data-panel="skinSelectorContainer"]').addEventListener('click', () => showPanel('skinSelectorContainer'));
+        closeSkinSelectorBtn.addEventListener('click', () => showPanel('skinSelectorContainer'));
 
         openAdminPanelBtn.addEventListener('click', () => showPanel('adminPanel'));
         closeAdminPanelBtn.addEventListener('click', () => showPanel('adminPanel'));
@@ -3859,6 +4060,7 @@
                     if (skinAttackPanel.style.display !== 'none') showPanel('skinAttackPanel');
                     if (dataPanel.style.display !== 'none') showPanel('dataPanel'); 
                     if (levelSelectorContainer.style.display !== 'none') showPanel('levelSelectorContainer');
+                    if (skinSelectorContainer.style.display !== 'none') showPanel('skinSelectorContainer');
                     break;
                 case 'g':
                 case 'G':
@@ -3883,6 +4085,10 @@
                 case 'n':
                 case 'N':
                     showPanel('levelSelectorContainer');
+                    break;
+                case 's':
+                case 'S':
+                    showPanel('skinSelectorContainer');
                     break;
             }
         });
@@ -3917,6 +4123,7 @@
         makeDraggable('skinAttackPanel');
         makeDraggable('dataPanel');
         makeDraggable('levelSelectorContainer');
+        makeDraggable('skinSelectorContainer'); // NOUVEAU: Rendre le panneau de skin déplaçable
 
         updateLastAttackerPanel("Personne", new Date());
 
@@ -3934,6 +4141,7 @@
         updateRewardsTable();
         updateAttackModeDisplay();
         selectAttackModeToEdit(1);
+        populateSkinSelector(); // NOUVEAU: Initialiser le sélecteur de skin
         initGame();
     </script>
 </body>

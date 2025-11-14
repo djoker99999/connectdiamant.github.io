@@ -3288,7 +3288,9 @@
             document.addEventListener("touchmove", drag);
 
             function dragStart(e) {
-                if (e.target.tagName === 'BUTTON' || e.target.tagName === 'INPUT' || e.target.closest('.skin-content') || e.target.closest('.admin-content') || e.target.closest('.data-content') || e.target.closest('.level-item')) {
+                // CORRECTION: Simplification de la logique de détection des éléments cliquables
+                // Seuls les boutons et inputs doivent bloquer le drag
+                if (e.target.tagName === 'BUTTON' || e.target.tagName === 'INPUT') {
                     return;
                 }
 
@@ -3300,9 +3302,9 @@
                     initialY = e.clientY - yOffset;
                 }
 
-                if (e.target === panel || e.target.parentNode === panel || e.target.parentNode.parentNode === panel || e.target.classList.contains('rewards-header') || e.target.classList.contains('admin-panel-header') || e.target.classList.contains('skin-attack-header') || e.target.classList.contains('data-panel-header') || e.target.classList.contains('level-selector-header') || e.target.classList.contains('queue-header') || e.target.classList.contains('last-reward-header')) {
-                    isDragging = true;
-                }
+                // CORRECTION: Simplification de la condition de drag
+                // Toute partie du panneau peut être utilisée pour le drag
+                isDragging = true;
             }
 
             function dragEnd(e) {

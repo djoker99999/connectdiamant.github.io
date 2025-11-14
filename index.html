@@ -1935,7 +1935,7 @@
                 </tr>
             </thead>
             <tbody id="rewardsTableBody">
-            </tbody>
+            </</tbody>
         </table>
     </div>
     <div class="last-attacker-panel" id="lastAttackerPanel" style="display: none;">
@@ -1972,7 +1972,14 @@
             <label for="adminHpInput">Points de Vie à Retirer (sans animation):</label>
             <input type="number" id="adminHpInput" value="1000" min="1">
             <button id="adminRemoveHpBtn">Retirer HP</button>
-        </div>
+            
+            <label for="adminManualHpInput" style="margin-top: 15px;">Ajuster la Vie Manuellement (+/- HP):</label>
+            <input type="number" id="adminManualHpInput" value="1000" min="1">
+            <div style="display: flex; gap: 10px;">
+                <button id="adminAddHpBtn" style="background: linear-gradient(45deg, #4CAF50, #8BC34A);">Ajouter HP</button>
+                <button id="adminSubtractHpBtn" style="background: linear-gradient(45deg, #2196F3, #03A9F4);">Retirer HP</button>
+            </div>
+            </div>
     </div>
     <div class="skin-attack-panel" id="skinAttackPanel" style="display: none;">
         <div class="skin-attack-header">
@@ -2101,7 +2108,7 @@
         // Variables pour le Drop
         let dropProgress = 0;
         let dropPool = 0;
-        const DROP_TARGET = 100;
+        const DROP_TARGET = 1000; // MODIFIÉ: Ancienne valeur 100 * 10 = 1000
         const DROP_REWARD = 5;
         // MODIFICATION: Tripler les chances de drop (1/333 au lieu de 1/1000)
         const DROP_CHANCE_MAX = 333;
@@ -2185,6 +2192,12 @@
         const adminRemoveHpBtn = document.getElementById("adminRemoveHpBtn");
         const closeAdminPanelBtn = document.getElementById("closeAdminPanelBtn");
         const openAdminPanelBtn = document.getElementById("openAdminPanelBtn");
+
+        // AJOUTÉ: Éléments du contrôle manuel HP
+        const adminManualHpInput = document.getElementById("adminManualHpInput");
+        const adminAddHpBtn = document.getElementById("adminAddHpBtn");
+        const adminSubtractHpBtn = document.getElementById("adminSubtractHpBtn");
+        // FIN AJOUTÉ
 
         // NOUVEAU: Éléments du panneau Skin Attack
         const skinAttackPanel = document.getElementById("skinAttackPanel");
@@ -3246,6 +3259,42 @@
             document.getElementById('openAdminPanelBtn').classList.remove('active');
         }
 
+        // AJOUTÉ: Fonction pour ajouter ou retirer des HP manuellement
+        function adjustHP(operation) {
+            const hpToAdjust = parseInt(adminManualHpInput.value);
+            if (isNaN(hpToAdjust) || hpToAdjust <= 0) {
+                showNotification("❌ Veuillez entrer un nombre de HP valide pour l'ajustement.", 'error');
+                return;
+            }
+
+            let oldHP = currentHP;
+
+            if (operation === 'add') {
+                currentHP = Math.min(maxHP, currentHP + hpToAdjust);
+                showNotification(`✅ Admin a ajouté ${hpToAdjust.toLocaleString()} HP.`, 'info');
+            } else if (operation === 'subtract') {
+                currentHP = Math.max(0, currentHP - hpToAdjust);
+                showNotification(`⚠️ Admin a retiré ${hpToAdjust.toLocaleString()} HP.`, 'info');
+            }
+
+            // Si on passe à 0, terminer le jeu
+            if (currentHP <= 0 && oldHP > 0) {
+                lastAttackerName = "Admin (Ajustement)";
+                endGame();
+            } else if (currentHP > 0 && oldHP <= 0) {
+                // Si on ajoute des HP après la défaite, réinitialiser
+                diamond.classList.remove('broken');
+                initGame();
+            }
+
+            updateUI();
+
+            // Fermer le panneau après l'action
+            adminPanel.style.display = 'none';
+            document.getElementById('openAdminPanelBtn').classList.remove('active');
+        }
+        // FIN AJOUTÉ
+
         // =============================================
         // NOUVEAU: FONCTIONS SKIN ATTACK
         // =============================================
@@ -3721,6 +3770,10 @@
         openAdminPanelBtn.addEventListener('click', () => showPanel('adminPanel'));
         closeAdminPanelBtn.addEventListener('click', () => showPanel('adminPanel'));
         adminRemoveHpBtn.addEventListener('click', handleAdminRemoveHp);
+        // AJOUTÉ: Événements pour l'ajustement manuel
+        adminAddHpBtn.addEventListener('click', () => adjustHP('add'));
+        adminSubtractHpBtn.addEventListener('click', () => adjustHP('subtract'));
+        // FIN AJOUTÉ
 
         // Événements Panneau Skin Attack
         openSkinAttackPanelBtn.addEventListener('click', () => showPanel('skinAttackPanel'));

@@ -51,7 +51,7 @@
             box-shadow: 0 10px 30px rgba(0, 0, 0, 0.5);
             position: relative;
             border: 2px solid rgba(255, 215, 0, 0.3);
-            z-index: 50; /* Z-INDEX AJUSTÉ: Assure que la zone de jeu est au-dessus du fond, mais en dessous des panneaux flottants. */
+            z-index: 50;
         }
 
         .game-container::before {
@@ -159,7 +159,6 @@
             width: 250px;
             height: 225px;
             margin: 0 auto;
-            /* background-image est maintenant géré par JS */
             background-size: contain;
             background-repeat: no-repeat;
             background-position: center;
@@ -169,15 +168,12 @@
             z-index: 5;
         }
 
-        /* CORRIGÉ: Animation pour l'attaque spéciale (30 coups) */
+        /* Animation pour l'attaque spéciale (30 coups) */
         .special-attack-anim {
             position: absolute;
             left: 50%;
-            /* Positionné au centre */
             top: 50%;
-            /* Décalé à droite du diamant (largeur diamant 250px / 2 = 125px) */
             transform: translate(130px, -50%);
-            /* 130px > 125px pour un petit écart */
             width: 150px;
             height: 150px;
             background-image: url('https://media.giphy.com/media/v1.Y2lkPTc5MGI3NjExd3IzbHh3ZjNrcmZ5MzA3ZmtoM3MxMTkwOHZrc3B1YjNyOTlqcHh2NSZlcD12MV9zdGlja2Vyc19zZWFyY2gmY3Q9cw/UqYDZT2Sek7bXkL2On/giphy.gif');
@@ -187,7 +183,6 @@
             z-index: 10;
             pointer-events: none;
             display: none;
-            /* Caché par défaut */
             opacity: 0;
         }
 
@@ -196,7 +191,6 @@
             animation: fadeInOut 3s ease-out forwards;
         }
 
-        /* CORRIGÉ: Keyframes pour le positionnement desktop */
         @keyframes fadeInOut {
             0% {
                 opacity: 0;
@@ -215,8 +209,6 @@
                 transform: translate(130px, -50%) scale(0.5);
             }
         }
-
-        /* FIN CORRECTION */
 
         .diamond.easy {
             filter: drop-shadow(0 0 15px rgba(0, 255, 0, 0.7)) brightness(1.1);
@@ -714,7 +706,6 @@
             transform: translateY(0);
         }
 
-        /* NOUVEAU: Style pour le bouton "Changer Skin" */
         #changeSkinBtn {
             background: linear-gradient(45deg, #4CAF50, #8BC34A);
         }
@@ -722,8 +713,6 @@
         #changeSkinBtn:hover {
             background: linear-gradient(45deg, #8BC34A, #9CCC65);
         }
-
-        /* FIN NOUVEAU */
 
         #resetBtn {
             background: linear-gradient(45deg, #555, #777);
@@ -857,7 +846,7 @@
         }
 
         .difficulty-selector {
-            display: none; /* MODIFIÉ: Cache la barre de difficulté par défaut */
+            display: none;
             justify-content: center;
             gap: 15px;
             margin: 15px 0;
@@ -912,7 +901,6 @@
             background-image: url('https://i.ibb.co/DHBNtX7t/IMG-6573.png');
         }
 
-        /* Suppression du cercle jaune pour les niveaux actifs */
         .difficulty-btn.active {
             border-color: rgba(255, 255, 255, 0.7);
             transform: scale(1.1);
@@ -938,16 +926,12 @@
                 height: 160px;
             }
 
-            /* CORRIGÉ: Ajuster l'animation spéciale pour mobile */
             .special-attack-anim {
                 width: 100px;
                 height: 100px;
-                /* Diamant mobile 180px large -> 90px du centre */
                 transform: translate(95px, -50%);
-                /* 95px > 90px */
             }
 
-            /* CORRIGÉ: Redéfinir les keyframes pour le transform mobile */
             @keyframes fadeInOut {
                 0% {
                     opacity: 0;
@@ -967,7 +951,6 @@
                 }
             }
 
-            /* FIN CORRECTION */
             .difficulty-selector {
                 gap: 10px;
             }
@@ -1080,40 +1063,8 @@
             background: linear-gradient(45deg, #F44336, #E91E63);
         }
         
-        /* Styles pour les badges personnalisés (si aucune classe de base n'est définie) */
         .difficulty-badge.custom {
             background: linear-gradient(45deg, #feca57, #ff6b9d);
-        }
-
-        /* Compteur de points de vie */
-        .hp-counter {
-            background: linear-gradient(45deg, #ff6b9d, #c44569);
-            color: white;
-            padding: 12px 20px;
-            border-radius: 15px;
-            font-weight: bold;
-            font-size: 14px;
-            box-shadow: 0 4px 10px rgba(0, 0, 0, 0.3);
-            border: 2px solid rgba(255, 255, 255, 0.2);
-            backdrop-filter: blur(5px);
-            margin: 15px auto;
-            max-width: 200px;
-            text-align: center;
-        }
-
-        .hp-counter .hp-label {
-            font-size: 12px;
-            opacity: 0.9;
-            display: block;
-            color: #ffffff;
-        }
-
-        .hp-counter .hp-value {
-            font-size: 16px;
-            font-weight: bold;
-            margin-top: 2px;
-            display: block;
-            color: #ffffff;
         }
 
         /* TikFinity Connection */
@@ -1127,7 +1078,7 @@
             text-align: center;
             max-width: 500px;
             width: 90%;
-            z-index: 55; /* Doit être au-dessus du game-container */
+            z-index: 55;
         }
 
         .connection-status {
@@ -1250,7 +1201,7 @@
             padding: 15px;
             backdrop-filter: blur(10px);
             border: 2px solid rgba(255, 215, 0, 0.3);
-            z-index: 100; /* Z-INDEX AJUSTÉ: Pour être au-dessus du game-container */
+            z-index: 100;
             max-width: 300px;
             width: 100%;
             box-shadow: 0 5px 15px rgba(0, 0, 0, 0.5);
@@ -1323,7 +1274,6 @@
             color: #ff6b9d;
         }
 
-        /* NOUVEAUX STYLES POUR LE BOUTON PAYÉ */
         .pay-reward-btn {
             padding: 4px 8px;
             font-size: 0.8em;
@@ -1344,7 +1294,6 @@
             text-align: center;
         }
 
-        /* FIN NOUVEAUX STYLES */
         .last-attacker-container {
             margin-top: 15px;
             padding-top: 10px;
@@ -1380,7 +1329,7 @@
         .menu-button {
             position: fixed;
             bottom: 20px;
-            right: 20px; /* MODIFIÉ: Positionné en bas à droite */
+            right: 20px;
             background: linear-gradient(45deg, #ff6b9d, #c44569);
             color: white;
             border: none;
@@ -1456,7 +1405,7 @@
         .menu-dropdown {
             position: fixed;
             bottom: 70px;
-            right: 20px; /* MODIFIÉ: Positionné en bas à droite */
+            right: 20px;
             background: rgba(0, 0, 0, 0.8);
             border-radius: 15px;
             padding: 15px;
@@ -1718,7 +1667,153 @@
             }
         }
 
-        /* NOUVEAU: Panneau Mode Admin */
+        /* NOUVEAU: Panneau de jauge de vie */
+        .hp-panel {
+            position: fixed;
+            top: 20px;
+            right: 20px;
+            background: rgba(0, 0, 0, 0.7);
+            border-radius: 15px;
+            padding: 15px;
+            backdrop-filter: blur(10px);
+            border: 2px solid rgba(255, 0, 0, 0.3);
+            z-index: 100;
+            max-width: 250px;
+            width: 100%;
+            box-shadow: 0 5px 15px rgba(0, 0, 0, 0.5);
+            cursor: move;
+            user-select: none;
+        }
+
+        .hp-panel-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 10px;
+            padding-bottom: 8px;
+            border-bottom: 1px solid rgba(255, 255, 255, 0.2);
+        }
+
+        .hp-panel-title {
+            font-size: 1.1em;
+            font-weight: bold;
+            color: #ff6b6b;
+            text-shadow: 0 0 5px rgba(255, 107, 107, 0.5);
+        }
+
+        .close-hp-panel {
+            background: none;
+            border: none;
+            color: #fff;
+            font-size: 1.2em;
+            cursor: pointer;
+            padding: 0;
+            width: 25px;
+            height: 25px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            border-radius: 50%;
+            transition: all 0.3s ease;
+        }
+
+        .close-hp-panel:hover {
+            background: rgba(255, 255, 255, 0.2);
+        }
+
+        .hp-bar-container {
+            width: 100%;
+            height: 25px;
+            background: rgba(0, 0, 0, 0.5);
+            border-radius: 12px;
+            margin: 10px 0;
+            overflow: hidden;
+            position: relative;
+            border: 1px solid rgba(255, 255, 255, 0.2);
+        }
+
+        .hp-bar-fill {
+            height: 100%;
+            background: linear-gradient(90deg, #ff6b6b, #ff8e8e);
+            border-radius: 12px;
+            transition: width 0.3s ease;
+            width: 100%;
+        }
+
+        .hp-bar-text {
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-weight: bold;
+            color: #fff;
+            text-shadow: 0 0 5px rgba(0, 0, 0, 0.7);
+            font-size: 12px;
+        }
+
+        .hp-info {
+            display: flex;
+            justify-content: space-between;
+            font-size: 0.9em;
+            color: #fff;
+            margin-top: 5px;
+        }
+
+        .hp-current {
+            font-weight: bold;
+            color: #ff6b6b;
+        }
+
+        .hp-max {
+            color: rgba(255, 255, 255, 0.7);
+        }
+
+        .hp-controls {
+            display: flex;
+            gap: 5px;
+            margin-top: 10px;
+        }
+
+        .hp-control-btn {
+            flex: 1;
+            padding: 5px;
+            font-size: 0.8em;
+            background: rgba(255, 255, 255, 0.1);
+            border: none;
+            border-radius: 5px;
+            color: #fff;
+            cursor: pointer;
+            transition: all 0.3s ease;
+        }
+
+        .hp-control-btn:hover {
+            background: rgba(255, 255, 255, 0.2);
+        }
+
+        .hp-control-btn.add {
+            background: rgba(76, 175, 80, 0.3);
+        }
+
+        .hp-control-btn.subtract {
+            background: rgba(244, 67, 54, 0.3);
+        }
+
+        /* Responsive pour le panneau de jauge de vie */
+        @media (max-width: 768px) {
+            .hp-panel {
+                position: relative;
+                top: auto;
+                right: auto;
+                margin: 15px auto;
+                max-width: 100%;
+            }
+        }
+
+        /* Panneau Mode Admin */
         .admin-panel, .skin-attack-panel, .data-panel {
             position: fixed;
             top: 50%;
@@ -1765,7 +1860,6 @@
             text-shadow: 0 0 8px rgba(0, 191, 255, 0.8);
         }
 
-
         .admin-content label, .skin-content label, .data-content label {
             display: block;
             margin-bottom: 8px;
@@ -1786,7 +1880,7 @@
         }
 
         .skin-content input[type="file"], .data-content input[type="file"] {
-            display: none; /* Cacher l'input file par défaut */
+            display: none;
         }
 
         .admin-content button, .skin-content button, #uploadFileBtn, #exportDataBtn, #importDataBtn {
@@ -1800,7 +1894,7 @@
             font-weight: bold;
             transition: all 0.3s ease;
             margin-top: 10px;
-            margin-bottom: 5px; /* Ajuster la marge pour l'alignement */
+            margin-bottom: 5px;
         }
 
         #uploadFileBtn {
@@ -1809,7 +1903,7 @@
         
         #exportDataBtn {
             background: linear-gradient(45deg, #4CAF50, #8BC34A);
-            margin-top: 0; /* Alignement */
+            margin-top: 0;
         }
         
         #importDataBtn {
@@ -1834,7 +1928,6 @@
             background: linear-gradient(45deg, #FFC107, #FF9800);
             transform: translateY(-1px);
         }
-
 
         .close-panel {
             background: none;
@@ -1894,17 +1987,17 @@
             border-radius: 8px;
         }
         
-        /* NOUVEAU: Styles pour le panneau de sélection de niveau */
+        /* Styles pour le panneau de sélection de niveau */
         .level-selector-container {
             position: fixed;
             top: 50%;
-            right: 20px; /* Positionnement initial */
+            right: 20px;
             transform: translateY(-50%);
             background: rgba(0, 0, 0, 0.7);
             border-radius: 15px;
             padding: 15px;
             backdrop-filter: blur(10px);
-            border: 2px solid rgba(0, 255, 255, 0.3); /* Nouvelle couleur de bordure */
+            border: 2px solid rgba(0, 255, 255, 0.3);
             z-index: 100;
             max-width: 250px;
             width: 90%;
@@ -2010,12 +2103,8 @@
                 transform: translate(50%, -50%);
             }
         }
-        
-        .hp-counter {
-            z-index: 55;
-        }
 
-        /* NOUVEAU: Styles pour le panneau de sélection de skin */
+        /* Styles pour le panneau de sélection de skin */
         .skin-selector-container {
             position: fixed;
             top: 50%;
@@ -2118,16 +2207,36 @@
         <div class="menu-item" data-panel="lastAttackerPanel">👤 Dernier attaquant</div>
         <div class="menu-item" data-panel="lastRewardContainer">🏆 Dernier gain</div>
         <div class="menu-item" data-panel="queueContainer">🚀 File d'attente</div>
+        <div class="menu-item" data-panel="hpPanel">❤️ Jauge de Vie</div>
         <div class="menu-item" data-panel="levelSelectorContainer" id="openLevelSelectorBtn">🎯 Sélectionner Niveau</div>
         <div class="menu-item" data-panel="skinSelectorContainer" id="openSkinSelectorBtn">🎨 Sélectionner Skin</div>
-        <div class="menu-item" id="openAdminPanelBtn">🐞 Mode Admin (Bug HP)</div>
         <div class="menu-item" id="openSkinAttackPanelBtn">🖌️ Menu Skin Coups</div>
         <div class="menu-item" id="openDataPanelBtn">📦 Import/Export Données</div>
         <div class="menu-item" id="resetDataBtn">🔄 Réinitialiser les données</div>
     </div>
     <button class="menu-button" id="menuBtn">📋 Menu Panneaux</button>
     
-    <!-- NOUVEAU: Panneau de sélection de skin -->
+    <!-- NOUVEAU: Panneau de jauge de vie -->
+    <div class="hp-panel" id="hpPanel" style="display: none;">
+        <div class="hp-panel-header">
+            <div class="hp-panel-title">❤️ JAUGE DE VIE</div>
+            <button class="close-hp-panel" id="closeHpPanelBtn">×</button>
+        </div>
+        <div class="hp-bar-container">
+            <div class="hp-bar-fill" id="hpBarFill"></div>
+            <div class="hp-bar-text" id="hpBarText">100%</div>
+        </div>
+        <div class="hp-info">
+            <span class="hp-current" id="hpCurrent">6000</span>
+            <span class="hp-max" id="hpMax">/ 6000</span>
+        </div>
+        <div class="hp-controls">
+            <button class="hp-control-btn add" id="hpAddBtn">+1000</button>
+            <button class="hp-control-btn subtract" id="hpSubtractBtn">-1000</button>
+        </div>
+    </div>
+    
+    <!-- Panneau de sélection de skin -->
     <div class="skin-selector-container" id="skinSelectorContainer" style="display: none;">
         <div class="skin-selector-header">
             <div class="skin-selector-title">🎨 SÉLECTIONNER SKIN</div>
@@ -2189,24 +2298,7 @@
             </div>
         <button id="setRandomLevelBtn" class="menu-item-selector">Choisir Niveau Aléatoire</button>
     </div>
-    <div class="admin-panel" id="adminPanel" style="display: none;">
-        <div class="admin-panel-header">
-            <div class="admin-panel-title">🐞 Mode Admin (Bug HP)</div>
-            <button class="close-panel" id="closeAdminPanelBtn">×</button>
-        </div>
-        <div class="admin-content">
-            <label for="adminHpInput">Points de Vie à Retirer (sans animation):</label>
-            <input type="number" id="adminHpInput" value="1000" min="1">
-            <button id="adminRemoveHpBtn">Retirer HP</button>
-            
-            <label for="adminManualHpInput" style="margin-top: 15px;">Ajuster la Vie Manuellement (+/- HP):</label>
-            <input type="number" id="adminManualHpInput" value="1000" min="1">
-            <div style="display: flex; gap: 10px;">
-                <button id="adminAddHpBtn" style="background: linear-gradient(45deg, #4CAF50, #8BC34A);">Ajouter HP</button>
-                <button id="adminSubtractHpBtn" style="background: linear-gradient(45deg, #2196F3, #03A9F4);">Retirer HP</button>
-            </div>
-            </div>
-    </div>
+    
     <div class="skin-attack-panel" id="skinAttackPanel" style="display: none;">
         <div class="skin-attack-header">
             <div class="skin-attack-title">🖌️ Menu Skin Coups</div>
@@ -2307,20 +2399,6 @@
         <p id="message"></p>
     </div>
     
-    <div class="hp-counter" id="hpCounter">
-        <span class="hp-label">Points de vie restants</span>
-        <span class="hp-value" id="hpValue">6000 / 6000</span>
-    </div>
-    
-    <div class="popup-overlay" id="victoryPopup">
-        <div class="popup-content">
-            <h3>🎉 Diamant Magique Brisé ! 🎉</h3>
-            <div id="popupRewardImage" class="popup-reward-image"></div>
-            <p id="popupRewardText" class="popup-reward-text"></p>
-            <div id="popupVictoryMessage" class="popup-victory-message"></div>
-            <button class="popup-close-btn" id="closePopupBtn">Continuer</button>
-        </div>
-    </div>
     <div class="tikfinity-connection">
         <div class="connection-status">
             <span class="status-dot disconnected" id="statusDot"></span>
@@ -2329,6 +2407,15 @@
         <button id="connectBtn" class="connect-btn">Se connecter à TikFinity</button>
         <div class="connection-info">
             💡 Configurez "Le Diamant Magique" dans TikFinity → Actions & Events → Third-party action
+        </div>
+    </div>
+    <div class="popup-overlay" id="victoryPopup">
+        <div class="popup-content">
+            <h3>🎉 Diamant Magique Brisé ! 🎉</h3>
+            <div id="popupRewardImage" class="popup-reward-image"></div>
+            <p id="popupRewardText" class="popup-reward-text"></p>
+            <div id="popupVictoryMessage" class="popup-victory-message"></div>
+            <button class="popup-close-btn" id="closePopupBtn">Continuer</button>
         </div>
     </div>
     <script>
@@ -2351,7 +2438,7 @@
         const DROP_REWARD = 5;
         const DROP_CHANCE_MAX = 333;
 
-        // NOUVEAU: Structure pour les niveaux personnalisés
+        // Structure pour les niveaux personnalisés
         const customDifficulties = {
             'trentecoups': {
                 maxHP: 500,
@@ -2447,7 +2534,7 @@
             }
         };
 
-        // NOUVEAU: Liste des skins de diamant
+        // Liste des skins de diamant
         const diamondSkins = [
             { 
                 name: "Original", 
@@ -2523,7 +2610,6 @@
         const gameContainer = document.getElementById("gameContainer");
         const comboIndicator = document.getElementById("comboIndicator");
         const particlesContainer = document.getElementById("particlesContainer");
-        const hpValue = document.getElementById("hpValue");
 
         const specialAttackAnim = document.getElementById('specialAttackAnim');
 
@@ -2556,27 +2642,27 @@
         const queueListBody = document.getElementById("queueListBody");
         const closeQueueBtn = document.getElementById("closeQueueBtn");
         
-        // NOUVEAU: Éléments du panneau de sélection de niveau
+        // NOUVEAU: Éléments du panneau de jauge de vie
+        const hpPanel = document.getElementById("hpPanel");
+        const hpBarFill = document.getElementById("hpBarFill");
+        const hpBarText = document.getElementById("hpBarText");
+        const hpCurrent = document.getElementById("hpCurrent");
+        const hpMax = document.getElementById("hpMax");
+        const closeHpPanelBtn = document.getElementById("closeHpPanelBtn");
+        const hpAddBtn = document.getElementById("hpAddBtn");
+        const hpSubtractBtn = document.getElementById("hpSubtractBtn");
+        
+        // Éléments du panneau de sélection de niveau
         const levelSelectorContainer = document.getElementById("levelSelectorContainer");
         const levelListBody = document.getElementById("levelListBody");
         const closeLevelSelectorBtn = document.getElementById("closeLevelSelectorBtn");
         const setRandomLevelBtn = document.getElementById("setRandomLevelBtn");
 
-        // NOUVEAU: Éléments du panneau de sélection de skin
+        // Éléments du panneau de sélection de skin
         const skinSelectorContainer = document.getElementById("skinSelectorContainer");
         const skinListBody = document.getElementById("skinListBody");
         const closeSkinSelectorBtn = document.getElementById("closeSkinSelectorBtn");
         const openSkinSelectorBtn = document.getElementById("openSkinSelectorBtn");
-
-        const adminPanel = document.getElementById("adminPanel");
-        const adminHpInput = document.getElementById("adminHpInput");
-        const adminRemoveHpBtn = document.getElementById("adminRemoveHpBtn");
-        const closeAdminPanelBtn = document.getElementById("closeAdminPanelBtn");
-        const openAdminPanelBtn = document.getElementById("openAdminPanelBtn");
-
-        const adminManualHpInput = document.getElementById("adminManualHpInput");
-        const adminAddHpBtn = document.getElementById("adminAddHpBtn");
-        const adminSubtractHpBtn = document.getElementById("adminSubtractHpBtn");
 
         const skinAttackPanel = document.getElementById("skinAttackPanel");
         const attackModeSelector = document.getElementById("attackModeSelector");
@@ -2596,7 +2682,6 @@
         const importFileInput = document.getElementById("importFileInput");
         const closeDataPanelBtn = document.getElementById("closeDataPanelBtn");
         const openDataPanelBtn = document.getElementById("openDataPanelBtn");
-
 
         const impactEffects = ["💥", "🔥", "⭐", "💫", "✨", "💢"];
         
@@ -2629,7 +2714,7 @@
                 x: 0,
                 y: 0
             },
-            adminPanel: {
+            hpPanel: {
                 x: 0,
                 y: 0
             },
@@ -2752,7 +2837,6 @@
                 console.warn('Erreur lors de la sauvegarde des positions des panneaux:', error);
             }
         }
-
 
         function changeDiamondSkin() {
             currentSkinIndex = (currentSkinIndex + 1) % diamondSkins.length;
@@ -3020,6 +3104,7 @@
             }
 
             updateUI();
+            updateHpPanel();
 
             if (!wasCracked && diamond.classList.contains('cracked')) {
                 playCrackSound();
@@ -3037,8 +3122,6 @@
         }
 
         function updateUI() {
-            hpValue.textContent = `${currentHP.toLocaleString()} / ${maxHP.toLocaleString()}`;
-
             const config = allDifficulties[currentDifficulty] || defaultDifficulties["noob"];
             const difficultyName = config.name;
 
@@ -3055,6 +3138,15 @@
                     message.textContent = `Diamant magique ${difficultyName} - À tout moment le diamant peut être brisé...`;
                 }
             }
+        }
+
+        // NOUVEAU: Fonction pour mettre à jour le panneau de jauge de vie
+        function updateHpPanel() {
+            const hpPercent = (currentHP / maxHP) * 100;
+            hpBarFill.style.width = `${hpPercent}%`;
+            hpBarText.textContent = `${Math.round(hpPercent)}%`;
+            hpCurrent.textContent = currentHP.toLocaleString();
+            hpMax.textContent = `/ ${maxHP.toLocaleString()}`;
         }
 
         function closeVictoryPopup() {
@@ -3092,6 +3184,7 @@
                 if (extraHits > 0) {
                     currentHP = Math.max(0, currentHP - extraHits);
                     updateUI();
+                    updateHpPanel();
 
                     if (currentHP <= 0) {
                         setTimeout(() => {
@@ -3162,6 +3255,7 @@
             totalHits = 0;
 
             updateUI();
+            updateHpPanel();
             updateAttackModeDisplay();
         }
 
@@ -3314,8 +3408,6 @@
             document.addEventListener("touchmove", drag);
 
             function dragStart(e) {
-                // CORRECTION: Simplification de la logique de détection des éléments cliquables
-                // Seuls les boutons et inputs doivent bloquer le drag
                 if (e.target.tagName === 'BUTTON' || e.target.tagName === 'INPUT') {
                     return;
                 }
@@ -3328,8 +3420,6 @@
                     initialY = e.clientY - yOffset;
                 }
 
-                // CORRECTION: Simplification de la condition de drag
-                // Toute partie du panneau peut être utilisée pour le drag
                 isDragging = true;
             }
 
@@ -3398,7 +3488,6 @@
                 let isActive = false;
                 
                 let targetPanelId = itemPanelId;
-                if (itemOpenBtnId === 'openAdminPanelBtn') targetPanelId = 'adminPanel';
                 if (itemOpenBtnId === 'openSkinAttackPanelBtn') targetPanelId = 'skinAttackPanel';
                 if (itemOpenBtnId === 'openDataPanelBtn') targetPanelId = 'dataPanel';
                 
@@ -3448,7 +3537,7 @@
             });
         }
         
-        // NOUVEAU: Fonction pour peupler le sélecteur de skin
+        // Fonction pour peupler le sélecteur de skin
         function populateSkinSelector() {
             skinListBody.innerHTML = '';
 
@@ -3515,7 +3604,6 @@
                 currentSkinIndex = 0;
                 localStorage.removeItem('diamondGameSkinIndex');
 
-
                 updateRewardsTable();
                 updateAttackModeDisplay();
 
@@ -3526,47 +3614,23 @@
         }
 
         // =============================================
-        // FONCTIONS ADMIN (BUG HP)
+        // FONCTIONS POUR LE PANNEAU DE JAUGE DE VIE
         // =============================================
-        function handleAdminRemoveHp() {
-            const hpToRemove = parseInt(adminHpInput.value);
-            if (isNaN(hpToRemove) || hpToRemove <= 0) {
-                showNotification("❌ Veuillez entrer un nombre de HP valide.", 'error');
-                return;
-            }
-
-            currentHP = Math.max(0, currentHP - hpToRemove);
-            updateUI();
-            showNotification(`⚠️ Admin a retiré ${hpToRemove.toLocaleString()} HP discrètement.`, 'info');
-
-            if (currentHP <= 0) {
-                lastAttackerName = "Admin (Bug HP)";
-                endGame();
-            }
-
-            adminPanel.style.display = 'none';
-            document.getElementById('openAdminPanelBtn').classList.remove('active');
-        }
-
         function adjustHP(operation) {
-            const hpToAdjust = parseInt(adminManualHpInput.value);
-            if (isNaN(hpToAdjust) || hpToAdjust <= 0) {
-                showNotification("❌ Veuillez entrer un nombre de HP valide pour l'ajustement.", 'error');
-                return;
-            }
-
+            let hpToAdjust = 1000;
+            
             let oldHP = currentHP;
 
             if (operation === 'add') {
                 currentHP = Math.min(maxHP, currentHP + hpToAdjust);
-                showNotification(`✅ Admin a ajouté ${hpToAdjust.toLocaleString()} HP.`, 'info');
+                showNotification(`✅ ${hpToAdjust.toLocaleString()} HP ajoutés.`, 'info');
             } else if (operation === 'subtract') {
                 currentHP = Math.max(0, currentHP - hpToAdjust);
-                showNotification(`⚠️ Admin a retiré ${hpToAdjust.toLocaleString()} HP.`, 'info');
+                showNotification(`⚠️ ${hpToAdjust.toLocaleString()} HP retirés.`, 'info');
             }
 
             if (currentHP <= 0 && oldHP > 0) {
-                lastAttackerName = "Admin (Ajustement)";
+                lastAttackerName = "Ajustement HP";
                 endGame();
             } else if (currentHP > 0 && oldHP <= 0) {
                 diamond.classList.remove('broken');
@@ -3574,9 +3638,7 @@
             }
 
             updateUI();
-
-            adminPanel.style.display = 'none';
-            document.getElementById('openAdminPanelBtn').classList.remove('active');
+            updateHpPanel();
         }
 
         // =============================================
@@ -3639,7 +3701,6 @@
                 showNotification("✅ Fichier local chargé! (L'URL sera perdue après rechargement de la page)", 'info');
             }
         });
-
 
         // =============================================
         // INTÉGRATION TIKFINTY
@@ -3877,6 +3938,7 @@
             createImpactEffect();
 
             updateUI();
+            updateHpPanel();
 
             setTimeout(() => {
                 diamond.classList.remove(animationType);
@@ -4026,6 +4088,16 @@
             document.querySelector('.menu-item[data-panel="queueContainer"]').classList.remove('active');
         });
         
+        // NOUVEAU: Gestion du panneau de jauge de vie
+        closeHpPanelBtn.addEventListener('click', function() {
+            hpPanel.style.display = 'none';
+            document.querySelector('.menu-item[data-panel="hpPanel"]').classList.remove('active');
+        });
+        hpAddBtn.addEventListener('click', () => adjustHP('add'));
+        hpSubtractBtn.addEventListener('click', () => adjustHP('subtract'));
+        
+        document.querySelector('.menu-item[data-panel="hpPanel"]').addEventListener('click', () => showPanel('hpPanel'));
+        
         document.querySelector('.menu-item[data-panel="levelSelectorContainer"]').addEventListener('click', () => showPanel('levelSelectorContainer'));
         closeLevelSelectorBtn.addEventListener('click', () => showPanel('levelSelectorContainer'));
         setRandomLevelBtn.addEventListener('click', function() {
@@ -4036,15 +4108,9 @@
             document.querySelector('.menu-item[data-panel="levelSelectorContainer"]').classList.remove('active');
         });
 
-        // NOUVEAU: Gestion du panneau de sélection de skin
+        // Gestion du panneau de sélection de skin
         document.querySelector('.menu-item[data-panel="skinSelectorContainer"]').addEventListener('click', () => showPanel('skinSelectorContainer'));
         closeSkinSelectorBtn.addEventListener('click', () => showPanel('skinSelectorContainer'));
-
-        openAdminPanelBtn.addEventListener('click', () => showPanel('adminPanel'));
-        closeAdminPanelBtn.addEventListener('click', () => showPanel('adminPanel'));
-        adminRemoveHpBtn.addEventListener('click', handleAdminRemoveHp);
-        adminAddHpBtn.addEventListener('click', () => adjustHP('add'));
-        adminSubtractHpBtn.addEventListener('click', () => adjustHP('subtract'));
 
         openSkinAttackPanelBtn.addEventListener('click', () => showPanel('skinAttackPanel'));
         closeSkinAttackPanelBtn.addEventListener('click', () => showPanel('skinAttackPanel'));
@@ -4066,13 +4132,12 @@
         importDataBtn.addEventListener('click', () => importFileInput.click());
         importFileInput.addEventListener('change', importGameData);
 
-
         menuBtn.addEventListener('click', toggleMenu);
 
         document.querySelectorAll('.menu-item').forEach(item => {
             if (item.id === 'resetDataBtn') {
                 item.addEventListener('click', resetGameData);
-            } else if (item.id !== 'openAdminPanelBtn' && item.id !== 'openSkinAttackPanelBtn' && item.id !== 'openDataPanelBtn' && item.id !== 'openLevelSelectorBtn') {
+            } else if (item.id !== 'openSkinAttackPanelBtn' && item.id !== 'openDataPanelBtn' && item.id !== 'openLevelSelectorBtn') {
                 item.addEventListener('click', function() {
                     const panelId = this.getAttribute('data-panel');
                     if (panelId) showPanel(panelId);
@@ -4110,11 +4175,11 @@
                 case 'Escape':
                     closeVictoryPopup();
                     menuDropdown.classList.remove('active');
-                    if (adminPanel.style.display !== 'none') showPanel('adminPanel');
                     if (skinAttackPanel.style.display !== 'none') showPanel('skinAttackPanel');
                     if (dataPanel.style.display !== 'none') showPanel('dataPanel'); 
                     if (levelSelectorContainer.style.display !== 'none') showPanel('levelSelectorContainer');
                     if (skinSelectorContainer.style.display !== 'none') showPanel('skinSelectorContainer');
+                    if (hpPanel.style.display !== 'none') showPanel('hpPanel');
                     break;
                 case 'g':
                 case 'G':
@@ -4135,6 +4200,10 @@
                 case 'q':
                 case 'Q':
                     showPanel('queueContainer');
+                    break;
+                case 'h':
+                case 'H':
+                    showPanel('hpPanel');
                     break;
                 case 'n':
                 case 'N':
@@ -4173,11 +4242,11 @@
         makeDraggable('lastAttackerPanel');
         makeDraggable('lastRewardContainer');
         makeDraggable('queueContainer');
-        makeDraggable('adminPanel');
+        makeDraggable('hpPanel');
         makeDraggable('skinAttackPanel');
         makeDraggable('dataPanel');
         makeDraggable('levelSelectorContainer');
-        makeDraggable('skinSelectorContainer'); // NOUVEAU: Rendre le panneau de skin déplaçable
+        makeDraggable('skinSelectorContainer');
 
         updateLastAttackerPanel("Personne", new Date());
 
@@ -4195,7 +4264,7 @@
         updateRewardsTable();
         updateAttackModeDisplay();
         selectAttackModeToEdit(1);
-        populateSkinSelector(); // NOUVEAU: Initialiser le sélecteur de skin
+        populateSkinSelector();
         initGame();
     </script>
 </body>
